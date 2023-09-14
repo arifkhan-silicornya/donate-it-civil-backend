@@ -213,6 +213,22 @@ class BottomBanner(models.Model):
     link = models.TextField(max_length=500, blank=True, null=True)
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    last_update_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.title
+    
+
+class GlobalLocation(models.Model):
+    country = models.CharField(max_length=50)
+    office_address = models.CharField(max_length=200)
+    email = models.EmailField(max_length=100 )
+    contact_no = models.CharField(max_length=200)
+
+    active= models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_update_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.email

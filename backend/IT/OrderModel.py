@@ -19,14 +19,15 @@ class OrderIt(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     ProductIT = models.ForeignKey(ProductModel ,  on_delete=models.PROTECT)
     currency = models.CharField(max_length= 300, null = False)
-    project_description = models.TextField(max_length= 300, null = True)
+    project_description = models.TextField(max_length= 300, null = True,blank=True)
     
-    total_price = models.CharField(max_length= 300, null = True)
-    total_online_paid = models.CharField(max_length= 300, null = True)
+    total_price = models.CharField(max_length= 300, null = True,blank=True)
+    total_online_paid = models.CharField(max_length= 300, null = True,blank=True)
+    total_offline_paid = models.CharField(max_length= 300, null = True,blank=True)
 
     status =(
     ("pen", "Pending"),
-    ("Pay", "Payment"),
+    ("pay", "Payment"),
     ("can", "Canceled"),
     ("wor", "Working"),
     ("com", "Completed"),
@@ -42,7 +43,7 @@ class OrderIt(models.Model):
     update_at = models.DateTimeField(auto_now= True)
 
     def __str__(self):
-        return str(self.user.id)
+        return str(self.id)
 
 # =========================       Order Pdf       =====================
 
@@ -73,30 +74,21 @@ class OtherPdfIT(models.Model):
 # =========================       Personal Info       =====================
 class PersonalInfoIT(models.Model):
     orderit = models.OneToOneField(OrderIt, on_delete=models.CASCADE )
-    is_same = models.BooleanField(default=True)
+    is_same = models.BooleanField(default=True,null=False,blank=False)
     GENDER_CHOICES =(
     ("M", "Male"),
     ("F", "Female"),
     ("O", "Other"),
     )
 
-    Title_CHOICES =(
-    ("Mr", "Mr"),
-    ("Mrs", "Mrs"),
-    ("Ms", "Ms"),
-    ("Miss", "Miss"),
-    ("Dr", "Dr"),
-    ("Engr", "Engr"),
-    ("Master", "Master"),
-    )
-
-    gender=models.CharField(max_length=7,choices=GENDER_CHOICES,null=True)
-    title=models.CharField(max_length=7,choices=Title_CHOICES,null=True)
-    date_of_birth=models.DateField(null=True)
+    
+    gender=models.CharField(max_length=7,choices=GENDER_CHOICES,null=True,blank=True)
+    title=models.CharField(max_length=7,null=True,blank=True)
+    date_of_birth=models.CharField(max_length=30,null=True,blank=True)
     occupation=models.CharField(max_length=10,null=True,blank=True)
 
-    first_name = models.CharField(max_length= 300,null = True)
-    last_name = models.CharField(max_length= 300,null = True)
+    first_name = models.CharField(max_length= 300,null=True,blank=True)
+    last_name = models.CharField(max_length= 300,null=True,blank=True)
     
     
     create_at = models.DateTimeField(auto_now_add=True)
@@ -108,12 +100,12 @@ class PersonalInfoIT(models.Model):
 # =========================       Present Address       =====================
 class PresentAddressIT(models.Model):
     orderit = models.OneToOneField(OrderIt, on_delete=models.CASCADE )
-    is_same = models.BooleanField(default=True)
-    country = models.CharField(max_length= 300,null = True)
-    State = models.CharField(max_length= 300,null = True)
-    city = models.CharField(max_length= 300,null = True)
-    houseRoad = models.CharField(max_length= 300,null = True)
-    zipCode = models.CharField(max_length= 300,null = True)
+    is_same = models.BooleanField(default=True,null=False,blank=False)
+    country = models.CharField(max_length= 300,null=True,blank=True)
+    State = models.CharField(max_length= 300,null=True,blank=True)
+    city = models.CharField(max_length= 300,null=True,blank=True)
+    houseRoad = models.CharField(max_length= 300,null=True,blank=True)
+    zipCode = models.CharField(max_length= 300,null=True,blank=True)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now= True)
 
@@ -123,13 +115,8 @@ class PresentAddressIT(models.Model):
 # =========================       Permanent Address       =====================
 class PermanentAddressIT(models.Model):
     orderit = models.OneToOneField(OrderIt, on_delete=models.CASCADE )
-    is_same_as_user = models.BooleanField(default=False)
-    is_same_present_address = models.BooleanField(default=False,null=True)
-    country = models.CharField(max_length= 300,null = True)
-    State = models.CharField(max_length= 300,null = True)
-    city = models.CharField(max_length= 300,null = True)
-    houseRoad = models.CharField(max_length= 300,null = True)
-    zipCode = models.CharField(max_length= 300,null = True)
+    is_same = models.BooleanField(default=True,null=False,blank=False)
+    address = models.TextField(max_length= 300,null=True,blank=True)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now= True)
 
@@ -141,7 +128,7 @@ class PermanentAddressIT(models.Model):
 class CompanyDetailIT(models.Model):
     orderit = models.OneToOneField(OrderIt, on_delete=models.CASCADE )
     is_same = models.BooleanField(default=True)
-    Company_same = models.CharField(max_length= 300,null = False)
+    Company_same = models.CharField(max_length= 300,null=True,blank=True)
 
     Com_type =(
     ("Pr", "Private"),
@@ -149,20 +136,20 @@ class CompanyDetailIT(models.Model):
     ("O", "Others"),
     )
 
-    Company_type = models.CharField(max_length=7,choices=Com_type,null=True)
-    Company_location = models.CharField(max_length= 300,null = True)
-    Company_website_url = models.URLField(max_length= 300,null = True)
+    Company_type = models.CharField(max_length=30,choices=Com_type,null=True,blank=True)
+    Company_location = models.CharField(max_length= 300,null=True,blank=True)
+    Company_website_url = models.URLField(max_length= 100,null=True,blank=True)
 
-    Company_phone_dial_code = models.CharField(max_length= 300,null = True)
-    Company_phone_number = models.CharField(max_length= 300,null = True)
-    Company_email = models.CharField(max_length= 300,null = True)
-    Company_details = models.TextField(max_length= 300,null = True)
+    Company_phone_dial_code = models.CharField(max_length= 8,null=True,blank=True)
+    Company_phone_number = models.CharField(max_length= 30,null=True,blank=True)
+    Company_email = models.EmailField(max_length= 50,null=True,blank=True)
+    Company_details = models.TextField(max_length= 300,null=True,blank=True)
 
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now= True)
 
     def __str__(self):
-        return str(self.orderit.id)
+        return str(self.orderit.id) +" com id :"+ str(self.id)
 
 
 # =========================       Contact Info       =====================
@@ -171,13 +158,13 @@ class Contact_infoIT(models.Model):
     orderit = models.OneToOneField(OrderIt, on_delete=models.CASCADE )
     is_same = models.BooleanField(default=True)
     
-    personal_phone_dial_code = models.CharField(max_length= 300,null = True)
-    personal_phone_number = models.CharField(max_length= 300,null = True)
-    home_phone_dial_code = models.CharField(max_length= 300,null = True)
-    home_phone_number = models.CharField(max_length= 300,null = True)
+    personal_phone_dial_code = models.CharField(max_length= 300,null=True,blank=True)
+    personal_phone_number = models.CharField(max_length= 300,null=True,blank=True)
+    home_phone_dial_code = models.CharField(max_length= 300,null=True,blank=True)
+    home_phone_number = models.CharField(max_length= 300,null=True,blank=True)
 
-    contact_email = models.EmailField(max_length= 300,null = True)
-    contact_address = models.TextField(max_length= 300,null = True)
+    contact_email = models.EmailField(max_length= 300,null=True,blank=True)
+    contact_address = models.TextField(max_length= 300,null=True,blank=True)
 
 
     create_at = models.DateTimeField(auto_now_add=True)
@@ -191,13 +178,12 @@ class Contact_infoIT(models.Model):
 
 class SocialMediaLinkIT(models.Model):
     orderit = models.ForeignKey(OrderIt, on_delete=models.CASCADE )
-    is_same = models.BooleanField(default=True)
     
-    name = models.CharField(max_length= 300,null = True)
-    link = models.CharField(max_length= 300,null = True)
+    name = models.CharField(max_length= 300,null=True,blank=True)
+    link = models.CharField(max_length= 300,null=True,blank=True)
 
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now= True)
 
     def __str__(self):
-        return str(self.orderit.id)
+        return str(self.orderit.id) + " " + str(self.id)

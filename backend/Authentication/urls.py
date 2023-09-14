@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from .views import *
 from rest_framework_simplejwt.views import ( TokenObtainPairView, TokenRefreshView, TokenVerifyView )
 from .AdminLoginView import *
-from rest_framework_simplejwt.views import TokenVerifyView
+from django.db.models import Q
 
 urlpatterns = [
 

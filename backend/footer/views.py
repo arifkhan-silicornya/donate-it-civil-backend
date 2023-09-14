@@ -51,6 +51,16 @@ class FooterView(APIView):
         footer_payment_icon_objects = PaymentIcon.objects.all()
         footer_payment_icon_serializer = PaymentIconSerializer(footer_payment_icon_objects, many=True, context={'request':request}).data
         return Response({'footerSections':footerSections, 'footerHeadOffices':footer_head_office_serializer, 'footerSocialIcon':footer_social_icon_serializer, 'paymentIcon':footer_payment_icon_serializer})
+    
+
+class FooterItem_IT_View(generics.ListAPIView):
+    permission_classes=[AllowAny]
+    serializer_class = FooterItemSerializer
+    queryset = footerItem.objects.all()
+
+    def get_queryset(self):
+        return self.queryset.filter(link__icontains='/it',active=True)
+    
             
 # def get(self, request):
 #         categories = Category.objects.all()

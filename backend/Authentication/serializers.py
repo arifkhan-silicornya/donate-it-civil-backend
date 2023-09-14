@@ -54,7 +54,7 @@ class UserSerializer(serializers.ModelSerializer):
     
     def get_SocialMediaLink(self,model:User):
         try:
-            social_media=SocialMediaLink.objects.filter(Q(active=True) & Q(user=model))
+            social_media=SocialMediaLink.objects.filter(active=True,user=model)
             return SocialMediaLinkSerializer(social_media,many=True).data
         except:
             return []
@@ -190,7 +190,7 @@ class ChangePasswordSerializer(serializers.Serializer):
     
     def validate(self, data):
         if data['new_password'] != data['confirm_password']:
-            raise serializers.ValidationError("New passwords do not match.")
+            raise serializers.ValidationError({"type":"error","msg":"New passwords do not match."})
         return data
 
     def update(self, instance, validated_data):
@@ -199,7 +199,7 @@ class ChangePasswordSerializer(serializers.Serializer):
         new_password = validated_data['new_password']
 
         if not user.check_password(old_password):
-            raise serializers.ValidationError("Invalid old password.")
+            raise serializers.ValidationError({"type":"error","msg":"Invalid old password."})
 
         user.set_password(new_password)
         user.save()
@@ -240,5 +240,10 @@ class PermanentAddressSerializer(serializers.ModelSerializer):
 class Contact_infoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact_info
+        fields = '__all__'
+
+class User_SocialMediaLinkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SocialMediaLink
         fields = '__all__'
 

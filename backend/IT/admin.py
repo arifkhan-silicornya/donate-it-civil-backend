@@ -20,6 +20,7 @@ admin.site.register(ProductCategoryModel)
 
 # Order Model
 admin.site.register(OrderIt) 
+admin.site.register(OrderPdfIT)  
 admin.site.register(OtherPdfIT)  
 admin.site.register(PersonalInfoIT)  
 admin.site.register(PresentAddressIT) 
@@ -27,3 +28,6 @@ admin.site.register(PermanentAddressIT)
 admin.site.register(CompanyDetailIT) 
 admin.site.register(Contact_infoIT)  
 admin.site.register(SocialMediaLinkIT)  
+
+#footer
+admin.site.register(GlobalLocation)  

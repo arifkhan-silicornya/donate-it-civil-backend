@@ -4,13 +4,40 @@ from Authentication.models import *
 from Authentication.serializers import *
 from rest_framework.response import Response
 from rest_framework.permissions import *
+from rest_framework.decorators import APIView
 from .serializers import *
 # Create your views here.
-class UserDataGet(generics.RetrieveAPIView):
-    permission_classes = (AllowAny,)
+class UserDataGet(APIView):
+    permission_classes = (IsAuthenticated,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    lookup_field = 'pk'
+
+    def get(self,request):
+        try:
+            if User.objects.filter(id= request.user.id).exists():
+                user = User.objects.get(id= request.user.id)
+                return Response(self.serializer_class(user,many=False).data)
+            else:
+                return Response({"type":"error","msg":"Valid user not found"})
+        except:
+            return Response({"type":"error","msg":"User not found"})
+
+class UserPersonalDataUpdate(generics.UpdateAPIView):
+    permission_classes = (IsAuthenticated,)
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def patch(self, request):
+        try:
+            instance = User.objects.get(id=request.user.id)    
+        except instance.DoesNotExist:
+            return Response({"type":"error","msg": "User not Exist", "status":status.HTTP_400_BAD_REQUEST})    
+        
+        serializer = self.serializer_class(instance,data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"type":"success","msg":"User Data Successfully Updated "})
+        return Response({"type":"error","msg": serializer.errors, "status":status.HTTP_400_BAD_REQUEST})
 
 class EducationalQualificationView(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
@@ -21,7 +48,7 @@ class EducationalQualificationView(generics.CreateAPIView):
     def post(self, request):
         try:
             instance = EducationalQualification.objects.get(user=request.user)    
-        except EducationalQualification.DoesNotExist:
+        except instance.DoesNotExist:
             serializer = EducationalQualificationSerializer(data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save(user=request.user)
@@ -33,25 +60,52 @@ class EducationalQualificationView(generics.CreateAPIView):
             return Response({"type":"success","msg":"Education Data Successfully Updated "})
         return Response({"type":"error","msg": serializer.errors, "status":status.HTTP_400_BAD_REQUEST})
 
-class SocialMediaLinkView(generics.CreateAPIView):
+# New Media Link Created
+class SocialLinkCreateByUser(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
     queryset = SocialMediaLink.objects.all()
-    serializer_class = SocialMediaLinkSerializer
+    serializer_class = User_SocialMediaLinkSerializer
     
     def post(self, request):
         try:
-            instance = SocialMediaLink.objects.get(user=request.user)    
-        except SocialMediaLink.DoesNotExist:
-            serializer = SocialMediaLinkSerializer(data=request.data, partial=True)
+            instance = User.objects.filter(id=request.user.id)    
+        except User.DoesNotExist:
+            # serializer = SocialMediaLinkSerializer(data=request.data, partial=True)
+            # if serializer.is_valid():
+            #     serializer.save(user=request.user)
+            return Response({"type":"error","msg":"Valid User not found "})
+        
+        if instance:
+            serializer = self.serializer_class(data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save(user=request.user)
-            return Response({"type":"success","msg":"Social Link Successfully Updated "})
+                return Response({"type":"success","msg":"Social Link Successfully Created "})
+            else:
+                return Response({"type":"error","msg": serializer.errors})
+        else:
+            return Response({"type":"error","msg": "User not found"})
         
-        serializer = SocialMediaLinkSerializer(instance, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"type":"success","msg":"Social Link Successfully Updated "})
-        return Response({"type":"error","msg": serializer.errors, "status":status.HTTP_400_BAD_REQUEST})
+
+class SocialMediaLinkDelete(APIView):
+    permission_classes = (IsAuthenticated,)
+    queryset = SocialMediaLink.objects.all()
+    serializer_class = User_SocialMediaLinkSerializer
+    lookup_field = 'pk'
+
+    def post(self,request,pk):
+        try:
+            instance = User.objects.get(id=request.user.id)    
+            linkID = SocialMediaLink.objects.get(id=pk)    
+        except instance.DoesNotExist:
+            return Response({"type":"error","msg":"Valid User not found "})
+    
+        if instance and linkID :
+            SocialMediaLink.objects.filter(user=instance,id=linkID.id).update(active=False)
+            return Response({"type":"success","msg":"Link deleted "})
+        else:
+            return Response({"type":"error","msg":"Sorry, try again! "})
+
+
 
 class CompanyDetailView(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
@@ -136,14 +190,14 @@ class Contact_infoView(generics.CreateAPIView):
 
 
 class userDataUpdate(generics.UpdateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated,]
     http_method_names = ['patch']
     queryset = User.objects.all()
     serializer_class = UserProfileUpdateSerializer
     lookup_field = 'pk'
 
     def update(self, request, *args, **kwargs):
-        instance = self.get_object()
+        instance = self.request.user
         serializer = self.get_serializer(instance, data=request.data, partial=True)
 
         if serializer.is_valid(raise_exception=True):
@@ -153,3 +207,21 @@ class userDataUpdate(generics.UpdateAPIView):
         else:
             return Response({"type": "error", "msg": "Update failed"})
 
+
+
+class ProfilePictureUpdate(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request, format=None):
+        try:
+            usr= request.user
+            if usr:
+                serializer = UserProfile_Pic_UpdateSerializer(usr, data=request.data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response({"type":"success","msg":"Picture Updated","New_image":serializer.data})
+                else:
+                    return Response({"type":"error","msg": serializer.errors})
+            else:
+                return Response({"type":"error","msg":"Registered User not found"})
+        except:
+            return Response({"type":"error","msg": "User not found" })

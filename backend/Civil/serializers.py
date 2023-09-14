@@ -13,9 +13,11 @@ class BannerCivilSerializer(serializers.ModelSerializer):
 # =======================         FeatureWorks Serializer        ========================
 
 class FeatureWorksSerializer(serializers.ModelSerializer):
+    # cat_name = serializers.CharField(source='category.category', read_only=True)
     class Meta:
         model = FeatureWorks
         fields= ['name','description','path','img']
+        # fields= ['name','description','path','img','category','cat_name']
 
 class FeatureWorksCategoryerializer(serializers.ModelSerializer):
     FeatureWorks =serializers.SerializerMethodField("get_FeatureWorks")

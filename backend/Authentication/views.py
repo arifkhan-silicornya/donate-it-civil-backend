@@ -247,9 +247,9 @@ class ChangePasswordView(generics.RetrieveUpdateAPIView):
         if serializer.is_valid():
             user = request.user  # Assuming the user is authenticated
             serializer.update(user, serializer.validated_data)
-            return Response({'type':'success',"message": "Password reset successful."}, status=status.HTTP_200_OK)
+            return Response({'type':'success',"msg": "Password Changed successfully."}, status=status.HTTP_200_OK)
         else:
-            return Response({'type':'error','msg':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'type':'error','msg':"Fill carefully before submit","status":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -261,7 +261,7 @@ class UsernameExist(generics.ListAPIView):
     search_fields = ['username', 'email']
 
 class UserDataGet(generics.RetrieveAPIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'id'

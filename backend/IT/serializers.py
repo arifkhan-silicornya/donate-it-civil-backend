@@ -13,10 +13,13 @@ class BannerITSerializer(serializers.ModelSerializer):
 # =======================         Technology Serializer        ========================
 
 class TechnologySerializer(serializers.ModelSerializer):
+    category = serializers.SerializerMethodField('get_category')
     class Meta:
         model = Technology
         fields= '__all__'
-
+    def get_category(self,model):
+        return model.category.category
+    
 class TechnologiesCategorySerializer(serializers.ModelSerializer):
     technology_sections=serializers.SerializerMethodField("get_technology_sections")
     class Meta:
@@ -71,10 +74,15 @@ class ContactSerializer(serializers.ModelSerializer):
 # =======================       Product Model Serializer         ========================
 
 class ProductSerializer(serializers.ModelSerializer):
+    category_name = serializers.SerializerMethodField('get_category')
     class Meta:
         model = ProductModel 
-        fields= ['id','proName','proDescription','proImg','fileOne','fileTwo','fileThree']
+        fields= ['id','proName','proDescription','proImg','fileOne','fileTwo','fileThree','category_name']
         depth = 1
+
+    def get_category(self,model):
+        return model.category.category
+
 
 class ProductCategoryModelSerializer(serializers.ModelSerializer):
     Products =serializers.SerializerMethodField("get_Product")
@@ -114,4 +122,9 @@ class BottomBannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = BottomBanner
         fields = '__all__'
-        
+
+class GlobalLocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GlobalLocation
+        fields = '__all__'
+    

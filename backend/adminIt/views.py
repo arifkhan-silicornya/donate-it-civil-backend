@@ -781,10 +781,13 @@ class footerSocialIconListCreateView(ListCreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = footerSocialIconSerializer
     def create(self, request, *args, **kwargs):
+        site_it = siteList.objects.get(name='IT')
         serializer = self.get_serializer(data=request.data, partial=True)
+
+        print(request.data)
         
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(siteList = site_it)
             return Response({"type": "success", "msg": "Social icon succesfully created"})
         return Response({"type": "error", "msg": "Social icon creation failed"}) 
        
@@ -792,14 +795,13 @@ class footerSocialIconRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = footerSocialIcon.objects.all()
     permission_classes = [AllowAny]
     serializer_class = footerSocialIconSerializer
+    lookup_field = 'pk'
     
     def partial_update(self, request, *args, **kwargs):
-        site = siteList.objects.get(name="IT")
-        print(site)
-        print(2)
-        serializer = self.get_serializer(data=request.data, partial=True)       
+        instance = self.get_object()
+        serializer = self.get_serializer(instance,data=request.data, partial=True)       
         if serializer.is_valid():
-            serializer.save(siteList=site)
+            serializer.save()
             return Response({"type": "success", "msg": "Social icon successfully updated"})
         return Response({"type": "error", "msg": "Social icon updation failed"})
 
@@ -821,9 +823,11 @@ class PaymentIconRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = PaymentIcon.objects.all()
     permission_classes = [AllowAny]
     serializer_class = PaymentIconSerializer
+    lookup_field = 'pk'
     
-    def partial_update(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data, partial=True)       
+    def partial_update(self, request,pk):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance,data=request.data, partial=True)       
         if serializer.is_valid():
             serializer.save()
             return Response({"type": "success", "msg": "Footer item successfully updated"})

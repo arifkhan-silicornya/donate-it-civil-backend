@@ -4,6 +4,8 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import *
 from .models import *
+from Authentication.models import *
+from Authentication.serializers import *
 
 # Create your views here.
 class SecurityPage_SerializerViewSet(generics.ListAPIView):
@@ -67,7 +69,53 @@ class Contact_ViewSet(generics.CreateAPIView):
 
         return Response({'type':'success','msg': 'Your message is safely stored in our database. We will reach you back.','status':status.HTTP_201_CREATED})
     
+class Global_location_ViewSet(generics.ListAPIView):
+    permission_classes = (AllowAny,)
+    queryset = GlobalLocation.objects.filter(active=True).all()
+    serializer_class = GlobalLocationSerializer
 
 
 
+
+class TechnologyLinkList(generics.ListAPIView):
+    permission_classes = (AllowAny,)
+    queryset = Technology.objects.filter(active=True).all()
+    serializer_class = TechnologySerializer
+
+class ServicesLinkList(generics.ListAPIView):
+    permission_classes = (AllowAny,)
+    queryset = OurServices.objects.filter(active=True).all()
+    serializer_class = OurServicesSerializer
+
+
+class ProductViewIT(APIView):
+    permission_classes = (AllowAny,)
+    def get_product(self, pk):
+        try:
+            return ProductModel.objects.filter(id=pk)
+        except:
+            return Response({'type': 'error', 'message': 'Product not found'})
+        
+    def get(self, request, pk=None):
+        if pk:
+            instance = self.get_product(pk)
+            serializer = ProductSerializer(instance, many=True, context={'request':request})
+        else:
+            instance = ProductModel.objects.filter(active=True).all()
+            serializer = ProductSerializer(instance, many=True, context={'request':request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ProCategoryViewIT(APIView):
+    permission_classes = (AllowAny,)
+    def get_category(self, pk):
+            return ProductCategoryModel.objects.filter(id=pk)
     
+    def get(self, request, pk=None):
+        if pk:
+            instance = self.get_category(pk)
+            serializer = ProductCategoryModelSerializer(instance, many=True, context={'request':request})
+        else:
+            instance = ProductCategoryModel.objects.filter(active=True)
+            serializer = ProductCategoryModelSerializer(instance, many=True, context={'request':request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
