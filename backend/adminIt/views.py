@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import *
 from rest_framework.pagination import PageNumberPagination
 from IT.models import *
+from Authentication.serializers import UserSerializer
 from rest_framework.generics import GenericAPIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.mixins import (ListModelMixin, CreateModelMixin,  UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin)
@@ -19,7 +20,7 @@ class CustomPagination(PageNumberPagination):
     max_page_size = 10
     
 class BannerView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     def get_banner(self, pk):
             return BannerIT.objects.get(id=pk)
         
@@ -54,8 +55,8 @@ class BannerView(APIView):
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-class TechnologiesCategoryView(APIView):
-    permission_classes = (AllowAny,)
+class TechnologiesCategoryAPIView(APIView):
+    permission_classes = (IsAdminUser,)
     def get_technologies_category(self, pk):
             return TechnologiesCategory.objects.filter(id=pk)
         
@@ -67,12 +68,12 @@ class TechnologiesCategoryView(APIView):
             instance = TechnologiesCategory.objects.all()
             serializer = TechnologiesCategorySerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
-    def post(self, request, format=None):
+    def post(self, request):
         serializer = TechnologiesCategorySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"type": "success", "msg": "Technology successfully created"})
-        return Response({"type": "error", "msg": "Technology creation failed"})
+            return Response({"type": "success", "msg": "Technology category successfully created"})
+        return Response({"type": "error", "msg": "Technology category creation failed"})
 
     def patch(self, request, pk):
         try:
@@ -82,16 +83,16 @@ class TechnologiesCategoryView(APIView):
         serializer = TechnologiesCategorySerializer(instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({"type": "success", "msg": "Technology successfully updated"})
-        return Response({"type": "error", "msg": "Technology updation failed"})
+            return Response({"type": "success", "msg": "Technology category successfully updated"})
+        return Response({"type": "error", "msg": "Technology category updation failed"})
     
     def delete(self, request, pk):
         instance = self.get_technologies_category(pk)
         instance.delete()
-        return Response({"type": "success", "msg": "Technology successfully deleted"})
-    
+        return Response({"type": "success", "msg": "Technology category successfully deleted"})
+
 class TechnologyView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     def get_technology(self, pk):
         try:
             return Technology.objects.filter(id=pk)
@@ -135,7 +136,7 @@ class TechnologyView(APIView):
     
 
 class NoticeView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     def get_notice(self, pk):
             return NoticeModel.objects.filter(id=pk)
         
@@ -148,30 +149,30 @@ class NoticeView(APIView):
             serializer = NoticeSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     def post(self, request, format=None):
-        serializer = NoticeSerializer(data=request.data)
+        serializer = NoticeSerializer(data=request.data or request.FILES)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"type": "success", "msg": "Notice created successfully"})
+        return Response({"type": "error", "msg": "Notice creation failed"})
 
-    def put(self, request, pk):
+    def patch(self, request, pk):
         try:
             instance = NoticeModel.objects.get(id=pk)    
         except NoticeModel.DoesNotExist:
-            return Response(status = status.HTTP_404_NOT_FOUND)
-        serializer = NoticeSerializer(instance, data=request.data, partial=True)
+            return Response({"type": "error", "msg": "Notice objects not found"})
+        serializer = NoticeSerializer(instance, data=request.data or request.FILES, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response("Successfully updated Banner")
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"type": "success", "msg": "Notice Updated successfully"})
+        return Response({"type": "error", "msg": "Notice updation failed"})
     
     def delete(self, request, pk):
         instance = self.get_notice(pk)
         instance.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)  
+        return Response({"type": "success", "msg": "Notice deleted successfully"})  
     
 class SecurityView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     def get_security(self, pk):
             return SecurityPage.objects.filter(id=pk)
         
@@ -208,7 +209,7 @@ class SecurityView(APIView):
     
 
 class ContactView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     def get_contact(self, pk):
             return Contact.objects.filter(id=pk)
         
@@ -245,7 +246,7 @@ class ContactView(APIView):
     
     
 class CompanyView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     def get_company(self, pk):
             return CompanyModel.objects.filter(id=pk)
         
@@ -281,7 +282,7 @@ class CompanyView(APIView):
         return Response({"type": "success", "msg": "Company deleted successfully"}) 
     
 class OurServicesView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     def get_service(self, pk):
             return OurServices.objects.filter(id=pk)
         
@@ -318,7 +319,7 @@ class OurServicesView(APIView):
     
     
 class ReadmoreView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     def get_readmore(self, pk):
             return Readmore.objects.filter(id=pk)
         
@@ -354,7 +355,7 @@ class ReadmoreView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 class HomeTemplateView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     def get_home(self, pk):
             return HomeTemplate.objects.filter(id=pk)
         
@@ -391,7 +392,7 @@ class HomeTemplateView(APIView):
     
     
 class CategoryView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     def get_category(self, pk):
             return ProductCategoryModel.objects.filter(id=pk)
         
@@ -428,7 +429,7 @@ class CategoryView(APIView):
     
     
 class ProductView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     def get_product(self, pk):
         try:
             return ProductModel.objects.filter(id=pk)
@@ -471,7 +472,7 @@ class ProductView(APIView):
         return Response({'type': 'success', 'msg': 'Product deleted successfully'})
     
 class OrderITView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     def get_orderIt(self, pk):
             return OrderIt.objects.filter(id=pk)
         
@@ -517,7 +518,7 @@ class OrderITView(APIView):
 
 
 class OrderPdfView(GenericAPIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     queryset = OrderPdfIT.objects.all()
     serializer_class = OrderPdfSerializer
 
@@ -562,7 +563,7 @@ class OrderPdfView(GenericAPIView):
 
 class OtherPdfListCreateView(GenericAPIView, ListModelMixin, 
                    CreateModelMixin):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     queryset = OtherPdfIT.objects.all()
     serializer_class = OtherPdfSerializer
     
@@ -575,7 +576,7 @@ class OtherPdfListCreateView(GenericAPIView, ListModelMixin,
     
 class OtherPdfRetrieveUpdateDeleteView(GenericAPIView, RetrieveModelMixin, 
                    UpdateModelMixin, DestroyModelMixin):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     queryset = OtherPdfIT.objects.all()
     serializer_class = OtherPdfSerializer
     
@@ -595,75 +596,75 @@ class OtherPdfRetrieveUpdateDeleteView(GenericAPIView, RetrieveModelMixin,
 
 class PersonalInfoListCreateView(ListCreateAPIView):
     queryset = PersonalInfoIT.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = PersonalInfoSerializer
     
     
 class PersonalInfoRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = PersonalInfoIT.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = PersonalInfoSerializer
     
 class PresentAddressListCreateView(ListCreateAPIView):
     queryset = PresentAddressIT.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = PresentAddressSerializer
     
 class PresentAddressRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = PresentAddressIT.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = PresentAddressSerializer
     
 
 class PermanentAddressListCreateView(ListCreateAPIView):
     queryset = PermanentAddressIT.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = PermanentAddressSerializer
     
 class PermanentAddressRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = PermanentAddressIT.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = PermanentAddressSerializer
     
     
 class CompanyDetailListCreateView(ListCreateAPIView):
     queryset = CompanyDetailIT.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = CompanyDetailSerializer
     pagination_class = CustomPagination
     
     
 class CompanyDetailRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = CompanyDetailIT.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = CompanyDetailSerializer
     
     
 class Contact_infoListCreateView(ListCreateAPIView):
     queryset = Contact_infoIT.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = Contact_infoSerializer
     
 class Contact_infoRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Contact_infoIT.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = Contact_infoSerializer
     
 from Authentication.models import *
 
 class SocialMediaLinkListCreateView(ListCreateAPIView):
     queryset = SocialMediaLinkIT.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = SocialMediaLinkSerializer
     
 class SocialMediaLinkRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = SocialMediaLinkIT.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = SocialMediaLinkSerializer
     
 class SocialMediaListCreateAPIView(ListCreateAPIView):
     queryset = SocialMediaLink.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = SocialMediaSerializer
     
     def post(self, request, *args, **kwargs):
@@ -678,23 +679,23 @@ class SocialMediaListCreateAPIView(ListCreateAPIView):
 
 class siteListCreateView(ListCreateAPIView):
     queryset = siteList.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = siteListSerializer
 
 class siteRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = siteList.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = siteListSerializer
     
     
 class NavbarCreateView(ListCreateAPIView):
     queryset = Navbar.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = NavbarSerializer
 
 class NavbarRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Navbar.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = NavbarSerializer
     
     
@@ -702,7 +703,7 @@ class NavbarRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
 
 class footerSectionListCreateView(ListCreateAPIView):
     queryset = footerSection.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = footerSectionSerializer
     
     def create(self, request, *args, **kwargs):
@@ -716,7 +717,7 @@ class footerSectionListCreateView(ListCreateAPIView):
     
 class footerSectionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = footerSection.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = footerSectionSerializer
     
     def partial_update(self, request, *args, **kwargs):
@@ -734,7 +735,7 @@ class footerSectionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
 class footerItemListCreateView(ListCreateAPIView):
     queryset = footerItem.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = footerItemSerializer
     
     def create(self, request, *args, **kwargs):
@@ -750,7 +751,7 @@ class footerItemListCreateView(ListCreateAPIView):
 
 class footerItemRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = footerItem.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = footerItemSerializer
     
     def partial_update(self, request, *args, **kwargs):
@@ -767,18 +768,18 @@ class footerItemRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
 class footerHeadOfficeListCreateView(ListCreateAPIView):
     queryset = footerHeadOffice.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = footerHeadOfficeSerializer
     
 class footerHeadOfficeRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = footerHeadOffice.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = footerHeadOfficeSerializer
     
 
 class footerSocialIconListCreateView(ListCreateAPIView):
     queryset = footerSocialIcon.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = footerSocialIconSerializer
     def create(self, request, *args, **kwargs):
         site_it = siteList.objects.get(name='IT')
@@ -793,7 +794,7 @@ class footerSocialIconListCreateView(ListCreateAPIView):
        
 class footerSocialIconRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = footerSocialIcon.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = footerSocialIconSerializer
     lookup_field = 'pk'
     
@@ -808,7 +809,7 @@ class footerSocialIconRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
 class PaymentIconListCreateView(ListCreateAPIView):
     queryset = PaymentIcon.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = PaymentIconSerializer
     
     def create(self, request, *args, **kwargs):
@@ -821,7 +822,7 @@ class PaymentIconListCreateView(ListCreateAPIView):
     
 class PaymentIconRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = PaymentIcon.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = PaymentIconSerializer
     lookup_field = 'pk'
     
@@ -836,24 +837,49 @@ class PaymentIconRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
 class NewsLetterListCreateView(ListCreateAPIView):
     queryset = NewsLetter.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = NewsLetterSerializer
     
 class NewsLetterRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = NewsLetter.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = NewsLetterSerializer
     
 
-# class CategoryProductView(APIView): 
-#     permission_classes = [AllowAny]
-#     def get(self, request):
-#         categories = ProductCategoryModel.objects.all()
-#         serializer = CategorySerializer(categories, many=True).data
-#         data = []
-#         for ctg in serializer:
-#             product_objects= ProductModel.objects.filter(category=ctg['id'])
-#             ctg['products'] = ProductSerializer(product_objects, many=True, context={'request': request}).data
-#             data.append(ctg)
-#         return Response(data)
-                              
+class GlobalListCreateAPIView(ListCreateAPIView):
+    queryset = GlobalLoc.objects.all()
+    permission_classes = [IsAdminUser]
+    serializer_class = GlobalLocSerializer
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)      
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"type": "success", "msg": "Global location succesfully created"})
+        return Response({"type": "error", "msg": "Global location creation failed"})
+    
+    
+class GlobalRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = GlobalLoc.objects.all()
+    permission_classes = [IsAdminUser]
+    serializer_class = GlobalLocSerializer
+    lookup_field = 'pk'
+    
+    def partial_update(self, request):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)       
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"type": "success", "msg": "Global location successfully updated"})
+        return Response({"type": "error", "msg": "Global location updation failed"})
+    
+class UserListAPIView(generics.ListAPIView):
+    queryset = User.objects.filter(is_superuser = False, is_staff = False)
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminUser]
+    
+    
+class OrderListAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = OrderItSerializer
+    queryset = OrderIt.objects.all()

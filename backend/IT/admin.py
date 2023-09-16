@@ -30,4 +30,4 @@ admin.site.register(Contact_infoIT)
 admin.site.register(SocialMediaLinkIT)  
 
 #footer
-admin.site.register(GlobalLocation)  
+admin.site.register(GlobalLoc)

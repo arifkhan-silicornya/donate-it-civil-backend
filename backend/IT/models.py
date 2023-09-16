@@ -218,17 +218,14 @@ class BottomBanner(models.Model):
     def __str__(self):
         return self.title
     
-
-class GlobalLocation(models.Model):
+class GlobalLoc(models.Model):
     country = models.CharField(max_length=50)
     office_address = models.CharField(max_length=200)
     email = models.EmailField(max_length=100 )
-    contact_no = models.CharField(max_length=200)
-
+    contact_number = models.CharField(max_length=200)
     active= models.BooleanField(default=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
-    last_update_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return self.email
+        return self.country

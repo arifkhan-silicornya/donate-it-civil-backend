@@ -12,7 +12,7 @@ class SecurityPage_SerializerViewSet(generics.ListAPIView):
     permission_classes = (AllowAny,)
 
     serializer_class = BannerITSerializer
-    serializer_class1 = TechnologiesCategorySerializer
+    serializer_class1 = User_Tech_Cat_Serializer
     serializer_class2 = OurServicesSerializer
     serializer_class3 = HomeTemplateSerializer
     serializer_class4 = ReadmoreSerializer
@@ -69,10 +69,7 @@ class Contact_ViewSet(generics.CreateAPIView):
 
         return Response({'type':'success','msg': 'Your message is safely stored in our database. We will reach you back.','status':status.HTTP_201_CREATED})
     
-class Global_location_ViewSet(generics.ListAPIView):
-    permission_classes = (AllowAny,)
-    queryset = GlobalLocation.objects.filter(active=True).all()
-    serializer_class = GlobalLocationSerializer
+
 
 
 
@@ -86,6 +83,20 @@ class ServicesLinkList(generics.ListAPIView):
     permission_classes = (AllowAny,)
     queryset = OurServices.objects.filter(active=True).all()
     serializer_class = OurServicesSerializer
+
+class TechnologiesCategoryView(APIView):
+    permission_classes = (AllowAny,)
+    def get_technologies_category(self, pk):
+            return TechnologiesCategory.objects.filter(id=pk,active=True)
+        
+    def get(self, request, pk=None):
+        if pk:
+            instance = self.get_technologies_category(pk)
+            serializer = User_Tech_Cat_Serializer(instance, many=True, context={'request':request})
+        else:
+            instance = TechnologiesCategory.objects.filter(active=True).all()
+            serializer = User_Tech_Cat_Serializer(instance, many=True, context={'request':request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ProductViewIT(APIView):
@@ -119,3 +130,46 @@ class ProCategoryViewIT(APIView):
             instance = ProductCategoryModel.objects.filter(active=True)
             serializer = ProductCategoryModelSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class user_SecurityView(APIView):
+    permission_classes = (AllowAny,)
+        
+    def get(self, request):
+            instance = SecurityPage.objects.filter(active=True).all()
+            serializer = SecurityPageSerializer(instance, many=True, context={'request':request})
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class user_CompanyView(APIView):
+    permission_classes = (AllowAny,)
+    def get_company(self, pk):
+            return CompanyModel.objects.filter(id=pk)
+        
+    def get(self, request, pk=None):
+        if pk:
+            instance = self.get_company(pk)
+            serializer = CompanySerializer(instance, many=True, context={'request':request})
+        else:
+            instance = CompanyModel.objects.filter(active=True)
+            serializer = CompanySerializer(instance, many=True, context={'request':request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class user_NoticeView(APIView):
+    permission_classes = (AllowAny,)
+    def get_notice(self, pk):
+            return NoticeModel.objects.filter(id=pk)
+        
+    def get(self, request, pk=None):
+        if pk:
+            instance = self.get_notice(pk)
+            serializer = NoticeSerializer(instance, many=True, context={'request':request})
+        else:
+            instance = NoticeModel.objects.filter(active=True).all()
+            serializer = NoticeSerializer(instance, many=True, context={'request':request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    
+    
+    
