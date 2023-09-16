@@ -11,6 +11,9 @@ admin.site.register(OurServices)
 admin.site.register(Readmore)
 admin.site.register(SecurityPage)
 admin.site.register(Contact)
+admin.site.register(GlobalLocation)
+admin.site.register(BottomBanner)
+
 
 admin.site.register(ProductCategoryModel)
 admin.site.register(ProductModel)
@@ -27,3 +30,4 @@ admin.site.register(PermanentAddressCivil)
 admin.site.register(CompanyDetailCivil) 
 admin.site.register(Contact_infoCivil)  
 admin.site.register(SocialMediaLinkCivil)  
+
