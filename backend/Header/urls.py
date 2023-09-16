@@ -5,8 +5,11 @@ from .views import *
 
 
 urlpatterns = [
-
+        # IT header
         path('header-view/', HeaderView.as_view(), name='header-view'),
+        
+        #  Civil header
+        path('civil-header/', HeaderCivilView.as_view(), name='civil-header-view'),
 
    ]
 
