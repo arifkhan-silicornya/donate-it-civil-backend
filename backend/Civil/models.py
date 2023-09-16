@@ -39,6 +39,8 @@ def upload_to_feature_work(instance, filename):
 def upload_to_architecture(instance, filename):
     return 'file/civil/architecture/{filename}'.format(filename=filename)
 
+def upload_to_bottom_banner(instance, filename):
+    return 'file/civil/bottom_banner/{filename}'.format(filename=filename)
 
 
 
@@ -211,3 +213,30 @@ class CompanyModel(models.Model):
     def __str__(self):
         return str(self.full_Name)+ " " + str(self.staff_title)
 
+
+class BottomBanner(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(max_length=700)
+    img = ResizedImageField( upload_to=upload_to_bottom_banner,blank=True, null=True)
+    link = models.TextField(max_length=200, blank=True, null=True)
+    active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_update_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.title
+    
+
+class GlobalLocation(models.Model):
+    country = models.CharField(max_length=50)
+    office_address = models.TextField(max_length=200)
+    email = models.EmailField(max_length=100 )
+    contact_no = models.CharField(max_length=200)
+
+    active= models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_update_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.email
