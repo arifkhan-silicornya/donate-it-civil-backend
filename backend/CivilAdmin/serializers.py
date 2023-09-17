@@ -127,10 +127,24 @@ class NoticeSerializer(serializers.ModelSerializer):
         fields= '__all__'
         # fields= ['noticeTitle','file','created_at']
 
-# =======================       Notice Model Serializer         ========================
+# =======================       Company Model Serializer         ========================
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = CompanyModel
         fields= '__all__'
         # fields= ['full_Name','staff_title','home_address','email','mobileNumber','staff_img']
+
+# =======================       BottomBanner Model Serializer         ========================
+
+class BottomBannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BottomBanner
+        fields= '__all__'
+
+# =======================       GlobalLocation Model Serializer         ========================
+
+class GlobalLocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GlobalLocation
+        fields= '__all__'

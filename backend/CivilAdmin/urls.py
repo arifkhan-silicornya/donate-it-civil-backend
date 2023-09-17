@@ -58,6 +58,14 @@ urlpatterns = [
       path('company/', CompanyModelAPIView.as_view()),
       path('company/<int:pk>/', CompanyModelAPIView.as_view()),
 
+      # BottomBannerAPIView crud url
+      path('bottom-banner/', BottomBannerAPIView.as_view()),
+      path('bottom-banner/<int:pk>/', BottomBannerAPIView.as_view()),
+
+      # GlobalLocationAPIView crud url
+      path('global-location/', GlobalLocationAPIView.as_view()),
+      path('global-location/<int:pk>/', GlobalLocationAPIView.as_view()),
+
       # CreateOrderView url
       path('create-order/', CreateOrderView.as_view()),
       path('order-view-all/', Order_ViewSet.as_view()),
