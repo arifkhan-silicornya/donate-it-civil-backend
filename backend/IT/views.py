@@ -71,7 +71,7 @@ class Contact_ViewSet(generics.CreateAPIView):
     
 class Global_location_ViewSet(generics.ListAPIView):
     permission_classes = (AllowAny,)
-    queryset = GlobalLocation.objects.filter(active=True).all()
+    queryset = GlobalLoc.objects.filter(active=True).all()
     serializer_class = GlobalLocationSerializer
 
 

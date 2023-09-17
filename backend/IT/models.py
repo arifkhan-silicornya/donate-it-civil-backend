@@ -219,7 +219,7 @@ class BottomBanner(models.Model):
         return self.title
     
 
-class GlobalLocation(models.Model):
+class GlobalLoc(models.Model):
     country = models.CharField(max_length=50)
     office_address = models.CharField(max_length=200)
     email = models.EmailField(max_length=100 )

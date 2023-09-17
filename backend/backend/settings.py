@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'Domain',
     'CivilAdmin',
     'user',
+    'Payment_And_Transaction',
 
     # third party
     'rest_framework',
