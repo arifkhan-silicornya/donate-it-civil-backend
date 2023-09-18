@@ -689,8 +689,10 @@ class siteRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
     
 class NavbarCreateView(ListCreateAPIView):
+
     site_it = siteList.objects.get(name='IT')
     queryset = Navbar.objects.filter(site=site_it)
+
     permission_classes = [IsAdminUser]
     serializer_class = NavbarSerializer
     
@@ -787,6 +789,7 @@ class footerItemRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
     
 class footerHeadOfficeListCreateView(ListCreateAPIView):
+
     site_it = siteList.objects.get(name='IT')
     queryset = footerHeadOffice.objects.filter(siteList=site_it)
     permission_classes = [AllowAny]
@@ -818,8 +821,10 @@ class footerHeadOfficeRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
 
 class footerSocialIconListCreateView(ListCreateAPIView):
+
     site_it = siteList.objects.get(name='IT')
     queryset = footerSocialIcon.objects.filter(siteList=site_it)
+
     permission_classes = [IsAdminUser]
     serializer_class = footerSocialIconSerializer
     def create(self, request, *args, **kwargs):

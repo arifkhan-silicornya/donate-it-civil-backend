@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .views import *
 from .OrderView import *
-
+from .Paymentviews import *
 
 urlpatterns = [
 
@@ -44,6 +44,13 @@ urlpatterns = [
         path('category/', ProCategoryViewIT.as_view(), name='Category'),
         path('category/<int:pk>/', ProCategoryViewIT.as_view(), name='Category'),
 
+
+        path('account-view-all/', CompanyAccount_View.as_view(), name='view-bank-details'),
+
+        path('make-payment/', CreateTransaction.as_view(), name='make-payment'),
+        path('get-all-transaction/', GetTransaction.as_view(), name='get-payment'),
+        
+        
 
         
    ]

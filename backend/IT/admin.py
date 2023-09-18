@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import *
 from .OrderModel import *
+from .Payment_Model import *
 # Register your models here.
 
 admin.site.register(BannerIT)
@@ -30,4 +31,10 @@ admin.site.register(Contact_infoIT)
 admin.site.register(SocialMediaLinkIT)  
 
 #footer
-admin.site.register(GlobalLoc)
+admin.site.register(GlobalLoc)  
+
+#payment
+admin.site.register(PaymentMethod)  
+admin.site.register(CompanyAccount)  
+admin.site.register(TransactionModel)  
+

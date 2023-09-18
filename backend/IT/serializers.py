@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import *
 from Header.models import *
-from .serializers import *
 
 # =======================         Banner Serializer        ========================
 
@@ -125,4 +124,8 @@ class BottomBannerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class GlobalLocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GlobalLoc
+        fields = '__all__'
     
