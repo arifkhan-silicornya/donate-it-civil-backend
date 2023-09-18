@@ -14,6 +14,8 @@ from Header.models import *
 from Civil.models import *
 from CivilAdmin.serializers import *
 
+from Authentication.models import *
+
 from footer.serializers import *
 from footer.models import *
 
@@ -765,3 +767,48 @@ class GlobalLocationAPIView(APIView):
             instance.active = True
             instance.save()
             return Response({"status": status.HTTP_200_OK,"type": "success", "message": "GlobalLocation Successfully activated"}, status=status.HTTP_200_OK)                           
+
+
+# =======================         User CRUD With APIView        ========================
+class UserAPIView(APIView):
+    permission_classes = (IsAdminUser,)
+
+    def get_data_pk(self, pk):
+            return User.objects.get(id=pk)
+        
+    def get(self, request, pk=None):
+        if pk:
+            instance = self.get_data_pk(pk)
+            serializer = UserSerializer(instance, context={'request':request})
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            instance = User.objects.all().order_by('-id')
+            serializer = UserSerializer(instance, many=True, context={'request':request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def patch(self, request, pk):
+        instance = self.get_data_pk(pk)
+        serializer = UserSerializer(instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"status": status.HTTP_200_OK, "type": "success", "message": "Successfully updated User"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        instance = self.get_data_pk(pk)
+        if instance.is_active == True:
+            instance.is_active = False
+            instance.save()
+            return Response({"status": status.HTTP_200_OK,"type": "success", "message": "User Successfully deactivated"}, status=status.HTTP_200_OK)        
+        if instance.is_active == False:
+            instance.is_active = True
+            instance.save()
+            return Response({"status": status.HTTP_200_OK,"type": "success", "message": "User Successfully activated"}, status=status.HTTP_200_OK)                           

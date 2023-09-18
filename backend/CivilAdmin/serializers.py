@@ -2,6 +2,7 @@ from rest_framework import serializers
 from Header.models import *
 from Civil.models import *
 from Header.serializers import *
+from Authentication.models import *
 
 
 # =======================         Navbar Serializer         ========================
@@ -148,3 +149,11 @@ class GlobalLocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = GlobalLocation
         fields= '__all__'
+
+# =======================       GlobalLocation Model Serializer         ========================
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        exclude=['password']
+        # fields= '__all__'

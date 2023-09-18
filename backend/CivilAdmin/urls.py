@@ -66,6 +66,10 @@ urlpatterns = [
       path('global-location/', GlobalLocationAPIView.as_view()),
       path('global-location/<int:pk>/', GlobalLocationAPIView.as_view()),
 
+      # UserAPIView crud url
+      path('user/', UserAPIView.as_view()),
+      path('user/<int:pk>/', UserAPIView.as_view()),
+
       # CreateOrderView url
       path('create-order/', CreateOrderView.as_view()),
       path('order-view-all/', Order_ViewSet.as_view()),
