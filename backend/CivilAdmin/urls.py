@@ -2,6 +2,8 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import *
+from .footer_views import *
+from .header_views import *
 from .OrderView import *
 
 
@@ -61,6 +63,25 @@ urlpatterns = [
       # CreateOrderView url
       path('create-order/', CreateOrderView.as_view()),
       path('order-view-all/', Order_ViewSet.as_view()),
+      
+      
+      path('header/', NavbarCreateView.as_view(), name='NavbarCreateView'),
+      path('header/<int:pk>/', NavbarRetrieveUpdateDestroyView.as_view(), name='NavbarRetrieveUpdateDestroyView'),
+      
+      path('footer-section/', footerSectionListCreateView.as_view(), name='footerSectionListCreateView'),
+      path('footer-section/<int:pk>/', footerSectionRetrieveUpdateDestroyView.as_view(), name='footerSectionRetrieveUpdateDestroyView'),
+      
+      path('footer-item/', footerItemListCreateView.as_view(), name='footerItemListCreateView'),
+      path('footer-item/<int:pk>/', footerItemRetrieveUpdateDestroyView.as_view(), name='footerItemRetrieveUpdateDestroyView'),
+      
+      path('head-office/', footerHeadOfficeListCreateView.as_view(), name='footerHeadOfficeListCreateView'),
+      path('head-office/<int:pk>/', footerHeadOfficeRetrieveUpdateDestroyView.as_view(), name='footerHeadOfficeRetrieveUpdateDestroyView'),
+      
+      path('social-icon/', footerSocialIconListCreateView.as_view(), name='footerSocialIconListCreateView'),
+      path('social-icon/<int:pk>/', footerSocialIconRetrieveUpdateDestroyView.as_view(), name='footerSocialIconRetrieveUpdateDestroyView'),
+      
+      path('news-letter/', NewsLetterListCreateView.as_view(), name='NewsLetterListCreateView'),
+      path('news-letter/<int:pk>/', NewsLetterRetrieveUpdateDestroyView.as_view(), name='NewsLetterRetrieveUpdateDestroyView'),
    ]
 
 

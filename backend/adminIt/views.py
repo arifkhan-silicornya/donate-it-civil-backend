@@ -818,7 +818,8 @@ class footerHeadOfficeRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
 
 class footerSocialIconListCreateView(ListCreateAPIView):
-    queryset = footerSocialIcon.objects.all()
+    site_it = siteList.objects.get(name='IT')
+    queryset = footerSocialIcon.objects.filter(siteList=site_it)
     permission_classes = [IsAdminUser]
     serializer_class = footerSocialIconSerializer
     def create(self, request, *args, **kwargs):
