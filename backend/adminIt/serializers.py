@@ -20,19 +20,19 @@ class TechnologySerializer(serializers.ModelSerializer):
         depth= 1
 
 class TechnologiesCategorySerializer(serializers.ModelSerializer):
-    technology_sections=serializers.SerializerMethodField("get_technology_sections")
+    # technology_sections=serializers.SerializerMethodField("get_technology_sections")
     class Meta:
         model = TechnologiesCategory
-        fields= ['id', 'category','technology_sections']
+        fields= '__all__'
         depth = 1
 
-    def get_technology_sections(self,model):
-        try:
-            obj = Technology.objects.filter(category=model,active=True)
-            seria =  TechnologySerializer(instance=obj,many=True, read_only=True).data
-            return seria
-        except:
-            return []
+    # def get_technology_sections(self,model):
+    #     try:
+    #         obj = Technology.objects.filter(category=model,active=True)
+    #         seria =  TechnologySerializer(instance=obj,many=True, read_only=True).data
+    #         return seria
+    #     except:
+    #         return []
 
 # =======================         Our Services Serializer         ========================
 
@@ -177,3 +177,9 @@ class SocialMediaSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
+
+
+class GlobalLocSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GlobalLoc
+        fields = '__all__'

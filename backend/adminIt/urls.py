@@ -2,13 +2,16 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import *
+from IT.views import *
 
 
 urlpatterns = [
         path('banner-it/', BannerView.as_view(), name='Banner_it'),
         path('banner-it/<int:pk>/', BannerView.as_view(), name='Banner_it'),
-        path('technologies-category/', TechnologiesCategoryView.as_view(), name='Technologies-category'),
-        path('technologies-category/<int:pk>/', TechnologiesCategoryView.as_view(), name='Technologies-category'),
+        
+        path('technologies-category/', TechnologiesCategoryAPIView.as_view(), name='Technologies-category'),
+        path('technologies-category/<int:pk>/', TechnologiesCategoryAPIView.as_view(), name='Technologies-category'),
+        
         path('technology/', TechnologyView.as_view(), name='Technology'),
         path('technology/<int:pk>/', TechnologyView.as_view(), name='Technology'),
         path('notice/', NoticeView.as_view(), name='Notice'),
@@ -81,10 +84,14 @@ urlpatterns = [
         path('news-letter/', NewsLetterListCreateView.as_view(), name='NewsLetterListCreateView'),
         path('news-letter/<int:pk>/', NewsLetterRetrieveUpdateDestroyView.as_view(), name='NewsLetterRetrieveUpdateDestroyView'),
         
+        path('global-loc/', GlobalListCreateAPIView.as_view(), name='GlobalListCreateAPIView'),
+        path('global-loc/<int:pk>/', GlobalRetrieveUpdateDestroyAPIView.as_view(), name='GlobalRetrieveUpdateDestroyAPIView'),
+
+        path('user-list/', UserListAPIView.as_view(), name='UserListAPIView'),
+        path('orders/', OrderListAPIView.as_view(), name='OrderListAPIView'),
+        
+        
         # path('category-product/', CategoryProductView.as_view(), name='CategoryProductView'),
-        
-        
-        
         
    ]
 

@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from .models import *
-from .models import *
+from .Payment_Model import *
 
 # =======================         Payment Serializer        ========================
 
@@ -32,3 +31,10 @@ class PaymentMethodSerializer(serializers.ModelSerializer):
             return seria
         except:
             return {}
+
+class TransactionModel_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = TransactionModel
+        fields= ['id','amount', 'Transaction_id', 'account_Info' , 'acc_holder_mail' , 'acc_holder_phone', 'pay_receipt_doc', 'user' , 'order', 'bank']
+
+    

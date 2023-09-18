@@ -53,10 +53,6 @@ class UserRegistrationView(generics.CreateAPIView):
         serializer1.is_valid(raise_exception=True)
         serializer1.save(user=user)
 
-        serializer2 = SocialMediaLinkSerializer(data=request.data,partial=True)
-        serializer2.is_valid(raise_exception=True)
-        serializer2.save(user=user)
-
         serializer3 = CompanyDetailSerializer(data=request.data,partial=True)
         serializer3.is_valid(raise_exception=True)
         serializer3.save(user=user)

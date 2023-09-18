@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import *
 from .OrderModel import *
 from django.db.models import Q
+from Authentication.serializers import UserSerializer
 
 
     # --------------------OrderModel serializers----------------------
