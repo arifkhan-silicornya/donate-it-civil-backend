@@ -98,3 +98,4 @@ class FooterCivilView(APIView):
         footer_payment_icon_objects = PaymentIcon.objects.all()
         footer_payment_icon_serializer = PaymentIconSerializer(footer_payment_icon_objects, many=True, context={'request':request}).data
         return Response({'footerSections':footerSections, 'footerHeadOffices':footer_head_office_serializer, 'footerSocialIcon':footer_social_icon_serializer, 'paymentIcon':footer_payment_icon_serializer})
+    

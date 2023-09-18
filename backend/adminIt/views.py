@@ -787,14 +787,34 @@ class footerItemRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
     
 class footerHeadOfficeListCreateView(ListCreateAPIView):
-    queryset = footerHeadOffice.objects.all()
-    permission_classes = [IsAdminUser]
+    site_it = siteList.objects.get(name='IT')
+    queryset = footerHeadOffice.objects.filter(siteList=site_it)
+    permission_classes = [AllowAny]
     serializer_class = footerHeadOfficeSerializer
+    
+    def create(self, request, *args, **kwargs):
+        site_it = siteList.objects.get(name='IT')
+        serializer = self.get_serializer(data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save(siteList=site_it)
+            return Response({"type": "success", "msg": "Head office succesfully created"})
+        return Response({"type": "error", "msg": "Head office  creation failed"})
     
 class footerHeadOfficeRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = footerHeadOffice.objects.all()
     permission_classes = [IsAdminUser]
     serializer_class = footerHeadOfficeSerializer
+    
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        site_it = siteList.objects.get(name='IT')
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save(siteList=site_it)
+            return Response({"type": "success", "msg": "Head office succesfully updated"})
+        return Response({"type": "error", "msg": "Head office updation failed"})
+
     
 
 class footerSocialIconListCreateView(ListCreateAPIView):
