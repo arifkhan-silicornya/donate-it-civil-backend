@@ -63,8 +63,8 @@ urlpatterns = [
         path('site/', siteListCreateView.as_view(), name='siteListCreateView'),
         path('site/<int:pk>/', siteRetrieveUpdateDestroyView.as_view(), name='siteRetrieveUpdateDestroyView'),
         
-        path('navbar/', NavbarCreateView.as_view(), name='NavbarCreateView'),
-        path('navbar/<int:pk>/', NavbarRetrieveUpdateDestroyView.as_view(), name='NavbarRetrieveUpdateDestroyView'),
+        path('header/', NavbarCreateView.as_view(), name='NavbarCreateView'),
+        path('header/<int:pk>/', NavbarRetrieveUpdateDestroyView.as_view(), name='NavbarRetrieveUpdateDestroyView'),
         
         path('footer-section/', footerSectionListCreateView.as_view(), name='footerSectionListCreateView'),
         path('footer-section/<int:pk>/', footerSectionRetrieveUpdateDestroyView.as_view(), name='footerSectionRetrieveUpdateDestroyView'),

@@ -69,10 +69,12 @@ class Contact_ViewSet(generics.CreateAPIView):
 
         return Response({'type':'success','msg': 'Your message is safely stored in our database. We will reach you back.','status':status.HTTP_201_CREATED})
     
+
 class Global_location_ViewSet(generics.ListAPIView):
     permission_classes = (AllowAny,)
     queryset = GlobalLoc.objects.filter(active=True).all()
     serializer_class = GlobalLocationSerializer
+
 
 
 
@@ -172,3 +174,7 @@ class user_NoticeView(APIView):
             instance = NoticeModel.objects.filter(active=True).all()
             serializer = NoticeSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    
+    
+    

@@ -104,7 +104,7 @@ class ProductCategoryModelSerializer(serializers.ModelSerializer):
 class NoticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = NoticeModel
-        fields= ['noticeTitle' ,'file' ,'last_update_at','created_at']
+        fields= '__all__'
 
 # =======================       Notice Model Serializer         ========================
 
@@ -122,6 +122,7 @@ class BottomBannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = BottomBanner
         fields = '__all__'
+
 
 class GlobalLocationSerializer(serializers.ModelSerializer):
     class Meta:

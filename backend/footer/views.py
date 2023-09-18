@@ -71,3 +71,31 @@ class FooterItem_IT_View(generics.ListAPIView):
 #             ctg['products'] = ProductSerializer(product_objects, many=True, context={'request': request}).data
 #             data.append(ctg)
 #         return Response(data)
+
+
+# ---------------------------Civil Footer --------------------------------
+
+
+class FooterCivilView(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        civil_site = siteList.objects.get(name='Civil')
+        site_serializer = SiteSerializer(civil_site).data
+        footer_sections = footerSection.objects.filter(site=site_serializer['id'])
+        footer_section_serializer = FooterSectionSerializer(footer_sections, many=True).data
+        footerSections = []
+        for footer_section in footer_section_serializer:
+            items = footerItem.objects.filter(footerSection=footer_section['id'])
+            footer_section['items'] = FooterItemSerializer(items, many=True).data
+            footerSections.append(footer_section)
+        
+        headOffice_objects = footerHeadOffice.objects.filter(siteList=site_serializer['id'], active=True)
+        footer_head_office_serializer = FooterHeadOfficeSerializer(headOffice_objects, many=True).data
+        
+        footer_social_icon_objects = footerSocialIcon.objects.filter(siteList=site_serializer['id'])
+        footer_social_icon_serializer = FooterSocialIconSerializer(footer_social_icon_objects, many=True, context={'request':request}).data
+        
+        footer_payment_icon_objects = PaymentIcon.objects.all()
+        footer_payment_icon_serializer = PaymentIconSerializer(footer_payment_icon_objects, many=True, context={'request':request}).data
+        return Response({'footerSections':footerSections, 'footerHeadOffices':footer_head_office_serializer, 'footerSocialIcon':footer_social_icon_serializer, 'paymentIcon':footer_payment_icon_serializer})
+    

@@ -101,7 +101,6 @@ class PresentAddressSerializer(serializers.ModelSerializer):
         model = PresentAddressIT
         fields = '__all__'
         depth = 1
-
 class PermanentAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = PermanentAddressIT

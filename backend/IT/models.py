@@ -218,7 +218,6 @@ class BottomBanner(models.Model):
     def __str__(self):
         return self.title
     
-
 class GlobalLoc(models.Model):
     country = models.CharField(max_length=50,blank=True, null=True)
     office_address = models.CharField(max_length=200,blank=True, null=True)

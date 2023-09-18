@@ -9,7 +9,12 @@ urlpatterns = [
 
         # path('view-all/', FooterViewSet.as_view(), name='footer_view'),
         path('news-letter/', NewsLetterViewSet.as_view(), name='email_send'),
+        
+        # IT footer view
         path('footerview/', FooterView.as_view(), name='email_send'),
+        
+        # Civil footer view
+        path('civil-footer/', FooterCivilView.as_view(), name='civil-footer'),
 
         path('footer-items/', FooterItem_IT_View.as_view(), name='footer-items'),
 
