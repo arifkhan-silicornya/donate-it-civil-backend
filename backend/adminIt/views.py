@@ -689,20 +689,40 @@ class siteRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
     
 class NavbarCreateView(ListCreateAPIView):
-    queryset = Navbar.objects.all()
+    site_it = siteList.objects.get(name='IT')
+    queryset = Navbar.objects.filter(site=site_it)
     permission_classes = [IsAdminUser]
     serializer_class = NavbarSerializer
+    
+    def create(self, request, *args, **kwargs):
+        site_it = siteList.objects.get(name='IT')
+        serializer = self.get_serializer(data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save(site=site_it)
+            return Response({"type": "success", "msg": "Header section succesfully created"})
+        return Response({"type": "error", "msg": "Header section creation failed"})
 
 class NavbarRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Navbar.objects.all()
     permission_classes = [IsAdminUser]
     serializer_class = NavbarSerializer
     
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        site_it = siteList.objects.get(name='IT')
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save(site=site_it)
+            return Response({"type": "success", "msg": "Header section succesfully updated"})
+        return Response({"type": "error", "msg": "Header section updation failed"})
+    
     
 # ------------------------footer views-------------------------
 
 class footerSectionListCreateView(ListCreateAPIView):
-    queryset = footerSection.objects.all()
+    site_it = siteList.objects.get(name='IT')
+    queryset = footerSection.objects.filter(site=site_it)
     permission_classes = [IsAdminUser]
     serializer_class = footerSectionSerializer
     
