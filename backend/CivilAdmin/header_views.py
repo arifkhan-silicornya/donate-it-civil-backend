@@ -8,8 +8,7 @@ from IT.models import *
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 class NavbarCreateView(ListCreateAPIView):
-    site_civil = siteList.objects.get(name='Civil')
-    queryset = Navbar.objects.filter(site=site_civil)
+    queryset = Navbar.objects.all()
     permission_classes = [IsAdminUser]
     serializer_class = NavbarSerializer
     
@@ -21,6 +20,11 @@ class NavbarCreateView(ListCreateAPIView):
             serializer.save(site=site_civil)
             return Response({"type": "success", "msg": "Header section succesfully created"})
         return Response({"type": "error", "msg": "Header section creation failed"})
+    def get(self, request):
+        site_civil = siteList.objects.get(name='Civil')
+        queryset = Navbar.objects.filter(site=site_civil)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 class NavbarRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Navbar.objects.all()

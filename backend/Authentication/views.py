@@ -18,7 +18,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 import datetime
 from django.contrib.auth.models import update_last_login
-
 # Create your views here.
 
    

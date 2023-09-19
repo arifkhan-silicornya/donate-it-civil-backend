@@ -689,10 +689,7 @@ class siteRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
     
 class NavbarCreateView(ListCreateAPIView):
-
-    site_it = siteList.objects.get(name='IT')
-    queryset = Navbar.objects.filter(site=site_it)
-
+    queryset = Navbar.objects.all()
     permission_classes = [IsAdminUser]
     serializer_class = NavbarSerializer
     
@@ -704,6 +701,12 @@ class NavbarCreateView(ListCreateAPIView):
             serializer.save(site=site_it)
             return Response({"type": "success", "msg": "Header section succesfully created"})
         return Response({"type": "error", "msg": "Header section creation failed"})
+    
+    def get(self,request):
+        site_it = siteList.objects.get(name='IT')
+        queryset = Navbar.objects.filter(site=site_it)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
 class NavbarRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Navbar.objects.all()
@@ -723,8 +726,7 @@ class NavbarRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
 # ------------------------footer views-------------------------
 
 class footerSectionListCreateView(ListCreateAPIView):
-    site_it = siteList.objects.get(name='IT')
-    queryset = footerSection.objects.filter(site=site_it)
+    queryset = footerSection.objects.all()
     permission_classes = [IsAdminUser]
     serializer_class = footerSectionSerializer
     
@@ -736,6 +738,12 @@ class footerSectionListCreateView(ListCreateAPIView):
             serializer.save(site=site_it)
             return Response({"type": "success", "msg": "Footer section succesfully created"})
         return Response({"type": "error", "msg": "Footer section creation failed"})
+    def get(self, request):
+        site_it = siteList.objects.get(name='IT')
+        queryset = footerSection.objects.filter(site=site_it)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+        
     
 class footerSectionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = footerSection.objects.all()
@@ -789,9 +797,7 @@ class footerItemRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
     
 class footerHeadOfficeListCreateView(ListCreateAPIView):
-
-    site_it = siteList.objects.get(name='IT')
-    queryset = footerHeadOffice.objects.filter(siteList=site_it)
+    queryset = footerHeadOffice.objects.all()
     permission_classes = [AllowAny]
     serializer_class = footerHeadOfficeSerializer
     
@@ -803,6 +809,11 @@ class footerHeadOfficeListCreateView(ListCreateAPIView):
             serializer.save(siteList=site_it)
             return Response({"type": "success", "msg": "Head office succesfully created"})
         return Response({"type": "error", "msg": "Head office  creation failed"})
+    def get(self, request, *args, **kwargs):
+        site_it = siteList.objects.get(name='IT')
+        queryset = footerHeadOffice.objects.filter(siteList=site_it)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
     
 class footerHeadOfficeRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = footerHeadOffice.objects.all()
@@ -821,10 +832,7 @@ class footerHeadOfficeRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
 
 class footerSocialIconListCreateView(ListCreateAPIView):
-
-    site_it = siteList.objects.get(name='IT')
-    queryset = footerSocialIcon.objects.filter(siteList=site_it)
-
+    queryset = footerSocialIcon.objects.all()
     permission_classes = [IsAdminUser]
     serializer_class = footerSocialIconSerializer
     def create(self, request, *args, **kwargs):
@@ -837,6 +845,11 @@ class footerSocialIconListCreateView(ListCreateAPIView):
             serializer.save(siteList = site_it)
             return Response({"type": "success", "msg": "Social icon succesfully created"})
         return Response({"type": "error", "msg": "Social icon creation failed"}) 
+    def get(self,request):
+        site_it = siteList.objects.get(name='IT')
+        queryset = footerSocialIcon.objects.filter(siteList=site_it)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
        
 class footerSocialIconRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = footerSocialIcon.objects.all()
@@ -920,7 +933,7 @@ class GlobalRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return Response({"type": "error", "msg": "Global location updation failed"})
     
 class UserListAPIView(generics.ListAPIView):
-    queryset = User.objects.filter(is_superuser = False, is_staff = False)
+    queryset = User.objects.filter(is_superuser = False, is_staff = False).order_by('-id')
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
     
@@ -928,4 +941,42 @@ class UserListAPIView(generics.ListAPIView):
 class OrderListAPIView(generics.ListCreateAPIView):
     permission_classes = [IsAdminUser]
     serializer_class = OrderItSerializer
-    queryset = OrderIt.objects.all()
+    queryset = OrderIt.objects.all().order_by('-id')
+    
+class PendingOrderListAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = OrderItSerializer
+    queryset = OrderIt.objects.filter(status='pen').order_by('-id')
+    
+class PaymentOrderListAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = OrderItSerializer
+    queryset = OrderIt.objects.filter(status='pay').order_by('-id')
+    
+class WorkingOrderListAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = OrderItSerializer
+    queryset = OrderIt.objects.filter(status='wor').order_by('-id')
+    
+class CancelledOrderListAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = OrderItSerializer
+    queryset = OrderIt.objects.filter(status='can').order_by('-id')
+    
+class CompletedOrderListAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = OrderItSerializer
+    queryset = OrderIt.objects.filter(status='com').order_by('-id')
+    
+class DeliveryOrderListAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = OrderItSerializer
+    queryset = OrderIt.objects.filter(status='del').order_by('-id')
+
+from IT.Paymentserializers import *   
+from IT.Payment_Model import *
+
+class TransactionListAPIView(generics.ListCreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = TransactionModel_Serializer
+    queryset = TransactionModel.objects.all().order_by('-id')

@@ -82,6 +82,17 @@ urlpatterns = [
       
       path('news-letter/', NewsLetterListCreateView.as_view(), name='NewsLetterListCreateView'),
       path('news-letter/<int:pk>/', NewsLetterRetrieveUpdateDestroyView.as_view(), name='NewsLetterRetrieveUpdateDestroyView'),
+      # BottomBannerAPIView crud url
+      path('bottom-banner/', BottomBannerAPIView.as_view()),
+      path('bottom-banner/<int:pk>/', BottomBannerAPIView.as_view()),
+
+      # GlobalLocationAPIView crud url
+      path('global-location/', GlobalLocationAPIView.as_view()),
+      path('global-location/<int:pk>/', GlobalLocationAPIView.as_view()),
+
+      # UserAPIView crud url
+      path('user/', UserAPIView.as_view()),
+      path('user/<int:pk>/', UserAPIView.as_view()),
    ]
 
 

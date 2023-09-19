@@ -40,3 +40,5 @@ urllib3==2.0.4
 validators==0.21.2
 virtualenv==20.13.0
 win32-setctime==1.1.0
+Django==4.2.4
+

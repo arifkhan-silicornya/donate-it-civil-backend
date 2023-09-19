@@ -13,11 +13,12 @@ class BannerCivilSerializer(serializers.ModelSerializer):
 # =======================         FeatureWorks Serializer        ========================
 
 class FeatureWorksSerializer(serializers.ModelSerializer):
-    # cat_name = serializers.CharField(source='category.category', read_only=True)
+    category_name = serializers.CharField(source='category.category')
     class Meta:
         model = FeatureWorks
-        fields= ['name','description','path','img']
-        # fields= ['name','description','path','img','category','cat_name']
+        # fields= ['name','description','path','img']
+        fields= ['category_name','name','description','path','img']
+
 
 class FeatureWorksCategoryerializer(serializers.ModelSerializer):
     FeatureWorks =serializers.SerializerMethodField("get_FeatureWorks")
@@ -28,7 +29,7 @@ class FeatureWorksCategoryerializer(serializers.ModelSerializer):
     def get_FeatureWorks(self,model):
         try:
             obj = FeatureWorks.objects.filter(category=model,active=True)
-            seria =  FeatureWorksSerializer(instance=obj,many=True, read_only=True).data
+            seria =  FeatureWorksSerializer(instance=obj, many=True, read_only=True).data
             return seria
         except:
             return []
@@ -70,7 +71,7 @@ class SecurityPageSerializer(serializers.ModelSerializer):
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
-        fields= '__All__'
+        fields= '__all__'
 
 
 # =======================       Product Model Serializer         ========================

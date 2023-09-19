@@ -8,19 +8,25 @@ from IT.models import *
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 class footerSectionListCreateView(ListCreateAPIView):
-    site_civil = siteList.objects.get(name='Civil')
-    queryset = footerSection.objects.filter(site=site_civil)
+    queryset = footerSection.objects.all()
     permission_classes = [IsAdminUser]
     serializer_class = footerSectionSerializer
     
     def create(self, request, *args, **kwargs):
-        site_civil = siteList.objects.get(name='Civil')
+        if siteList.objects.filter(name='Civil').exists():
+            site_civil = siteList.objects.get(name='Civil')
         serializer = self.get_serializer(data=request.data, partial=True)
         
         if serializer.is_valid():
             serializer.save(site=site_civil)
             return Response({"type": "success", "msg": "Footer section succesfully created"})
         return Response({"type": "error", "msg": "Footer section creation failed"})
+    def get(self, request):
+        if siteList.objects.filter(name='Civil').exists():
+            site_civil = siteList.objects.get(name='Civil')
+        allData =  footerSection.objects.filter(site =site_civil).all()
+        serializer = self.get_serializer(allData, many=True).data
+        return Response(serializer)
     
 class footerSectionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = footerSection.objects.all()
@@ -29,7 +35,8 @@ class footerSectionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
-        site_civil = siteList.objects.get(name='Civil')
+        if siteList.objects.filter(name='Civil').exists():
+            site_civil = siteList.objects.get(name='Civil')
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save(site=site_civil)
@@ -47,13 +54,21 @@ class footerItemListCreateView(ListCreateAPIView):
     
     def create(self, request, *args, **kwargs):
         section = request.data['footerSection']
-        footer_section = footerSection.objects.filter(title=section).first()
+        if footerSection.objects.filter(title=section).exists():
+            footer_section = footerSection.objects.get(title=section)
         serializer = self.get_serializer(data=request.data, partial=True)
         
         if serializer.is_valid():
             serializer.save(footerSection=footer_section)
             return Response({"type": "success", "msg": "Footer item succesfully created"})
         return Response({"type": "error", "msg": "Footer item creation failed"})
+    def get(self, request):
+        if siteList.objects.filter(name='Civil').exists():
+            site_civil = siteList.objects.get(name='Civil')
+        if footerSection.objects.filter(site =site_civil).exists():
+            allData =  footerSection.objects.filter(site =site_civil).all()
+        serializer = self.get_serializer(allData, many=True).data
+        return Response(serializer)
     
 
 class footerItemRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
@@ -64,7 +79,8 @@ class footerItemRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
         f_section = request.data['footerSection']
-        footer_section = footerSection.objects.filter(title=f_section).first()
+        if footerSection.objects.filter(title=f_section).exists():
+            footer_section = footerSection.objects.filter(title=f_section).first()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         
         if serializer.is_valid():
@@ -74,19 +90,25 @@ class footerItemRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
     
 class footerHeadOfficeListCreateView(ListCreateAPIView):
-    site_civil = siteList.objects.get(name='Civil')
-    queryset = footerHeadOffice.objects.filter(siteList=site_civil)
+    queryset = footerHeadOffice.objects.all()
     permission_classes = [AllowAny]
     serializer_class = footerHeadOfficeSerializer
     
     def create(self, request, *args, **kwargs):
-        site_civil = siteList.objects.get(name='civil')
+        if siteList.objects.filter(name='Civil').exists():
+            site_civil = siteList.objects.get(name='Civil')
         serializer = self.get_serializer(data=request.data, partial=True)
         
         if serializer.is_valid():
             serializer.save(siteList=site_civil)
             return Response({"type": "success", "msg": "Head office succesfully created"})
         return Response({"type": "error", "msg": "Head office  creation failed"})
+    def get(self, request):
+        if siteList.objects.filter(name='Civil').exists():
+            site_civil = siteList.objects.get(name='Civil')
+        allData =  footerHeadOffice.objects.filter(siteList =site_civil).all()
+        serializer = self.get_serializer(allData, many=True).data
+        return Response(serializer)
     
 class footerHeadOfficeRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = footerHeadOffice.objects.all()
@@ -105,20 +127,24 @@ class footerHeadOfficeRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
 
 class footerSocialIconListCreateView(ListCreateAPIView):
-    site_civil = siteList.objects.get(name='Civil')
-    queryset = footerSocialIcon.objects.filter(siteList=site_civil)
+    queryset = footerSocialIcon.objects.all()
     permission_classes = [IsAdminUser]
     serializer_class = footerSocialIconSerializer
     def create(self, request, *args, **kwargs):
-        site_civil = siteList.objects.get(name='Civil')
+        if siteList.objects.filter(name='Civil').exists():
+            site_civil = siteList.objects.get(name='Civil')
         serializer = self.get_serializer(data=request.data, partial=True)
 
-        print(request.data)
-        
         if serializer.is_valid():
             serializer.save(siteList = site_civil)
             return Response({"type": "success", "msg": "Social icon succesfully created"})
         return Response({"type": "error", "msg": "Social icon creation failed"}) 
+    def get(self, request):
+        if siteList.objects.filter(name='Civil').exists():
+            site_civil = siteList.objects.get(name='Civil')
+        allData =  footerSocialIcon.objects.filter(siteList =site_civil).all()
+        serializer = self.get_serializer(allData, many=True).data
+        return Response(serializer)
        
 class footerSocialIconRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = footerSocialIcon.objects.all()
