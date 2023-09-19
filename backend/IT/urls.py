@@ -47,6 +47,7 @@ urlpatterns = [
 
         path('account-view-all/', CompanyAccount_View.as_view(), name='view-bank-details'),
 
+        #transaction
         path('make-payment/', CreateTransaction.as_view(), name='make-payment'),
         path('get-all-transaction/', GetTransaction.as_view(), name='get-payment'),
         

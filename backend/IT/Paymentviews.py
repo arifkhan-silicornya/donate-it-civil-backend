@@ -59,5 +59,5 @@ class GetTransaction(generics.ListAPIView):
     serializer_class = TransactionModel_Serializer
 
     def get(self, request):
-        isinstance =  TransactionModel.objects.filter(user = request.user).all()
+        isinstance =  TransactionModel.objects.filter(user = request.user).all().order_by('-id')
         return Response(self.serializer_class(instance = isinstance ,many=True ).data)

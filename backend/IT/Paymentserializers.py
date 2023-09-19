@@ -33,8 +33,14 @@ class PaymentMethodSerializer(serializers.ModelSerializer):
             return {}
 
 class TransactionModel_Serializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField("get_user")
+    bank = serializers.SerializerMethodField("get_bank")
     class Meta:
         model = TransactionModel
-        fields= ['id','amount', 'Transaction_id', 'account_Info' , 'acc_holder_mail' , 'acc_holder_phone', 'pay_receipt_doc', 'user' , 'order', 'bank']
+        fields= ['id','amount', 'Transaction_id', 'account_Info' , 'acc_holder_mail' , 'acc_holder_phone', 'pay_receipt_doc', 'user' , 'order', 'bank','created_at']
 
+    def get_user(self,model):
+        return  model.user.username
     
+    def get_bank(self,model):
+        return  model.bank.bank_name
