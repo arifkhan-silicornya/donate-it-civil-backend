@@ -16,8 +16,12 @@ urlpatterns = [
         # Civil footer view
         path('civil-footer/', FooterCivilView.as_view(), name='civil-footer'),
 
+        # IT
         path('footer-items/', FooterItem_IT_View.as_view(), name='footer-items'),
-
+        
+        # civil
+        path('civil-footer-items/', FooterItem_Civil_View.as_view(), name='footer-items'),
+        
    ]
 
 

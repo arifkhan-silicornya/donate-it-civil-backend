@@ -104,7 +104,7 @@ class TechnologiesCategoryView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class ProductViewIT(APIView):
+class ProductViewIT(APIView): 
     permission_classes = (AllowAny,)
     def get_product(self, pk):
         try:

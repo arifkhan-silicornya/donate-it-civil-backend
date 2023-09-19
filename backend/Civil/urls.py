@@ -11,8 +11,17 @@ urlpatterns = [
         path('contact-msg-send/', Contact_ViewSet.as_view(), name='Civil_Home_view'),
 
         # order
-        path('create-order/', CreateOrderView.as_view(), name='Civil_Home_view'),
+        path('create-order/', CreateOrderViewCivil.as_view(), name='Create-it-order'),
+        path('save-pdf-order-other/', OrderAndOtherPDFUpload.as_view(), name='order-other-pdf'),
+        path('self-order-view-all/', ViewAllSelfOrder.as_view(), name='self-order-list-all'),
+
+
+        # product
+        path('product/', ProductViewIT.as_view(), name='Product'),
+        path('product/<int:pk>/', ProductViewIT.as_view(), name='Product'),
         
+        # service
+        path('service-link/', ServicesLinkList.as_view(), name='service-link-list'),
    ]
 
 

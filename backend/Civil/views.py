@@ -60,4 +60,26 @@ class Contact_ViewSet(generics.CreateAPIView):
 
         return Response({'type':'success','msg': 'Your message is safely stored in our database. We will reach you back.','status':status.HTTP_201_CREATED})
 
+
+class ProductViewIT(APIView): 
+    permission_classes = (AllowAny,)
+    def get_product(self, pk):
+        try:
+            return ProductModel.objects.filter(id=pk)
+        except:
+            return Response({'type': 'error', 'message': 'Product not found'})
+        
+    def get(self, request, pk=None):
+        if pk:
+            instance = self.get_product(pk)
+            serializer = ProductSerializer(instance, many=True, context={'request':request})
+        else:
+            instance = ProductModel.objects.filter(active=True).all()
+            serializer = ProductSerializer(instance, many=True, context={'request':request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     
+class ServicesLinkList(generics.ListAPIView):
+    permission_classes = (AllowAny,)
+    queryset = OurServices.objects.filter(active=True).all()
+    serializer_class = OurServicesSerializer

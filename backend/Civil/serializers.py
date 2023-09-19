@@ -77,9 +77,14 @@ class ContactSerializer(serializers.ModelSerializer):
 # =======================       Product Model Serializer         ========================
 
 class ProductSerializer(serializers.ModelSerializer):
+    category_name = serializers.SerializerMethodField('get_category')
     class Meta:
         model = ProductModel 
-        fields= ['id','proName','proDescription','proImg','fileOne','fileTwo','fileThree']
+        fields= ['id','proName','proDescription','proImg','fileOne','fileTwo','fileThree','category_name']
+        depth = 1
+        
+    def get_category(self,model):
+        return model.category.category
 
 class ProductCategoryModelSerializer(serializers.ModelSerializer):
     Products =serializers.SerializerMethodField("get_Product")

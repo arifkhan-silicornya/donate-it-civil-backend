@@ -158,7 +158,7 @@ class Contact(models.Model):
         return str(self.email)
     
 # =======================     Product category Model        ========================
-class ProductCategoryModel(models.Model):
+class ProductCategoryModel(models.Model): 
     category = models.CharField(max_length= 100,blank = False, null=True)
     active=models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
