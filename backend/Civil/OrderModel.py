@@ -21,7 +21,7 @@ class OrderCivil(models.Model):
     project_description = models.TextField(max_length= 300, null = True,blank=True)
     
     payment_left = models.PositiveIntegerField(default=2)
-    total_price = models.CharField(max_length= 300, null = True,blank=True)
+    total_price = models.CharField(max_length= 300, default=0, null = True,blank=True)
     total_online_paid = models.BigIntegerField(default=0, null = True,blank=True)
     total_offline_paid = models.BigIntegerField(default=0, null = True,blank=True)
 

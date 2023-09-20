@@ -170,7 +170,7 @@ class OrderAndOtherPDFUpload(CreateAPIView):
         except:
             return Response({"type": "error", "msg": "Order and other pdf upload failed"})
 
-class ViewAllSelfOrder(ListAPIView):
+class ViewAllSelfOrder(ListAPIView): 
     permission_classes = (IsAuthenticated,)
     queryset = OrderIt.objects.all()
     serializer_class = OrderItSerializer
