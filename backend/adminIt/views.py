@@ -765,7 +765,7 @@ class footerSectionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
 class footerItemListCreateView(ListCreateAPIView):
     queryset = footerItem.objects.all()
-    permission_classes = [IsAdminUser]
+    permission_classes = [AllowAny]
     serializer_class = footerItemSerializer
     
     def create(self, request, *args, **kwargs):
@@ -777,6 +777,21 @@ class footerItemListCreateView(ListCreateAPIView):
             serializer.save(footerSection=footer_section)
             return Response({"type": "success", "msg": "Footer item succesfully created"})
         return Response({"type": "error", "msg": "Footer item creation failed"})
+    
+    def get(self, request):
+        if siteList.objects.filter(name='IT').exists():
+            site_civil = siteList.objects.get(name='IT')
+        if footerSection.objects.filter(site =site_civil).exists():
+            allData =  footerSection.objects.filter(site =site_civil).all()
+        serializer = footerSectionSerializer(allData, many=True).data
+        print(serializer)
+        data = []
+        for section in serializer:
+            print(section)
+            item = footerItem.objects.filter(footerSection=section['id'])
+            item_serializer = footerItemSerializer(item, many=True).data
+            data.append(item_serializer)
+        return Response({"data":data})
     
 
 class footerItemRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
@@ -922,9 +937,8 @@ class GlobalRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = GlobalLoc.objects.all()
     permission_classes = [IsAdminUser]
     serializer_class = GlobalLocSerializer
-    lookup_field = 'pk'
     
-    def partial_update(self, request):
+    def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)       
         if serializer.is_valid():

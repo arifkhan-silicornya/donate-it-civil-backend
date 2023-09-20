@@ -49,13 +49,13 @@ class footerSectionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
 class footerItemListCreateView(ListCreateAPIView):
     queryset = footerItem.objects.all()
-    permission_classes = [IsAdminUser]
+    permission_classes = [AllowAny]
     serializer_class = footerItemSerializer
     
     def create(self, request, *args, **kwargs):
         section = request.data['footerSection']
         if footerSection.objects.filter(title=section).exists():
-            footer_section = footerSection.objects.get(title=section)
+            footer_section = footerSection.objects.get(title=section).first()
         serializer = self.get_serializer(data=request.data, partial=True)
         
         if serializer.is_valid():
@@ -67,8 +67,15 @@ class footerItemListCreateView(ListCreateAPIView):
             site_civil = siteList.objects.get(name='Civil')
         if footerSection.objects.filter(site =site_civil).exists():
             allData =  footerSection.objects.filter(site =site_civil).all()
-        serializer = self.get_serializer(allData, many=True).data
-        return Response(serializer)
+        serializer = footerSectionSerializer(allData, many=True).data
+        print(serializer)
+        data = []
+        for section in serializer:
+            print(section)
+            item = footerItem.objects.filter(footerSection=section['id'])
+            item_serializer = footerItemSerializer(item, many=True).data
+            data.append(item_serializer)
+        return Response({"data":data})
     
 
 class footerItemRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
