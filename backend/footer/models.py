@@ -9,7 +9,7 @@ def upload_to_icons(instance, filename):
 
 class footerSection(models.Model):
     site = models.ForeignKey(siteList, on_delete=models.CASCADE )
-    title = models.CharField(unique=True, max_length= 300,blank = False)
+    title = models.CharField(max_length= 300,blank = False)
     active=models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_update_at = models.DateTimeField(auto_now=True)
