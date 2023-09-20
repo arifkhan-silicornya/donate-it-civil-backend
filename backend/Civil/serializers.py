@@ -40,7 +40,7 @@ class FeatureWorksCategoryerializer(serializers.ModelSerializer):
 class ArchitectureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Architecture
-        fields= ['name','description','path','img','price']
+        fields= ['id','name','description','path','img','price']
 
 # =======================         Our Services Serializer         ========================
 

@@ -100,9 +100,12 @@ class DetailsDesignView(generics.RetrieveAPIView):
             return Response({'type': 'error','message': 'id not found'})
         if Architecture.objects.filter(id=id).exists():
             instance = Architecture.objects.get(id=id)
-            obj = DetailsOfFeatureDesign.objects.get(Architecture=instance , active=True)
-            serializer = self.serializer_class(obj, many=False, context={'request':request}).data
-            return Response(serializer, status=status.HTTP_200_OK)
+            if DetailsOfFeatureDesign.objects.filter(Architecture=instance , active=True).exists():
+                obj = DetailsOfFeatureDesign.objects.get(Architecture=instance , active=True)
+                serializer = self.serializer_class(obj, many=False, context={'request':request}).data
+                return Response(serializer, status=status.HTTP_200_OK)
+            else:
+                return Response({'type': 'error','message': 'id not exist'})
         else:
-            return []
+            return Response({'type': 'error','message': 'id not exist'})
 
