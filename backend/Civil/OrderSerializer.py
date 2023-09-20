@@ -122,4 +122,4 @@ class SocialMediaLinkSerializer(serializers.ModelSerializer):
         model = SocialMediaLinkCivil
         fields = '__all__'
         depth = 1
-        
+

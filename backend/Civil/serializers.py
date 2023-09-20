@@ -113,3 +113,32 @@ class CompanySerializer(serializers.ModelSerializer):
         model = CompanyModel
         fields= ['full_Name','staff_title','home_address','email','mobileNumber','staff_img']
 
+
+class BottomBannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BottomBanner
+        fields = ['title','description','img','link']
+
+
+
+# =======================       DetailsOfFeatureDesign Serializer         ========================
+
+class ImagesOfDesignSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImagesOfDetailsDesign
+        fields = ['img']
+
+class DetailsOfFeatureDesignSerializer(serializers.ModelSerializer):
+    images = serializers.SerializerMethodField("get_images")
+    class Meta:
+        model = DetailsOfFeatureDesign
+        fields = ['bed','bath','kitchen','Plan_description','images']
+        
+    
+    def get_images(self,model):
+        try:
+            obj = ImagesOfDetailsDesign.objects.filter(DetailsDesign=model,active=True).all()
+            seria =  ImagesOfDesignSerializer(instance=obj, many=True, read_only=True).data
+            return seria
+        except:
+            return []

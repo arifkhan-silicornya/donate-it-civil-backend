@@ -42,6 +42,8 @@ def upload_to_architecture(instance, filename):
 def upload_to_bottom_banner(instance, filename):
     return 'file/civil/bottom_banner/{filename}'.format(filename=filename)
 
+def upload_to_detailsdesign(instance, filename):
+    return 'file/civil/details_design/{filename}'.format(filename=filename)
 
 
 
@@ -240,3 +242,30 @@ class GlobalLocation(models.Model):
     
     def __str__(self):
         return self.email
+
+class DetailsOfFeatureDesign(models.Model):
+    Architecture = models.OneToOneField(Architecture, on_delete=models.CASCADE )
+    bed = models.IntegerField()
+    bath = models.IntegerField()
+    kitchen = models.IntegerField()
+    Plan_description = models.TextField(max_length=600)
+
+    active= models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_update_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.Architecture.name
+
+class ImagesOfDetailsDesign(models.Model):
+    DetailsDesign = models.ForeignKey(DetailsOfFeatureDesign, on_delete=models.CASCADE )
+
+    img = ResizedImageField( upload_to=upload_to_detailsdesign,blank=True, null=True)
+    active= models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_update_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return str(self.id)
