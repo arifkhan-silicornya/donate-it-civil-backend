@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from IT.models import *
 from IT.OrderModel import *
+from IT.Payment_Model import *
 from Header.models import *
 from .serializers import *
 
@@ -183,3 +184,22 @@ class GlobalLocSerializer(serializers.ModelSerializer):
     class Meta:
         model = GlobalLoc
         fields = '__all__'
+        
+        
+class PaymentMethodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaymentMethod
+        fields = '__all__'
+        depth = 1
+        
+class CompanyAccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CompanyAccount
+        fields = '__all__'
+        depth = 1
+        
+class BottomBannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BottomBanner
+        fields = '__all__'
+        depth = 1

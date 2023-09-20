@@ -6,8 +6,11 @@ from IT.views import *
 
 
 urlpatterns = [
-        path('banner-it/', BannerView.as_view(), name='Banner_it'),
-        path('banner-it/<int:pk>/', BannerView.as_view(), name='Banner_it'),
+        path('banner/', BannerView.as_view(), name='Banner_it'),
+        path('banner/<int:pk>/', BannerView.as_view(), name='Banner_it'),
+        
+        path('bottom-banner/', BottomBannerView.as_view(), name='bottom-banner'),
+        path('bottom-banner/<int:pk>/', BottomBannerView.as_view(), name='bottom-banner'),
         
         path('technologies-category/', TechnologiesCategoryAPIView.as_view(), name='Technologies-category'),
         path('technologies-category/<int:pk>/', TechnologiesCategoryAPIView.as_view(), name='Technologies-category'),
@@ -43,8 +46,14 @@ urlpatterns = [
         path('personal-info/', PersonalInfoListCreateView.as_view(), name='PersonalInfoListCreateView'),
         path('personal-info/<int:pk>/', PersonalInfoRetrieveUpdateDestroyView.as_view(), name='PersonalInfoRetrieveUpdateDestroyView'),
         
-        path('present-address/', PresentAddressListCreateView.as_view(), name='PresentAddressListCreateView'),
-        path('present-address/<int:pk>/', PresentAddressRetrieveUpdateDestroyView.as_view(), name='PresentAddressRetrieveUpdateDestroyView'),
+        path('payment-method/', PaymentMethodListCreateView.as_view(), name='PaymentMethodListCreateView'),
+        path('payment-method/<int:pk>/', PaymentMethodRetrieveUpdateDestroyView.as_view(), name='PaymentMethodRetrieveUpdateDestroyView'),
+        
+        path('payment-method/', PaymentMethodListCreateView.as_view(), name='PaymentMethodListCreateView'),
+        path('payment-method/<int:pk>/', PaymentMethodRetrieveUpdateDestroyView.as_view(), name='PaymentMethodRetrieveUpdateDestroyView'),
+        
+        path('account/', CompanyAccountListCreateView.as_view(), name='CompanyAccountListCreateView'),
+        path('account/<int:pk>/', CompanyAccountRetrieveUpdateDestroyView.as_view(), name='CompanyAccountRetrieveUpdateDestroyView'),
         
         path('permanent-address/', PermanentAddressListCreateView.as_view(), name='PermanentAddressListCreateView'),
         path('permanent-address/<int:pk>/', PermanentAddressRetrieveUpdateDestroyView.as_view(), name='PermanentAddressRetrieveUpdateDestroyView'),

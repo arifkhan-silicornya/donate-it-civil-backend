@@ -36,10 +36,10 @@ class BannerView(APIView):
         serializer = BannerITSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"type": "success", "msg": "Banner created successfully"})
+        return Response({"type": "error", "msg": "Banner creation failed"})
 
-    def put(self, request, pk):
+    def patch(self, request, pk):
         try:
             instance = BannerIT.objects.get(id=pk)    
         except BannerIT.DoesNotExist:
@@ -47,8 +47,44 @@ class BannerView(APIView):
         serializer = BannerITSerializer(instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response("Successfully updated Banner")
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"type": "success", "msg": "Banner successfully updated"})
+        return Response({"type": "error", "msg": "Banner updation failed"})
+    
+    def delete(self, request, pk):
+        instance = self.get_banner(pk)
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class BottomBannerView(APIView):
+    permission_classes = (IsAdminUser,)
+    def get_banner(self, pk):
+            return BottomBanner.objects.get(id=pk)
+        
+    def get(self, request, pk=None):
+        if pk:
+            instance = self.get_banner(pk)
+            serializer = BottomBannerSerializer(instance, context={'request':request})
+        else:
+            instance = BottomBanner.objects.all()
+            serializer = BottomBannerSerializer(instance, many=True, context={'request':request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    def post(self, request, format=None):
+        serializer = BottomBannerSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"type": "success", "msg": "Banner created successfully"})
+        return Response({"type": "error", "msg": "Banner creation failed"})
+
+    def patch(self, request, pk):
+        try:
+            instance = BottomBanner.objects.get(id=pk)    
+        except BottomBanner.DoesNotExist:
+            return Response(status = status.HTTP_404_NOT_FOUND)
+        serializer = BottomBannerSerializer(instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"type": "success", "msg": "Banner successfully updated"})
+        return Response({"type": "error", "msg": "Banner updation failed"})
     
     def delete(self, request, pk):
         instance = self.get_banner(pk)
@@ -335,10 +371,10 @@ class ReadmoreView(APIView):
         serializer = ReadmoreSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"type": "success", "msg": "Readmore created successfully"})
+        return Response({"type": "error", "msg": "Readmore creation failed"})
 
-    def put(self, request, pk):
+    def patch(self, request, pk):
         try:
             instance = Readmore.objects.get(id=pk)    
         except Readmore.DoesNotExist:
@@ -346,8 +382,8 @@ class ReadmoreView(APIView):
         serializer = ReadmoreSerializer(instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response("Successfully updated Banner")
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"type": "success", "msg": "Readmore updated successfully"})
+        return Response({"type": "error", "msg": "Readmore updation failed"})
     
     def delete(self, request, pk):
         instance = self.get_readmore(pk)
@@ -790,7 +826,8 @@ class footerItemListCreateView(ListCreateAPIView):
             print(section)
             item = footerItem.objects.filter(footerSection=section['id'])
             item_serializer = footerItemSerializer(item, many=True).data
-            data.append(item_serializer)
+            for d in item_serializer:
+                data.append(d)
         return Response({"data":data})
     
 
@@ -945,6 +982,62 @@ class GlobalRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
             serializer.save()
             return Response({"type": "success", "msg": "Global location successfully updated"})
         return Response({"type": "error", "msg": "Global location updation failed"})
+    
+class PaymentMethodListCreateView(ListCreateAPIView):
+    queryset = PaymentMethod.objects.all()
+    permission_classes = [IsAdminUser]
+    serializer_class = PaymentMethodSerializer
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)      
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"type": "success", "msg": "Payment method succesfully created"})
+        return Response({"type": "error", "msg": "Payment method creation failed"})
+    
+    
+class PaymentMethodRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    queryset = PaymentMethod.objects.all()
+    permission_classes = [IsAdminUser]
+    serializer_class = PaymentMethodSerializer
+    
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)       
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"type": "success", "msg": "Payment method succesfully updated"})
+        return Response({"type": "error", "msg": "Payment method updation failed"})
+    
+class CompanyAccountListCreateView(ListCreateAPIView):
+    queryset = CompanyAccount.objects.all()
+    permission_classes = [AllowAny]
+    serializer_class = CompanyAccountSerializer
+    
+    def post(self, request, format=None):
+        payment_method = request.data['payment_method']
+        method_model = PaymentMethod.objects.get(method_name=payment_method)
+        serializer = self.get_serializer(data=request.data or request.FILES, partial=True)
+        if serializer.is_valid():
+            serializer.save(payment_method=method_model)
+            return Response({'type': 'success', 'msg': 'Account created successfully'})
+        return Response({'type': 'error', 'msg': 'Account creation failed'})
+    
+    
+class CompanyAccountRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    queryset = CompanyAccount.objects.all()
+    permission_classes = [IsAdminUser]
+    serializer_class = CompanyAccountSerializer
+    
+    def partial_update(self, request, *args, **kwargs):
+        payment_method = request.data['payment_method']
+        method_model = PaymentMethod.objects.get(method_name=payment_method)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)       
+        if serializer.is_valid():
+            serializer.save(payment_method=method_model)
+            return Response({"type": "success", "msg": "Company account succesfully updated"})
+        return Response({"type": "error", "msg": "Company account updation failed"})
     
 class UserListAPIView(generics.ListAPIView):
     queryset = User.objects.filter(is_superuser = False, is_staff = False).order_by('-id')
