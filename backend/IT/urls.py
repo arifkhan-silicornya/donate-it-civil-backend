@@ -34,7 +34,8 @@ urlpatterns = [
         # path('global-location-view-all/', Global_location_ViewSet.as_view(), name='global-location-data'),
 
         path('technology-link/', TechnologyLinkList.as_view(), name='technology-link-list'),
-        path('service-link/', ServicesLinkList.as_view(), name='service-link-list'),        
+        path('service-link/', ServicesLinkList.as_view(), name='service-link-list'),    
+        path('readmore-link/', ReadmoreSerializer_View.as_view(), name='readmore-link-list'),        
         
         path('product/', ProductViewIT.as_view(), name='Product'),
         path('product/<int:pk>/', ProductViewIT.as_view(), name='Product'),

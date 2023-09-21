@@ -4,10 +4,14 @@ from django.conf.urls.static import static
 from .views import *
 from IT.views import *
 from .header_view import *
+from .OrderManageView import *
 
 urlpatterns = [
-        path('banner-it/', BannerView.as_view(), name='Banner_it'),
-        path('banner-it/<int:pk>/', BannerView.as_view(), name='Banner_it'),
+        path('banner/', BannerView.as_view(), name='Banner_it'),
+        path('banner/<int:pk>/', BannerView.as_view(), name='Banner_it'),
+        
+        path('bottom-banner/', BottomBannerView.as_view(), name='bottom-banner'),
+        path('bottom-banner/<int:pk>/', BottomBannerView.as_view(), name='bottom-banner'),
         
         path('technologies-category/', TechnologiesCategoryAPIView.as_view(), name='Technologies-category'),
         path('technologies-category/<int:pk>/', TechnologiesCategoryAPIView.as_view(), name='Technologies-category'),
@@ -45,8 +49,14 @@ urlpatterns = [
         path('personal-info/', PersonalInfoListCreateView.as_view(), name='PersonalInfoListCreateView'),
         path('personal-info/<int:pk>/', PersonalInfoRetrieveUpdateDestroyView.as_view(), name='PersonalInfoRetrieveUpdateDestroyView'),
         
-        path('present-address/', PresentAddressListCreateView.as_view(), name='PresentAddressListCreateView'),
-        path('present-address/<int:pk>/', PresentAddressRetrieveUpdateDestroyView.as_view(), name='PresentAddressRetrieveUpdateDestroyView'),
+        path('payment-method/', PaymentMethodListCreateView.as_view(), name='PaymentMethodListCreateView'),
+        path('payment-method/<int:pk>/', PaymentMethodRetrieveUpdateDestroyView.as_view(), name='PaymentMethodRetrieveUpdateDestroyView'),
+        
+        path('payment-method/', PaymentMethodListCreateView.as_view(), name='PaymentMethodListCreateView'),
+        path('payment-method/<int:pk>/', PaymentMethodRetrieveUpdateDestroyView.as_view(), name='PaymentMethodRetrieveUpdateDestroyView'),
+        
+        path('account/', CompanyAccountListCreateView.as_view(), name='CompanyAccountListCreateView'),
+        path('account/<int:pk>/', CompanyAccountRetrieveUpdateDestroyView.as_view(), name='CompanyAccountRetrieveUpdateDestroyView'),
         
         path('permanent-address/', PermanentAddressListCreateView.as_view(), name='PermanentAddressListCreateView'),
         path('permanent-address/<int:pk>/', PermanentAddressRetrieveUpdateDestroyView.as_view(), name='PermanentAddressRetrieveUpdateDestroyView'),
@@ -99,6 +109,14 @@ urlpatterns = [
         path('complete-orders/', CompletedOrderListAPIView.as_view(), name='CompletedOrderListAPIView'),
         
         path('transaction/', TransactionListAPIView.as_view(), name='TransactionListAPIView'),
+        
+        # ORder update
+        
+        path('update-pending-order/<int:pk>/', UpdateOrder.as_view() ),
+        path('cancel-pending-order/<int:pk>/', CancelOrder.as_view() ),
+        path('working-order/<int:pk>/', WorkingOrder.as_view() ),
+        path('complete-order/<int:pk>/', CompleteOrder.as_view() ),
+        path('deliver-order/<int:pk>/', DeliveredOrder.as_view() ),
         
         
         # Brand Logo

@@ -38,3 +38,5 @@ admin.site.register(PaymentMethod)
 admin.site.register(CompanyAccount)  
 admin.site.register(TransactionModel)  
 
+admin.site.register(DeliveryFile)  
+

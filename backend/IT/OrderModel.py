@@ -21,7 +21,7 @@ class OrderIt(models.Model):
     project_description = models.TextField(max_length= 300, null = True,blank=True)
     
     payment_left = models.PositiveIntegerField(default=2)
-    total_price = models.CharField(max_length= 300, null = True,blank=True)
+    total_price = models.BigIntegerField(default=0, null = True,blank=True)
     total_online_paid = models.BigIntegerField(default=0, null = True,blank=True)
     total_offline_paid = models.BigIntegerField(default=0, null = True,blank=True)
 
@@ -187,3 +187,17 @@ class SocialMediaLinkIT(models.Model):
 
     def __str__(self):
         return str(self.orderit.id) + " " + str(self.id)
+
+
+    # =========================       Order Pdf       =====================
+
+class DeliveryFile(models.Model):
+    orderit = models.ForeignKey(OrderIt, on_delete=models.SET_NULL,null=True )
+    
+    file = models.FileField( upload_to=upload_to_OrderPdf,blank=True, null=True)
+
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now= True)
+
+    def __str__(self):
+        return str(self.id)
