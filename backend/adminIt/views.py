@@ -947,12 +947,12 @@ class NewsLetterRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
 
 class GlobalListCreateAPIView(ListCreateAPIView):
-    queryset = GlobalLoc.objects.all().order_by('-id')
+    queryset = GlobalLoc.objects.all()
     permission_classes = [IsAdminUser]
     serializer_class = GlobalLocSerializer
     
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)      
+        serializer = self.get_serializer(data=request.data, partial=True)      
         if serializer.is_valid():
             serializer.save()
             return Response({"type": "success", "msg": "Global location succesfully created"})
