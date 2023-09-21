@@ -93,6 +93,11 @@ urlpatterns = [
       # UserAPIView crud url
       path('user/', UserAPIView.as_view()),
       path('user/<int:pk>/', UserAPIView.as_view()),
+
+      
+      # Brand Logo
+      path('create-view-brand/', ITBrandList.as_view() ),
+      path('view-update-brand/<int:pk>/', ITBrandUpdateRetrieve.as_view()),
    ]
 
 

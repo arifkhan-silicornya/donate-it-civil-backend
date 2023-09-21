@@ -11,6 +11,10 @@ urlpatterns = [
         #  Civil header
         path('civil-header/', HeaderCivilView.as_view(), name='civil-header-view'),
 
+        # all brand
+        path('brands-logos/', HeaderBrandLogoViewAll.as_view(), name='brands-logos'),
+
+
    ]
 
 

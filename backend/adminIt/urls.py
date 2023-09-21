@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .views import *
 from IT.views import *
-
+from .header_view import *
 
 urlpatterns = [
         path('banner-it/', BannerView.as_view(), name='Banner_it'),
@@ -14,6 +14,7 @@ urlpatterns = [
         
         path('technology/', TechnologyView.as_view(), name='Technology'),
         path('technology/<int:pk>/', TechnologyView.as_view(), name='Technology'),
+        path('technology-active-deactive/<int:pk>/', TechnologyStatusChange.as_view(), name='Product-status'),
         path('notice/', NoticeView.as_view(), name='Notice'),
         path('notice/<int:pk>/', NoticeView.as_view(), name='Notice'),
         path('security/', SecurityView.as_view(), name='Security'),
@@ -32,6 +33,7 @@ urlpatterns = [
         path('product-category/<int:pk>/', CategoryView.as_view(), name='Category'),
         path('product/', ProductView.as_view(), name='Product'),
         path('product/<int:pk>/', ProductView.as_view(), name='Product'),
+        path('product-active-deactive/<int:pk>/', ProductStatusChange.as_view(), name='Product-status'),
         path('order-it/', OrderITView.as_view(), name='OrderIt'),
         path('order-it/<int:pk>/', OrderITView.as_view(), name='OrderIt'),
         path('order-pdf/', OrderPdfView.as_view(), name='OrderPdf'),
@@ -97,6 +99,13 @@ urlpatterns = [
         path('complete-orders/', CompletedOrderListAPIView.as_view(), name='CompletedOrderListAPIView'),
         
         path('transaction/', TransactionListAPIView.as_view(), name='TransactionListAPIView'),
+        
+        
+        # Brand Logo
+        path('create-view-brand/', ITBrandList.as_view() ),
+        path('view-update-brand/<int:pk>/', ITBrandUpdateRetrieve.as_view()),
+
+
         
         
         # path('category-product/', CategoryProductView.as_view(), name='CategoryProductView'),

@@ -31,3 +31,36 @@ class Navbar(models.Model):
 
     def __str__(self):
         return str(self.name) +" "+ str(self.site)
+
+# Brand Logo for donate
+class DonateBrandLogo(models.Model):
+    name = models.CharField(max_length= 30,blank=True, null=True)
+    img = ResizedImageField( upload_to=upload_to_site,blank=True, null=True)
+    active=models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_update_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.name)
+
+# Brand Logo for donate
+class ITBrandLogo(models.Model):
+    name = models.CharField(max_length= 30,blank=True, null=True)
+    img = ResizedImageField( upload_to=upload_to_site,blank=True, null=True,)
+    active=models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_update_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.name)
+
+# Brand Logo for donate
+class CivilBrandLogo(models.Model):
+    name = models.CharField(max_length= 30,blank=True, null=True)
+    img = ResizedImageField( upload_to=upload_to_site,blank=True, null=True,)
+    active=models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_update_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.name)

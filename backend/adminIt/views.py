@@ -119,14 +119,15 @@ class TechnologyView(APIView):
     def patch(self, request, pk):
         try:
             instance = Technology.objects.get(id=pk)    
+            ctg = request.data['category']
         except Technology.DoesNotExist:
             return Response(status = status.HTTP_404_NOT_FOUND)
-        ctg = request.data['category']
-        ctg_model = TechnologiesCategory.objects.filter(category=ctg).first()
-        serializer = TechnologySerializer(instance, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save(category=ctg_model)
-            return Response({"type": "success", "msg": "Technology successfully updated"})
+        if TechnologiesCategory.objects.filter(id=ctg).exists():
+            ctg_model = TechnologiesCategory.objects.get(id=ctg)
+            serializer = TechnologySerializer(instance, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save(category=ctg_model)
+                return Response({"type": "success", "msg": "Technology successfully updated"})
         return Response({"type": "error", "msg": "Technology updation failed"})
     
     def delete(self, request, pk):
@@ -134,6 +135,18 @@ class TechnologyView(APIView):
         instance.delete()
         return Response({"type": "success", "msg": "Technology successfully deleted"})    
     
+class TechnologyStatusChange(APIView):
+    permission_classes = (IsAdminUser,)
+    def patch(self, request, pk):
+        try:
+            instance = Technology.objects.get(id=pk)    
+            serializer = TechnologySerializer(instance, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"type": "success", "msg": "Technology successfully updated!"})
+            return Response({"type": "error", "msg": "Technology updation failed!"})
+        except Technology.DoesNotExist:
+            return Response(status = status.HTTP_404_NOT_FOUND)
 
 class NoticeView(APIView):
     permission_classes = (IsAdminUser,)
@@ -411,7 +424,7 @@ class CategoryView(APIView):
             return Response({"type": "success", "msg": "Category successfully created!"})
         return Response({"type": "error", "msg": "Category creation failed!"})
 
-    def put(self, request, pk):
+    def patch(self, request, pk):
         try:
             instance = ProductCategoryModel.objects.get(id=pk)    
         except ProductCategoryModel.DoesNotExist:
@@ -459,18 +472,34 @@ class ProductView(APIView):
         except ProductModel.DoesNotExist:
             return Response(status = status.HTTP_404_NOT_FOUND)
         ctg = request.data['category']
-        ctg_model = ProductCategoryModel.objects.filter(category=ctg).first()
-        serializer = ProductSerializer(instance, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save(category=ctg_model)
-            return Response({'type': 'success', 'msg': 'Product successfully updated'})
-        return Response({'type': 'error', 'msg': 'Product updation failed'})
+        if ProductCategoryModel.objects.filter(id=ctg).exists():
+            ctg_model = ProductCategoryModel.objects.get(id=ctg)
+            serializer = ProductSerializer(instance, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save(category=ctg_model)
+                return Response({'type': 'success', 'msg': 'Product successfully updated'})
+        else:
+            return Response({'type': 'error', 'msg': 'Product category not exist'})
     
     def delete(self, request, pk):
         instance = self.get_product(pk)
         instance.delete()
         return Response({'type': 'success', 'msg': 'Product deleted successfully'})
     
+class ProductStatusChange(APIView):
+    permission_classes = (IsAdminUser,)
+    def patch(self, request, pk):
+        try:
+            instance = ProductModel.objects.get(id=pk)    
+            serializer = ProductSerializer(instance, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"type": "success", "msg": "Product successfully updated!"})
+            return Response({"type": "error", "msg": "Product updation failed!"})
+        except ProductModel.DoesNotExist:
+            return Response(status = status.HTTP_404_NOT_FOUND)
+        
+        
 class OrderITView(APIView):
     permission_classes = (IsAdminUser,)
     def get_orderIt(self, pk):
