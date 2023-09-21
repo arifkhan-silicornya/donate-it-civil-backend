@@ -93,6 +93,14 @@ urlpatterns = [
       # UserAPIView crud url
       path('user/', UserAPIView.as_view()),
       path('user/<int:pk>/', UserAPIView.as_view()),
+
+      # DetailsOfFeatureDesignAPIView crud url
+      path('details-feature-design/', DetailsOfFeatureDesignAPIView.as_view()),
+      path('details-feature-design/<int:pk>/', DetailsOfFeatureDesignAPIView.as_view()),
+
+      # ImagesOfDetailsDesignAPIView crud url
+      path('images-details-design/', ImagesOfDetailsDesignAPIView.as_view()),
+      path('images-details-design/<int:pk>/', ImagesOfDetailsDesignAPIView.as_view()),
    ]
 
 
