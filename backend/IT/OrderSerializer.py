@@ -12,7 +12,7 @@ class CreateOrderItSerializer(serializers.ModelSerializer):
         model = OrderIt
         fields = '__all__'
 
-class OrderItSerializer(serializers.ModelSerializer):
+class OrderItSerializer(serializers.ModelSerializer): 
     OrderPdfIT=serializers.SerializerMethodField("get_OrderPdfIT")
     OtherPdfIT=serializers.SerializerMethodField("get_OtherPdfIT")
     PersonalInfoIT=serializers.SerializerMethodField("get_PersonalInfoIT")

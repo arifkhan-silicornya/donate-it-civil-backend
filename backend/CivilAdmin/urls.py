@@ -93,6 +93,17 @@ urlpatterns = [
       # UserAPIView crud url
       path('user/', UserAPIView.as_view()),
       path('user/<int:pk>/', UserAPIView.as_view()),
+      
+      path('transaction/', TransactionListAPIView.as_view(), name='TransactionListAPIView'),
+      
+      path('orders/', OrderListAPIView.as_view(), name='OrderListAPIView'),
+      path('pending-orders/', PendingOrderListAPIView.as_view(), name='PendingOrderListAPIView'),
+      path('payment-orders/', PaymentOrderListAPIView.as_view(), name='PaymentOrderListAPIView'),
+      path('working-orders/', WorkingOrderListAPIView.as_view(), name='WorkingOrderListAPIView'),
+      path('cancelled-orders/', CancelledOrderListAPIView.as_view(), name='CancelledOrderListAPIView'),
+      path('delivery-orders/', DeliveryOrderListAPIView.as_view(), name='DeliveryOrderListAPIView'),
+      path('complete-orders/', CompletedOrderListAPIView.as_view(), name='CompletedOrderListAPIView'),
+
    ]
 
 

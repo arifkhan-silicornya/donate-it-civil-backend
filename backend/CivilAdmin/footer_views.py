@@ -53,9 +53,9 @@ class footerItemListCreateView(ListCreateAPIView):
     serializer_class = footerItemSerializer
     
     def create(self, request, *args, **kwargs):
-        section = request.data['footerSection']
-        if footerSection.objects.filter(title=section).exists():
-            footer_section = footerSection.objects.get(title=section).first()
+        id = request.data['footerSection']
+        if footerSection.objects.filter(id=id).exists():
+            footer_section = footerSection.objects.get(id=id)
         serializer = self.get_serializer(data=request.data, partial=True)
         
         if serializer.is_valid():
@@ -68,10 +68,8 @@ class footerItemListCreateView(ListCreateAPIView):
         if footerSection.objects.filter(site =site_civil).exists():
             allData =  footerSection.objects.filter(site =site_civil).all()
         serializer = footerSectionSerializer(allData, many=True).data
-        print(serializer)
         data = []
         for section in serializer:
-            print(section)
             item = footerItem.objects.filter(footerSection=section['id'])
             item_serializer = footerItemSerializer(item, many=True).data
             data.append(item_serializer)
@@ -85,13 +83,10 @@ class footerItemRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
-        f_section = request.data['footerSection']
-        if footerSection.objects.filter(title=f_section).exists():
-            footer_section = footerSection.objects.filter(title=f_section).first()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         
         if serializer.is_valid():
-            serializer.save(footerSection=footer_section)
+            serializer.save()
             return Response({"type": "success", "msg": "Footer item successfully updated"})
         return Response({"type": "error", "msg": "Footer item updation failed"})
     

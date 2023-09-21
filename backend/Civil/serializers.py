@@ -40,7 +40,7 @@ class FeatureWorksCategoryerializer(serializers.ModelSerializer):
 class ArchitectureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Architecture
-        fields= ['name','description','path','img','price']
+        fields= ['id','name','description','path','img','price']
 
 # =======================         Our Services Serializer         ========================
 
@@ -77,9 +77,14 @@ class ContactSerializer(serializers.ModelSerializer):
 # =======================       Product Model Serializer         ========================
 
 class ProductSerializer(serializers.ModelSerializer):
+    category_name = serializers.SerializerMethodField('get_category')
     class Meta:
         model = ProductModel 
-        fields= ['id','proName','proDescription','proImg','fileOne','fileTwo','fileThree']
+        fields= ['id','proName','proDescription','proImg','fileOne','fileTwo','fileThree','category_name']
+        depth = 1
+        
+    def get_category(self,model):
+        return model.category.category
 
 class ProductCategoryModelSerializer(serializers.ModelSerializer):
     Products =serializers.SerializerMethodField("get_Product")
@@ -108,3 +113,32 @@ class CompanySerializer(serializers.ModelSerializer):
         model = CompanyModel
         fields= ['full_Name','staff_title','home_address','email','mobileNumber','staff_img']
 
+
+class BottomBannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BottomBanner
+        fields = ['title','description','img','link']
+
+
+
+# =======================       DetailsOfFeatureDesign Serializer         ========================
+
+class ImagesOfDesignSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImagesOfDetailsDesign
+        fields = ['img']
+
+class DetailsOfFeatureDesignSerializer(serializers.ModelSerializer):
+    images = serializers.SerializerMethodField("get_images")
+    class Meta:
+        model = DetailsOfFeatureDesign
+        fields = ['bed','bath','kitchen','Plan_description','images']
+        
+    
+    def get_images(self,model):
+        try:
+            obj = ImagesOfDetailsDesign.objects.filter(DetailsDesign=model,active=True).all()
+            seria =  ImagesOfDesignSerializer(instance=obj, many=True, read_only=True).data
+            return seria
+        except:
+            return []

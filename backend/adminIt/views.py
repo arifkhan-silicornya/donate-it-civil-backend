@@ -806,7 +806,7 @@ class footerItemListCreateView(ListCreateAPIView):
     
     def create(self, request, *args, **kwargs):
         section = request.data['footerSection']
-        footer_section = footerSection.objects.filter(title=section).first()
+        footer_section = footerSection.objects.filter(id=section).first()
         serializer = self.get_serializer(data=request.data, partial=True)
         
         if serializer.is_valid():
@@ -818,16 +818,13 @@ class footerItemListCreateView(ListCreateAPIView):
         if siteList.objects.filter(name='IT').exists():
             site_civil = siteList.objects.get(name='IT')
         if footerSection.objects.filter(site =site_civil).exists():
-            allData =  footerSection.objects.filter(site =site_civil).all()
-        serializer = footerSectionSerializer(allData, many=True).data
-        print(serializer)
-        data = []
-        for section in serializer:
-            print(section)
-            item = footerItem.objects.filter(footerSection=section['id'])
+            allData =  footerSection.objects.filter(site =site_civil).all().order_by('-id')
+        
+        dataArray = []
+        for section in allData:
+            item = footerItem.objects.filter(footerSection=section).all()
             item_serializer = footerItemSerializer(item, many=True).data
-            for d in item_serializer:
-                data.append(d)
+            data.append(item_serializer)
         return Response({"data":data})
     
 
@@ -838,12 +835,12 @@ class footerItemRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
-        f_section = request.data['footerSection']
-        footer_section = footerSection.objects.filter(title=f_section).first()
+        # id = request.data['footerSection']
+        # footer_section = footerSection.objects.get(id=id)
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         
         if serializer.is_valid():
-            serializer.save(footerSection=footer_section)
+            serializer.save()
             return Response({"type": "success", "msg": "Footer item successfully updated"})
         return Response({"type": "error", "msg": "Footer item updation failed"})
     
@@ -863,7 +860,7 @@ class footerHeadOfficeListCreateView(ListCreateAPIView):
         return Response({"type": "error", "msg": "Head office  creation failed"})
     def get(self, request, *args, **kwargs):
         site_it = siteList.objects.get(name='IT')
-        queryset = footerHeadOffice.objects.filter(siteList=site_it)
+        queryset = footerHeadOffice.objects.filter(siteList=site_it).all().order_by('-id')
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
     
@@ -891,15 +888,13 @@ class footerSocialIconListCreateView(ListCreateAPIView):
         site_it = siteList.objects.get(name='IT')
         serializer = self.get_serializer(data=request.data, partial=True)
 
-        print(request.data)
-        
         if serializer.is_valid():
             serializer.save(siteList = site_it)
             return Response({"type": "success", "msg": "Social icon succesfully created"})
         return Response({"type": "error", "msg": "Social icon creation failed"}) 
     def get(self,request):
         site_it = siteList.objects.get(name='IT')
-        queryset = footerSocialIcon.objects.filter(siteList=site_it)
+        queryset = footerSocialIcon.objects.filter(siteList=site_it).order_by('-id')
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
        
@@ -919,7 +914,7 @@ class footerSocialIconRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
 
     
 class PaymentIconListCreateView(ListCreateAPIView):
-    queryset = PaymentIcon.objects.all()
+    queryset = PaymentIcon.objects.all().order_by('-id')
     permission_classes = [IsAdminUser]
     serializer_class = PaymentIconSerializer
     
@@ -947,18 +942,18 @@ class PaymentIconRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
     
 class NewsLetterListCreateView(ListCreateAPIView):
-    queryset = NewsLetter.objects.all()
+    queryset = NewsLetter.objects.all().order_by('-id')
     permission_classes = [IsAdminUser]
     serializer_class = NewsLetterSerializer
     
 class NewsLetterRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
-    queryset = NewsLetter.objects.all()
+    queryset = NewsLetter.objects.all().order_by('-id')
     permission_classes = [IsAdminUser]
     serializer_class = NewsLetterSerializer
     
 
 class GlobalListCreateAPIView(ListCreateAPIView):
-    queryset = GlobalLoc.objects.all()
+    queryset = GlobalLoc.objects.all().order_by('-id')
     permission_classes = [IsAdminUser]
     serializer_class = GlobalLocSerializer
     
@@ -1084,6 +1079,6 @@ from IT.Paymentserializers import *
 from IT.Payment_Model import *
 
 class TransactionListAPIView(generics.ListCreateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = TransactionModel_Serializer
     queryset = TransactionModel.objects.all().order_by('-id')

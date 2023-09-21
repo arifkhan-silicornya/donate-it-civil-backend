@@ -14,18 +14,20 @@ def upload_to_OtherPdf(instance, filename):
 # Models start here
 
 # =========================       Order Model       =====================
-class OrderCivil(models.Model):
+class OrderCivil(models.Model): 
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     ProductCivil = models.ForeignKey(ProductModel ,  on_delete=models.PROTECT)
     currency = models.CharField(max_length= 300, null = False)
-    project_description = models.TextField(max_length= 300, null = True)
+    project_description = models.TextField(max_length= 300, null = True,blank=True)
     
-    total_price = models.CharField(max_length= 300, null = True)
-    total_online_paid = models.CharField(max_length= 300, null = True)
+    payment_left = models.PositiveIntegerField(default=2)
+    total_price = models.CharField(max_length= 300, default=0, null = True,blank=True)
+    total_online_paid = models.BigIntegerField(default=0, null = True,blank=True)
+    total_offline_paid = models.BigIntegerField(default=0, null = True,blank=True)
 
     status =(
     ("pen", "Pending"),
-    ("Pay", "Payment"),
+    ("pay", "Payment"),
     ("can", "Canceled"),
     ("wor", "Working"),
     ("com", "Completed"),
@@ -41,7 +43,7 @@ class OrderCivil(models.Model):
     update_at = models.DateTimeField(auto_now= True)
 
     def __str__(self):
-        return str(self.user.id)
+        return str(self.id)
 
 # =========================       Order Pdf       =====================
 

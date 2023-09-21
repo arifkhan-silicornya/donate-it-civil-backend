@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import *
 from .models import *
 from .OrderModel import *
-from rest_framework.decorators import *
+from rest_framework.decorators import * 
 
 
 
@@ -170,7 +170,7 @@ class OrderAndOtherPDFUpload(CreateAPIView):
         except:
             return Response({"type": "error", "msg": "Order and other pdf upload failed"})
 
-class ViewAllSelfOrder(ListAPIView):
+class ViewAllSelfOrder(ListAPIView): 
     permission_classes = (IsAuthenticated,)
     queryset = OrderIt.objects.all()
     serializer_class = OrderItSerializer
