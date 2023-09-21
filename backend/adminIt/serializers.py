@@ -119,10 +119,12 @@ class OrderItSerializer(serializers.ModelSerializer):
     OtherPdfIT = serializers.SerializerMethodField("get_OtherPdfIT")
     user = serializers.SerializerMethodField("get_user")
     ProductIT = serializers.SerializerMethodField("get_ProductIT")
+    DeliveryFile = serializers.SerializerMethodField("get_DeliveryFile")
+    
     class Meta:
         model = OrderIt
         fields = '__all__'
-        include = ['OrderPdfIT','OtherPdfIT','user','ProductIT']
+        include = ['OrderPdfIT','OtherPdfIT','user','ProductIT','DeliveryFile']
     
     def get_OrderPdfIT(self,model):
         try:
@@ -141,12 +143,15 @@ class OrderItSerializer(serializers.ModelSerializer):
             return []
         
     def get_user(self,model):
-        orderUser = UserSerializer(User.objects.get(id=model.user.id),many=False).data
-        return orderUser
+        return UserSerializer(User.objects.get(id=model.user.id),many=False).data
     
     def get_ProductIT(self,model):
-        prod = ProductSerializer(ProductModel.objects.get(id=model.ProductIT.id),many=False).data
-        return prod
+        return ProductSerializer(ProductModel.objects.get(id=model.ProductIT.id),many=False).data
+    
+    def get_DeliveryFile(self,model):
+        return DeliveryFileSerializer(DeliveryFile.objects.filter(id=model.id),many=True).data
+    
+    
     
 class OrderPdfSerializer(serializers.ModelSerializer):
     class Meta:
