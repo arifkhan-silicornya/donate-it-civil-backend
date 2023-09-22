@@ -109,6 +109,13 @@ urlpatterns = [
       path('delivery-orders/', DeliveryOrderListAPIView.as_view(), name='DeliveryOrderListAPIView'),
       path('complete-orders/', CompletedOrderListAPIView.as_view(), name='CompletedOrderListAPIView'),
 
+      # DetailsOfFeatureDesignAPIView crud url
+      path('details-feature-design/', DetailsOfFeatureDesignAPIView.as_view()),
+      path('details-feature-design/<int:pk>/', DetailsOfFeatureDesignAPIView.as_view()),
+
+      # ImagesOfDetailsDesignAPIView crud url
+      path('images-details-design/', ImagesOfDetailsDesignAPIView.as_view()),
+      path('images-details-design/<int:pk>/', ImagesOfDetailsDesignAPIView.as_view()),
    ]
 
 

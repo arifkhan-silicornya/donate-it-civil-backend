@@ -64,10 +64,20 @@ class FeatureWorksCategoryeSerializer(serializers.ModelSerializer):
 # =======================         Architecture Serializer         ========================
 
 class ArchitectureSerializer(serializers.ModelSerializer):
+    Details =serializers.SerializerMethodField("get_deatial_feature")
     class Meta:
         model = Architecture
-        fields= '__all__'
-        # fields= ['name','description','path','img','price']
+        # fields= '__all__'
+        fields= ['id','name','description','path','img','price','active', 'Details']
+
+    def get_deatial_feature(self,model):
+        try:
+            if DetailsOfFeatureDesign.objects.filter(Architecture=model).exists():
+                return True
+            else:
+                return False
+        except:
+            return False    
 
 # =======================         Our Services Serializer         ========================
 
@@ -157,3 +167,29 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         exclude=['password']
         # fields= '__all__'
+
+
+# =======================       DetailsOfFeatureDesign Model Serializer         ========================
+
+class DetailsOfFeatureDesignSerializer(serializers.ModelSerializer):
+    Architecture_name = serializers.SerializerMethodField("get_architecture_name")
+    Architecture = serializers.SerializerMethodField("get_architecture")
+    class Meta:
+        model = DetailsOfFeatureDesign
+        fields= ['id', 'bed', 'bath', 'kitchen', 'Plan_description', 'active', 'Architecture_name', 'Architecture']
+        # fields= '__all__'
+
+    def get_architecture_name(self, model):
+        return model.Architecture.name
+        
+    def get_architecture(self, model):
+        return model.Architecture.id    
+
+# =======================       ImagesOfDetailsDesign Model Serializer         ========================
+
+class ImagesOfDetailsDesignSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImagesOfDetailsDesign
+        fields= '__all__'
+
+   

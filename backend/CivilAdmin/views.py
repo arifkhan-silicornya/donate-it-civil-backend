@@ -856,3 +856,137 @@ class UserAPIView(APIView):
             instance.is_active = True
             instance.save()
             return Response({"status": status.HTTP_200_OK,"type": "success", "message": "User Successfully activated"}, status=status.HTTP_200_OK)                           
+
+
+
+# =======================         DetailsOfFeatureDesign CRUD With APIView        ========================
+class DetailsOfFeatureDesignAPIView(APIView):
+    permission_classes = (IsAdminUser,)
+
+    def get_data_pk(self, pk):
+            return DetailsOfFeatureDesign.objects.get(id=pk)
+        
+    def get(self, request, pk=None):
+        if pk:
+            instance = self.get_data_pk(pk)
+            serializer = DetailsOfFeatureDesignSerializer(instance, context={'request':request})
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            instance = DetailsOfFeatureDesign.objects.all().order_by('-id')
+            serializer = DetailsOfFeatureDesignSerializer(instance, many=True, context={'request':request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, format=None):
+        try:
+            architecture_id = request.data['Architecture']
+        except:    
+            return Response({"type":"error","msg":"Architecture Id not sent with request"})
+
+        if Architecture.objects.filter(id=architecture_id).exists():
+            architecture = Architecture.objects.get(id=architecture_id)
+            print("12", architecture)
+        else:
+            return Response({"type":"error","msg":"Architecture not found"}) 
+        
+        if DetailsOfFeatureDesign.objects.filter(Architecture=architecture).exists():
+            return Response({"type":"error","msg":"This Architecture Data Already existed"}) 
+
+        serializer = DetailsOfFeatureDesignSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save(Architecture=architecture)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk):
+        try:
+            architecture_id = request.data['Architecture']
+        except:    
+            return Response({"type":"error","msg":"Architecture Id not sent with request"})
+
+        if Architecture.objects.filter(id=architecture_id).exists():
+            architecture = Architecture.objects.get(id=architecture_id)
+        else:
+            return Response({"type":"error","msg":"Architecture not found"}) 
+        instance = self.get_data_pk(pk)
+        serializer = DetailsOfFeatureDesignSerializer(instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save(Architecture=architecture)
+            return Response({"status": status.HTTP_200_OK, "type": "success", "message": "Successfully updated DetailsOfFeatureDesign", "data": serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        instance = self.get_data_pk(pk)
+        if instance.active == True:
+            instance.active = False
+            instance.save()
+            return Response({"status": status.HTTP_200_OK,"type": "success", "message": "DetailsOfFeatureDesign Successfully deactivated"}, status=status.HTTP_200_OK)        
+        if instance.active == False:
+            instance.active = True
+            instance.save()
+            return Response({"status": status.HTTP_200_OK,"type": "success", "message": "DetailsOfFeatureDesign Successfully activated"}, status=status.HTTP_200_OK)                           
+
+
+# =======================         ImagesOfDetailsDesign CRUD With APIView        ========================
+class ImagesOfDetailsDesignAPIView(APIView):
+    permission_classes = (IsAdminUser,)
+
+    def get_data_pk(self, pk):
+            return ImagesOfDetailsDesign.objects.get(id=pk)
+        
+    def get(self, request, pk=None):
+        if pk:
+            instance = self.get_data_pk(pk)
+            serializer = ImagesOfDetailsDesignSerializer(instance, context={'request':request})
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            instance = ImagesOfDetailsDesign.objects.all().order_by('-id')
+            serializer = ImagesOfDetailsDesignSerializer(instance, many=True, context={'request':request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    def post(self, request, format=None):
+        try:
+            DetailsDesign_id = request.data['DetailsDesign']
+        except:    
+            return Response({"type":"error","msg":"DetailsDesign Id not sent with request"})
+
+        if DetailsOfFeatureDesign.objects.filter(id=DetailsDesign_id).exists():
+            DetailsDesign = DetailsOfFeatureDesign.objects.get(id=DetailsDesign_id)
+        else:
+            return Response({"type":"error","msg":"DetailsDesign not found"}) 
+
+        serializer = ImagesOfDetailsDesignSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save(DetailsDesign=DetailsDesign)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk):
+        try:
+            DetailsDesign_id = request.data['DetailsDesign']
+        except:    
+            return Response({"type":"error","msg":"DetailsDesign Id not sent with request"})
+
+        if DetailsOfFeatureDesign.objects.filter(id=DetailsDesign_id).exists():
+            DetailsDesign = DetailsOfFeatureDesign.objects.get(id=DetailsDesign_id)
+        else:
+            return Response({"type":"error","msg":"DetailsDesign not found"}) 
+        instance = self.get_data_pk(pk)
+        serializer = ImagesOfDetailsDesignSerializer(instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save(DetailsDesign=DetailsDesign)
+            return Response({"status": status.HTTP_200_OK, "type": "success", "message": "Successfully updated ImagesOfDetailsDesign", "data": serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        instance = self.get_data_pk(pk)
+        if instance.active == True:
+            instance.active = False
+            instance.save()
+            return Response({"status": status.HTTP_200_OK,"type": "success", "message": "ImagesOfDetailsDesign Successfully deactivated"}, status=status.HTTP_200_OK)        
+        if instance.active == False:
+            instance.active = True
+            instance.save()
+            return Response({"status": status.HTTP_200_OK,"type": "success", "message": "ImagesOfDetailsDesign Successfully activated"}, status=status.HTTP_200_OK)                           
