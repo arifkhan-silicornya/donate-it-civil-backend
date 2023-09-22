@@ -77,6 +77,7 @@ class DeliveredOrder(generics.CreateAPIView):
                 serializer = self.get_serializer(data=request.data)
                 if serializer.is_valid(raise_exception=True):
                     serializer.save(orderit=orderIT)
+                    OrderIt.objects.filter(id=pk).update(status='del')
                     return Response({"type": "success", "msg": "Order file Delivered"})
                 else:
                     return Response({"type": "error", "msg": "failed to delivered!"})
