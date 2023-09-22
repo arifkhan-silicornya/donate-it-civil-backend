@@ -31,7 +31,7 @@ urlpatterns = [
         path('save-pdf-order-other/', OrderAndOtherPDFUpload.as_view(), name='order-other-pdf'),
         path('self-order-view-all/', ViewAllSelfOrder.as_view(), name='self-order-list-all'),
 
-        # path('global-location-view-all/', Global_location_ViewSet.as_view(), name='global-location-data'),
+        path('global-location-view-all/', Global_location_ViewSet.as_view(), name='global-location-data'),
 
         path('technology-link/', TechnologyLinkList.as_view(), name='technology-link-list'),
         path('service-link/', ServicesLinkList.as_view(), name='service-link-list'),    

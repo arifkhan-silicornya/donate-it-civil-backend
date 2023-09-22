@@ -76,7 +76,9 @@ REST_FRAMEWORK = {
        'DEFAULT_PERMISSION_CLASSES': [
              'rest_framework.permissions.IsAuthenticated',
         ],
-
+        'DEFAULT_RENDERER_CLASSES': (
+            'rest_framework.renderers.JSONRenderer',
+        ),
         'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
     #    'DEFAULT_AUTHENTICATION_CLASSES': (
         
@@ -201,7 +203,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/python
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -218,10 +219,10 @@ EMAIL_HOST_USER='mastermindtour@gmail.com'
 EMAIL_HOST_PASSWORD='dwaaxbjzfhmhtxuu'
 
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR , 'static')
-]
-STATIC_ROOT = os.path.join(BASE_DIR , '/static/upload')
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'static/'))
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+

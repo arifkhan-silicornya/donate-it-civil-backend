@@ -9,7 +9,7 @@ from rest_framework.pagination import PageNumberPagination
 from IT.models import *
 from Authentication.serializers import UserSerializer
 from rest_framework.generics import GenericAPIView
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView ,UpdateAPIView
 from rest_framework.mixins import (ListModelMixin, CreateModelMixin,  UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin)
 
 # Create your views here.
@@ -1065,6 +1065,19 @@ class CompanyAccountRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
             return Response({"type": "success", "msg": "Company account succesfully updated"})
         return Response({"type": "error", "msg": "Company account updation failed"})
     
+class CompanyAccountActive_Disable(UpdateAPIView):
+    queryset = CompanyAccount.objects.all()
+    permission_classes = [IsAdminUser]
+    serializer_class = CompanyAccountSerializer
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True) 
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"type": "success", "msg": "Company account status Changed"})
+        return Response({"type": "error", "msg": "Company account updation failed"})      
+
 class UserListAPIView(generics.ListAPIView):
     queryset = User.objects.filter(is_superuser = False, is_staff = False).order_by('-id')
     serializer_class = UserSerializer
@@ -1112,5 +1125,9 @@ from IT.Payment_Model import *
 class TransactionListAPIView(generics.ListCreateAPIView):
     permission_classes = [IsAdminUser]
     serializer_class = TransactionModel_Serializer
-    queryset = TransactionModel.objects.all().order_by('-id')
+    queryset = TransactionModel.objects.all()
+
+    def get(self,request):
+        trans =  TransactionModel.objects.all().order_by('-id')
+        return Response(self.serializer_class(trans,many=True ,context={'request':request}).data )
 

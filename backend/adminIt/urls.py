@@ -51,12 +51,10 @@ urlpatterns = [
         
         path('payment-method/', PaymentMethodListCreateView.as_view(), name='PaymentMethodListCreateView'),
         path('payment-method/<int:pk>/', PaymentMethodRetrieveUpdateDestroyView.as_view(), name='PaymentMethodRetrieveUpdateDestroyView'),
-        
-        path('payment-method/', PaymentMethodListCreateView.as_view(), name='PaymentMethodListCreateView'),
-        path('payment-method/<int:pk>/', PaymentMethodRetrieveUpdateDestroyView.as_view(), name='PaymentMethodRetrieveUpdateDestroyView'),
-        
+                
         path('account/', CompanyAccountListCreateView.as_view(), name='CompanyAccountListCreateView'),
         path('account/<int:pk>/', CompanyAccountRetrieveUpdateDestroyView.as_view(), name='CompanyAccountRetrieveUpdateDestroyView'),
+        path('account-active-disable/<int:pk>/', CompanyAccountActive_Disable.as_view(), name='CompanyAccountRetrieveUpdateDestroyView'),
         
         path('permanent-address/', PermanentAddressListCreateView.as_view(), name='PermanentAddressListCreateView'),
         path('permanent-address/<int:pk>/', PermanentAddressRetrieveUpdateDestroyView.as_view(), name='PermanentAddressRetrieveUpdateDestroyView'),
@@ -108,7 +106,7 @@ urlpatterns = [
         path('delivery-orders/', DeliveryOrderListAPIView.as_view(), name='DeliveryOrderListAPIView'),
         path('complete-orders/', CompletedOrderListAPIView.as_view(), name='CompletedOrderListAPIView'),
         
-        path('transaction/', TransactionListAPIView.as_view(), name='TransactionListAPIView'),
+        path('transaction/', TransactionListAPIView.as_view() ),
         
         # ORder update
         
