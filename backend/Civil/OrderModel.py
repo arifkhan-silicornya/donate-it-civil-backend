@@ -202,3 +202,15 @@ class SocialMediaLinkCivil(models.Model):
 
     def __str__(self):
         return str(self.OrderCivil.id)
+# =========================       Delivery File       =====================
+
+class DeliveryFileCivil(models.Model):
+    ordercivil = models.ForeignKey(OrderCivil, on_delete=models.SET_NULL,null=True )
+    
+    file = models.FileField( upload_to=upload_to_OrderPdf,blank=True, null=True)
+
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now= True)
+
+    def __str__(self):
+        return str(self.id)

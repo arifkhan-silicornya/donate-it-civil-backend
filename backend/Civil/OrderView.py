@@ -8,32 +8,34 @@ from .models import *
 from .OrderModel import *
 
 
-class CreateOrderViewCivil(CreateAPIView):
+class CreateOrderViewCivil(CreateAPIView): 
     permission_classes = [IsAuthenticated]
+    queryset = OrderCivil.objects.all()
     serializer_class = CreateOrderCivilSerializer
 
     def post(self, request, format=None):
         try:
             userID = request.data['user']
-            productID = request.data['ProductIT']
+            productID = request.data['ProductID']
             if User.objects.filter(id=userID).exists():
                 user = User.objects.get(id=userID)
             else:
                 return Response({"type":"error","msg":"User not found"})    
             
             if ProductModel.objects.filter(id=productID).exists():
-                product = ProductModel.objects.get(id=productID)
+                productobj = ProductModel.objects.get(id=productID)
             else:
                 return Response({"type":"error","msg":"Product not found"})
         except:    
             return Response({"type":"error","msg":"User or Product not sent with request"})    
         
-      
+        request.data['ProductCivil'] = productobj.id
         serializer = self.serializer_class(data=request.data)
+        
         if serializer.is_valid():
-            order = serializer.save(user=user,ProductCivil=product)
+            order = serializer.save(user=user)
         else:
-            return Response({"type":"error","msg": "order data not valid"})
+            return Response({"type":"error","msg": "order data not valid","status":serializer.errors})
         
         
         # personal_info

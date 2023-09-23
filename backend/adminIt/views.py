@@ -1020,6 +1020,11 @@ class PaymentMethodListCreateView(ListCreateAPIView):
             serializer.save()
             return Response({"type": "success", "msg": "Payment method succesfully created"})
         return Response({"type": "error", "msg": "Payment method creation failed"})
+
+    def get(self, request):
+        ins = PaymentMethod.objects.filter(active=True).all()
+        seria =  self.get_serializer(ins, data=request.data,many=True).data
+        return seria
     
     
 class PaymentMethodRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):

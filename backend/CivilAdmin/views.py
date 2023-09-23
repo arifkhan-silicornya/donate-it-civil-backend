@@ -14,9 +14,10 @@ from Header.models import *
 from Civil.models import *
 from CivilAdmin.serializers import *
 from CivilAdmin.OrderSerializer import *
-from IT.Paymentserializers import *
-from IT.Payment_Model import *
-from IT.OrderSerializer import *
+
+from Civil.Paymentserializers import *
+from Civil.Payment_Model import *
+from Civil.OrderSerializer import *
 
 from Authentication.models import *
 
@@ -28,7 +29,7 @@ from footer.models import *
 class TransactionListAPIView(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = TransactionModel_Serializer
-    queryset = TransactionModel.objects.all().order_by('-id')
+    queryset = TransactionModelCivil.objects.all().order_by('-id')
     
 class OrderListAPIView(generics.ListCreateAPIView):
     permission_classes = [IsAdminUser]

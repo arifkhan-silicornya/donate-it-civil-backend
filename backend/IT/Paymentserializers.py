@@ -43,4 +43,4 @@ class TransactionModel_Serializer(serializers.ModelSerializer):
         return  model.user.username
     
     def get_bank(self,model):
-        return  model.bank.bank_name
+        return  model.bank.bank_name 

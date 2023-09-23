@@ -189,7 +189,7 @@ class SocialMediaLinkIT(models.Model):
         return str(self.orderit.id) + " " + str(self.id)
 
 
-    # =========================       Order Pdf       =====================
+    # =========================       Delivery File       =====================
 
 class DeliveryFile(models.Model):
     orderit = models.ForeignKey(OrderIt, on_delete=models.SET_NULL,null=True )

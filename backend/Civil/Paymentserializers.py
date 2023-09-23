@@ -11,7 +11,7 @@ class CompanyAccount_Serializer(serializers.ModelSerializer):
     class Meta:
         model = CompanyAccount
         fields= ['id', 'bank_name','country' , 'account_details' ,'bank_img','bar_code','method_name']
-        depth = 1
+        depth = 1 
 
     def get_payment_method(self,model):
         return  model.payment_method.method_name

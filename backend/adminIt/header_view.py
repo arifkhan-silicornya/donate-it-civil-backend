@@ -32,7 +32,6 @@ class ITBrandUpdateRetrieve(RetrieveAPIView,UpdateAPIView):
 
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
-        print(request.data)
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
