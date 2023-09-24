@@ -74,10 +74,10 @@ class DeliveredOrder(generics.CreateAPIView):
     def post(self,  request, pk):
         try:
             if OrderCivil.objects.filter(id=pk).exists():
-                OrderCivil= OrderCivil.objects.get(id=pk)
+                OrderCiv= OrderCivil.objects.get(id=pk)
                 serializer = self.get_serializer(data=request.data)
                 if serializer.is_valid(raise_exception=True):
-                    serializer.save(OrderCivil=OrderCivil)
+                    serializer.save(ordercivil=OrderCiv)
                     OrderCivil.objects.filter(id=pk).update(status='del')
                     return Response({"type": "success", "msg": "Order file Delivered"})
                 else:

@@ -30,7 +30,7 @@ class CreateTransaction(generics.CreateAPIView):
             if order == '' or bank == '':
                 return Response({'type':'error','msg': 'order or bank is empty'})
             else:
-                if CompanyAccount.objects.filter(id=bank).exists() and CompanyAccount.objects.filter(id=order).exists():
+                if CompanyAccount.objects.filter(id=bank).exists() and OrderCivil.objects.filter(id=order).exists():
                     bankObj = CompanyAccount.objects.get(id=bank)
                     orderobj = OrderCivil.objects.get(id=order)
                     serializer = self.get_serializer(data=request.data)
