@@ -5,6 +5,7 @@ from .views import *
 from .footer_views import *
 from .header_views import *
 from .OrderView import *
+from .Paymentviews import *
 
 
 urlpatterns = [
@@ -101,6 +102,14 @@ urlpatterns = [
       # ImagesOfDetailsDesignAPIView crud url
       path('images-details-design/', ImagesOfDetailsDesignAPIView.as_view()),
       path('images-details-design/<int:pk>/', ImagesOfDetailsDesignAPIView.as_view()),
+
+      # PaymentMethodAPIView crud url
+      path('payment-method/', PaymentMethodAPIView.as_view()),
+      path('payment-method/<int:pk>/', PaymentMethodAPIView.as_view()),
+
+      # CompanyAccountAPIView crud url
+      path('company-account/', CompanyAccountAPIView.as_view()),
+      path('company-account/<int:pk>/', CompanyAccountAPIView.as_view()),
    ]
 
 
