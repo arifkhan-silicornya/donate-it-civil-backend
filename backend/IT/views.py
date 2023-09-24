@@ -175,6 +175,10 @@ class user_NoticeView(APIView):
             serializer = NoticeSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    
-    
+
+class ReadmoreSerializer_View(generics.ListAPIView):
+    permission_classes = (AllowAny,)
+    queryset = Readmore.objects.filter(active=True).all()
+    serializer_class = ReadmoreSerializer
+
     

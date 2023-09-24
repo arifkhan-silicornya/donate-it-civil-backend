@@ -4,3 +4,8 @@ from .models import *
 
 admin.site.register(siteList)
 admin.site.register(Navbar)
+
+# Brand Logo
+admin.site.register(DonateBrandLogo)
+admin.site.register(ITBrandLogo)
+admin.site.register(CivilBrandLogo)

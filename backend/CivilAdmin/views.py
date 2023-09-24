@@ -13,6 +13,11 @@ from Header.models import *
 
 from Civil.models import *
 from CivilAdmin.serializers import *
+from CivilAdmin.OrderSerializer import *
+
+from Civil.Paymentserializers import *
+from Civil.Payment_Model import *
+from Civil.OrderSerializer import *
 
 from Authentication.models import *
 
@@ -20,6 +25,46 @@ from footer.serializers import *
 from footer.models import *
 
 # Create your views here.
+
+class TransactionListAPIView(generics.ListCreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = TransactionModel_Serializer
+    queryset = TransactionModelCivil.objects.all().order_by('-id')
+    
+class OrderListAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = OrderCivilSerializer
+    queryset = OrderCivil.objects.all().order_by('-id')
+    
+class PendingOrderListAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = OrderCivilSerializer
+    queryset = OrderCivil.objects.filter(status='pen').order_by('-id')
+    
+class PaymentOrderListAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = OrderCivilSerializer
+    queryset = OrderCivil.objects.filter(status='pay').order_by('-id')
+    
+class WorkingOrderListAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = OrderCivilSerializer
+    queryset = OrderCivil.objects.filter(status='wor').order_by('-id')
+    
+class CancelledOrderListAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = OrderCivilSerializer
+    queryset = OrderCivil.objects.filter(status='can').order_by('-id')
+    
+class CompletedOrderListAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = OrderCivilSerializer
+    queryset = OrderCivil.objects.filter(status='com').order_by('-id')
+    
+class DeliveryOrderListAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = OrderCivilSerializer
+    queryset = OrderCivil.objects.filter(status='del').order_by('-id')
 
 class SiteListView(generics.CreateAPIView):
     permission_classes = (IsAdminUser,)

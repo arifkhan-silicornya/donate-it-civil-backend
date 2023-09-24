@@ -3,7 +3,7 @@ from Header.models import *
 from Civil.models import *
 from Header.serializers import *
 from Authentication.models import *
-
+from Civil.OrderModel import *
 
 # =======================         Navbar Serializer         ========================
 
@@ -192,4 +192,8 @@ class ImagesOfDetailsDesignSerializer(serializers.ModelSerializer):
         model = ImagesOfDetailsDesign
         fields= '__all__'
 
-   
+class DeliveryFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeliveryFileCivil
+        fields = '__all__'
+        depth = 1

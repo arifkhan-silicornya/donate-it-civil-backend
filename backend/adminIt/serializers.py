@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from IT.models import *
 from IT.OrderModel import *
+from IT.Payment_Model import *
 from Header.models import *
 from .serializers import *
+from rest_framework.response import Response
+from Authentication.serializers import UserSerializer
 
 # =======================         Banner Serializer        ========================
 
@@ -112,11 +115,44 @@ class CategorySerializer(serializers.ModelSerializer):
     # --------------------OrderModel serializers----------------------
 
 class OrderItSerializer(serializers.ModelSerializer):
+    OrderPdfIT = serializers.SerializerMethodField("get_OrderPdfIT")
+    OtherPdfIT = serializers.SerializerMethodField("get_OtherPdfIT")
+    user = serializers.SerializerMethodField("get_user")
+    ProductIT = serializers.SerializerMethodField("get_ProductIT")
+    DeliveryFile = serializers.SerializerMethodField("get_DeliveryFile")
+    
     class Meta:
         model = OrderIt
         fields = '__all__'
-        depth = 1
+        include = ['OrderPdfIT','OtherPdfIT','user','ProductIT','DeliveryFile']
+    
+    def get_OrderPdfIT(self,model):
+        try:
+            obj = OrderPdfIT.objects.filter(orderit=model)
+            seria =  OrderPdfSerializer(instance=obj,many=True, read_only=True).data
+            return seria
+        except:
+            return []
         
+    def get_OtherPdfIT(self,model):
+        try:
+            obj = OtherPdfIT.objects.filter(orderit=model)
+            seria =  OtherPdfSerializer(instance=obj,many=True, read_only=True).data
+            return seria
+        except:
+            return []
+        
+    def get_user(self,model):
+        return UserSerializer(User.objects.get(id=model.user.id),many=False).data
+    
+    def get_ProductIT(self,model):
+        return ProductSerializer(ProductModel.objects.get(id=model.ProductIT.id),many=False).data
+    
+    def get_DeliveryFile(self,model):
+        return DeliveryFileSerializer(DeliveryFile.objects.filter(id=model.id),many=True).data
+    
+    
+    
 class OrderPdfSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderPdfIT
@@ -183,3 +219,28 @@ class GlobalLocSerializer(serializers.ModelSerializer):
     class Meta:
         model = GlobalLoc
         fields = '__all__'
+        
+        
+class PaymentMethodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaymentMethod
+        fields = '__all__'
+        depth = 1
+        
+class CompanyAccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CompanyAccount
+        fields = '__all__'
+        depth = 1
+        
+class BottomBannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BottomBanner
+        fields = '__all__'
+        depth = 1
+
+class DeliveryFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeliveryFile
+        fields = '__all__'
+        depth = 1

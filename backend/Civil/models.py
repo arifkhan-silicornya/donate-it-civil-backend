@@ -184,7 +184,7 @@ class ProductModel(models.Model):
     last_update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.proName)
+        return str(self.id)
 
 
 class NoticeModel(models.Model):

@@ -24,4 +24,20 @@ class SiteSerializer(serializers.ModelSerializer):
             return seria.data
         except:
             return []
-        
+    
+# new brand logo
+class DonateBrandLogoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DonateBrandLogo
+        fields= ['name','img']
+
+class ITBrandLogoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ITBrandLogo
+        fields= ['name','img']
+
+class CivilBrandLogoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CivilBrandLogo
+        fields= ['name','img']
+

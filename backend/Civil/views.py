@@ -46,7 +46,6 @@ class Civil_Page_ViewSet(generics.ListAPIView):
                 'Notice' :  self.serializer_class7(queryset7,many=True).data,
                 'Company' :  self.serializer_class8(queryset8,many=True).data,
                 'BottomBanner' :  self.serializer_class9(queryset9,many=True).data
-                # 'BottomBanner' :  self.serializer_class9(queryset9,many=True).data[0]
         })
 
 

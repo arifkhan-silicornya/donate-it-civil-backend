@@ -18,6 +18,9 @@ SECRET_KEY = 'django-insecure-gsyv+3vg$qn!8i*b#@60eui_ysh@^c31l##vyd0rw-ntr10b!t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# BASE_URL = "https://backend.usukc.com"
+# ALLOWED_HOSTS = ['https://usukc.com']
+
 BASE_URL = ""
 ALLOWED_HOSTS = ['*']
 
@@ -76,7 +79,9 @@ REST_FRAMEWORK = {
        'DEFAULT_PERMISSION_CLASSES': [
              'rest_framework.permissions.IsAuthenticated',
         ],
-
+        # 'DEFAULT_RENDERER_CLASSES': (
+        #     'rest_framework.renderers.JSONRenderer',
+        # ),
         'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
     #    'DEFAULT_AUTHENTICATION_CLASSES': (
         
@@ -201,7 +206,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/python
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -214,14 +218,17 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST='smtp.gmail.com'
+# EMAIL_HOST_USER=''
+# EMAIL_HOST_PASSWORD=''
+
 EMAIL_HOST_USER='mastermindtour@gmail.com'
 EMAIL_HOST_PASSWORD='dwaaxbjzfhmhtxuu'
 
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR , 'static')
-]
-STATIC_ROOT = os.path.join(BASE_DIR , '/static/upload')
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+

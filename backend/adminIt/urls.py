@@ -3,17 +3,22 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .views import *
 from IT.views import *
-
+from .header_view import *
+from .OrderManageView import *
 
 urlpatterns = [
-        path('banner-it/', BannerView.as_view(), name='Banner_it'),
-        path('banner-it/<int:pk>/', BannerView.as_view(), name='Banner_it'),
+        path('banner/', BannerView.as_view(), name='Banner_it'),
+        path('banner/<int:pk>/', BannerView.as_view(), name='Banner_it'),
+        
+        path('bottom-banner/', BottomBannerView.as_view(), name='bottom-banner'),
+        path('bottom-banner/<int:pk>/', BottomBannerView.as_view(), name='bottom-banner'),
         
         path('technologies-category/', TechnologiesCategoryAPIView.as_view(), name='Technologies-category'),
         path('technologies-category/<int:pk>/', TechnologiesCategoryAPIView.as_view(), name='Technologies-category'),
         
         path('technology/', TechnologyView.as_view(), name='Technology'),
         path('technology/<int:pk>/', TechnologyView.as_view(), name='Technology'),
+        path('technology-active-deactive/<int:pk>/', TechnologyStatusChange.as_view(), name='Product-status'),
         path('notice/', NoticeView.as_view(), name='Notice'),
         path('notice/<int:pk>/', NoticeView.as_view(), name='Notice'),
         path('security/', SecurityView.as_view(), name='Security'),
@@ -32,6 +37,7 @@ urlpatterns = [
         path('product-category/<int:pk>/', CategoryView.as_view(), name='Category'),
         path('product/', ProductView.as_view(), name='Product'),
         path('product/<int:pk>/', ProductView.as_view(), name='Product'),
+        path('product-active-deactive/<int:pk>/', ProductStatusChange.as_view(), name='Product-status'),
         path('order-it/', OrderITView.as_view(), name='OrderIt'),
         path('order-it/<int:pk>/', OrderITView.as_view(), name='OrderIt'),
         path('order-pdf/', OrderPdfView.as_view(), name='OrderPdf'),
@@ -43,8 +49,12 @@ urlpatterns = [
         path('personal-info/', PersonalInfoListCreateView.as_view(), name='PersonalInfoListCreateView'),
         path('personal-info/<int:pk>/', PersonalInfoRetrieveUpdateDestroyView.as_view(), name='PersonalInfoRetrieveUpdateDestroyView'),
         
-        path('present-address/', PresentAddressListCreateView.as_view(), name='PresentAddressListCreateView'),
-        path('present-address/<int:pk>/', PresentAddressRetrieveUpdateDestroyView.as_view(), name='PresentAddressRetrieveUpdateDestroyView'),
+        path('payment-method/', PaymentMethodListCreateView.as_view(), name='PaymentMethodListCreateView'),
+        path('payment-method/<int:pk>/', PaymentMethodRetrieveUpdateDestroyView.as_view(), name='PaymentMethodRetrieveUpdateDestroyView'),
+                
+        path('account/', CompanyAccountListCreateView.as_view(), name='CompanyAccountListCreateView'),
+        path('account/<int:pk>/', CompanyAccountRetrieveUpdateDestroyView.as_view(), name='CompanyAccountRetrieveUpdateDestroyView'),
+        path('account-active-disable/<int:pk>/', CompanyAccountActive_Disable.as_view(), name='CompanyAccountRetrieveUpdateDestroyView'),
         
         path('permanent-address/', PermanentAddressListCreateView.as_view(), name='PermanentAddressListCreateView'),
         path('permanent-address/<int:pk>/', PermanentAddressRetrieveUpdateDestroyView.as_view(), name='PermanentAddressRetrieveUpdateDestroyView'),
@@ -96,7 +106,22 @@ urlpatterns = [
         path('delivery-orders/', DeliveryOrderListAPIView.as_view(), name='DeliveryOrderListAPIView'),
         path('complete-orders/', CompletedOrderListAPIView.as_view(), name='CompletedOrderListAPIView'),
         
-        path('transaction/', TransactionListAPIView.as_view(), name='TransactionListAPIView'),
+        path('transaction/', TransactionListAPIView.as_view() ),
+        
+        # ORder update
+        
+        path('update-pending-order/<int:pk>/', UpdateOrder.as_view() ),
+        path('cancel-pending-order/<int:pk>/', CancelOrder.as_view() ),
+        path('working-order/<int:pk>/', WorkingOrder.as_view() ),
+        path('complete-order/<int:pk>/', CompleteOrder.as_view() ),
+        path('deliver-order/<int:pk>/', DeliveredOrder.as_view() ),
+        
+        
+        # Brand Logo
+        path('create-view-brand/', ITBrandList.as_view() ),
+        path('view-update-brand/<int:pk>/', ITBrandUpdateRetrieve.as_view()),
+
+
         
         
         # path('category-product/', CategoryProductView.as_view(), name='CategoryProductView'),

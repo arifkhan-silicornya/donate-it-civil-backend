@@ -13,3 +13,9 @@ class NavbarSerializer(serializers.ModelSerializer):
         model = Navbar
         fields = '__all__'
         depth = 1
+
+#brand Logo
+class ITBrandLogoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ITBrandLogo
+        fields = '__all__'

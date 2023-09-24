@@ -9,7 +9,7 @@ from rest_framework.pagination import PageNumberPagination
 from IT.models import *
 from Authentication.serializers import UserSerializer
 from rest_framework.generics import GenericAPIView
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView ,UpdateAPIView
 from rest_framework.mixins import (ListModelMixin, CreateModelMixin,  UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin)
 
 # Create your views here.
@@ -36,10 +36,10 @@ class BannerView(APIView):
         serializer = BannerITSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"type": "success", "msg": "Banner created successfully"})
+        return Response({"type": "error", "msg": "Banner creation failed"})
 
-    def put(self, request, pk):
+    def patch(self, request, pk):
         try:
             instance = BannerIT.objects.get(id=pk)    
         except BannerIT.DoesNotExist:
@@ -47,8 +47,44 @@ class BannerView(APIView):
         serializer = BannerITSerializer(instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response("Successfully updated Banner")
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"type": "success", "msg": "Banner successfully updated"})
+        return Response({"type": "error", "msg": "Banner updation failed"})
+    
+    def delete(self, request, pk):
+        instance = self.get_banner(pk)
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class BottomBannerView(APIView):
+    permission_classes = (IsAdminUser,)
+    def get_banner(self, pk):
+            return BottomBanner.objects.get(id=pk)
+        
+    def get(self, request, pk=None):
+        if pk:
+            instance = self.get_banner(pk)
+            serializer = BottomBannerSerializer(instance, context={'request':request})
+        else:
+            instance = BottomBanner.objects.all()
+            serializer = BottomBannerSerializer(instance, many=True, context={'request':request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    def post(self, request, format=None):
+        serializer = BottomBannerSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"type": "success", "msg": "Banner created successfully"})
+        return Response({"type": "error", "msg": "Banner creation failed"})
+
+    def patch(self, request, pk):
+        try:
+            instance = BottomBanner.objects.get(id=pk)    
+        except BottomBanner.DoesNotExist:
+            return Response(status = status.HTTP_404_NOT_FOUND)
+        serializer = BottomBannerSerializer(instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"type": "success", "msg": "Banner successfully updated"})
+        return Response({"type": "error", "msg": "Banner updation failed"})
     
     def delete(self, request, pk):
         instance = self.get_banner(pk)
@@ -119,14 +155,15 @@ class TechnologyView(APIView):
     def patch(self, request, pk):
         try:
             instance = Technology.objects.get(id=pk)    
+            ctg = request.data['category']
         except Technology.DoesNotExist:
             return Response(status = status.HTTP_404_NOT_FOUND)
-        ctg = request.data['category']
-        ctg_model = TechnologiesCategory.objects.filter(category=ctg).first()
-        serializer = TechnologySerializer(instance, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save(category=ctg_model)
-            return Response({"type": "success", "msg": "Technology successfully updated"})
+        if TechnologiesCategory.objects.filter(id=ctg).exists():
+            ctg_model = TechnologiesCategory.objects.get(id=ctg)
+            serializer = TechnologySerializer(instance, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save(category=ctg_model)
+                return Response({"type": "success", "msg": "Technology successfully updated"})
         return Response({"type": "error", "msg": "Technology updation failed"})
     
     def delete(self, request, pk):
@@ -134,6 +171,18 @@ class TechnologyView(APIView):
         instance.delete()
         return Response({"type": "success", "msg": "Technology successfully deleted"})    
     
+class TechnologyStatusChange(APIView):
+    permission_classes = (IsAdminUser,)
+    def patch(self, request, pk):
+        try:
+            instance = Technology.objects.get(id=pk)    
+            serializer = TechnologySerializer(instance, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"type": "success", "msg": "Technology successfully updated!"})
+            return Response({"type": "error", "msg": "Technology updation failed!"})
+        except Technology.DoesNotExist:
+            return Response(status = status.HTTP_404_NOT_FOUND)
 
 class NoticeView(APIView):
     permission_classes = (IsAdminUser,)
@@ -335,10 +384,10 @@ class ReadmoreView(APIView):
         serializer = ReadmoreSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"type": "success", "msg": "Readmore created successfully"})
+        return Response({"type": "error", "msg": "Readmore creation failed"})
 
-    def put(self, request, pk):
+    def patch(self, request, pk):
         try:
             instance = Readmore.objects.get(id=pk)    
         except Readmore.DoesNotExist:
@@ -346,8 +395,8 @@ class ReadmoreView(APIView):
         serializer = ReadmoreSerializer(instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response("Successfully updated Banner")
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"type": "success", "msg": "Readmore updated successfully"})
+        return Response({"type": "error", "msg": "Readmore updation failed"})
     
     def delete(self, request, pk):
         instance = self.get_readmore(pk)
@@ -411,7 +460,7 @@ class CategoryView(APIView):
             return Response({"type": "success", "msg": "Category successfully created!"})
         return Response({"type": "error", "msg": "Category creation failed!"})
 
-    def put(self, request, pk):
+    def patch(self, request, pk):
         try:
             instance = ProductCategoryModel.objects.get(id=pk)    
         except ProductCategoryModel.DoesNotExist:
@@ -459,18 +508,34 @@ class ProductView(APIView):
         except ProductModel.DoesNotExist:
             return Response(status = status.HTTP_404_NOT_FOUND)
         ctg = request.data['category']
-        ctg_model = ProductCategoryModel.objects.filter(category=ctg).first()
-        serializer = ProductSerializer(instance, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save(category=ctg_model)
-            return Response({'type': 'success', 'msg': 'Product successfully updated'})
-        return Response({'type': 'error', 'msg': 'Product updation failed'})
+        if ProductCategoryModel.objects.filter(id=ctg).exists():
+            ctg_model = ProductCategoryModel.objects.get(id=ctg)
+            serializer = ProductSerializer(instance, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save(category=ctg_model)
+                return Response({'type': 'success', 'msg': 'Product successfully updated'})
+        else:
+            return Response({'type': 'error', 'msg': 'Product category not exist'})
     
     def delete(self, request, pk):
         instance = self.get_product(pk)
         instance.delete()
         return Response({'type': 'success', 'msg': 'Product deleted successfully'})
     
+class ProductStatusChange(APIView):
+    permission_classes = (IsAdminUser,)
+    def patch(self, request, pk):
+        try:
+            instance = ProductModel.objects.get(id=pk)    
+            serializer = ProductSerializer(instance, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"type": "success", "msg": "Product successfully updated!"})
+            return Response({"type": "error", "msg": "Product updation failed!"})
+        except ProductModel.DoesNotExist:
+            return Response(status = status.HTTP_404_NOT_FOUND)
+        
+        
 class OrderITView(APIView):
     permission_classes = (IsAdminUser,)
     def get_orderIt(self, pk):
@@ -788,6 +853,7 @@ class footerItemListCreateView(ListCreateAPIView):
         for section in allData:
             item = footerItem.objects.filter(footerSection=section).all()
             item_serializer = footerItemSerializer(item, many=True).data
+            
             for i in item_serializer:
                 dataArray.append(i)
         return Response(dataArray)
@@ -918,12 +984,12 @@ class NewsLetterRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     
 
 class GlobalListCreateAPIView(ListCreateAPIView):
-    queryset = GlobalLoc.objects.all().order_by('-id')
+    queryset = GlobalLoc.objects.all()
     permission_classes = [IsAdminUser]
     serializer_class = GlobalLocSerializer
     
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)      
+        serializer = self.get_serializer(data=request.data, partial=True)      
         if serializer.is_valid():
             serializer.save()
             return Response({"type": "success", "msg": "Global location succesfully created"})
@@ -943,6 +1009,80 @@ class GlobalRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
             return Response({"type": "success", "msg": "Global location successfully updated"})
         return Response({"type": "error", "msg": "Global location updation failed"})
     
+class PaymentMethodListCreateView(ListCreateAPIView):
+    queryset = PaymentMethod.objects.all()
+    permission_classes = [IsAdminUser]
+    serializer_class = PaymentMethodSerializer
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)      
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"type": "success", "msg": "Payment method succesfully created"})
+        return Response({"type": "error", "msg": "Payment method creation failed"})
+
+    def get(self, request):
+        ins = PaymentMethod.objects.filter(active=True).all()
+        seria =  self.get_serializer(ins, data=request.data,many=True).data
+        return seria
+    
+    
+class PaymentMethodRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    queryset = PaymentMethod.objects.all()
+    permission_classes = [IsAdminUser]
+    serializer_class = PaymentMethodSerializer
+    
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)       
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"type": "success", "msg": "Payment method succesfully updated"})
+        return Response({"type": "error", "msg": "Payment method updation failed"})
+    
+class CompanyAccountListCreateView(ListCreateAPIView):
+    queryset = CompanyAccount.objects.all()
+    permission_classes = [AllowAny]
+    serializer_class = CompanyAccountSerializer
+    
+    def post(self, request, format=None):
+        payment_method = request.data['payment_method']
+        method_model = PaymentMethod.objects.get(method_name=payment_method)
+        serializer = self.get_serializer(data=request.data or request.FILES, partial=True)
+        if serializer.is_valid():
+            serializer.save(payment_method=method_model)
+            return Response({'type': 'success', 'msg': 'Account created successfully'})
+        return Response({'type': 'error', 'msg': 'Account creation failed'})
+    
+    
+class CompanyAccountRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    queryset = CompanyAccount.objects.all()
+    permission_classes = [IsAdminUser]
+    serializer_class = CompanyAccountSerializer
+    
+    def partial_update(self, request, *args, **kwargs):
+        payment_method = request.data['payment_method']
+        method_model = PaymentMethod.objects.get(method_name=payment_method)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)       
+        if serializer.is_valid():
+            serializer.save(payment_method=method_model)
+            return Response({"type": "success", "msg": "Company account succesfully updated"})
+        return Response({"type": "error", "msg": "Company account updation failed"})
+    
+class CompanyAccountActive_Disable(UpdateAPIView):
+    queryset = CompanyAccount.objects.all()
+    permission_classes = [IsAdminUser]
+    serializer_class = CompanyAccountSerializer
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True) 
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"type": "success", "msg": "Company account status Changed"})
+        return Response({"type": "error", "msg": "Company account updation failed"})      
+
 class UserListAPIView(generics.ListAPIView):
     queryset = User.objects.filter(is_superuser = False, is_staff = False).order_by('-id')
     serializer_class = UserSerializer
@@ -988,6 +1128,11 @@ from IT.Paymentserializers import *
 from IT.Payment_Model import *
 
 class TransactionListAPIView(generics.ListCreateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     serializer_class = TransactionModel_Serializer
-    queryset = TransactionModel.objects.all().order_by('-id')
+    queryset = TransactionModel.objects.all()
+
+    def get(self,request):
+        trans =  TransactionModel.objects.all().order_by('-id')
+        return Response(self.serializer_class(trans,many=True ,context={'request':request}).data )
+

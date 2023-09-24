@@ -6,6 +6,7 @@ from .footer_views import *
 from .header_views import *
 from .OrderView import *
 from .Paymentviews import *
+from .OrderManageView import *
 
 
 urlpatterns = [
@@ -94,6 +95,29 @@ urlpatterns = [
       # UserAPIView crud url
       path('user/', UserAPIView.as_view()),
       path('user/<int:pk>/', UserAPIView.as_view()),
+
+      
+      # Brand Logo
+      path('create-view-brand/', ITBrandList.as_view() ),
+      path('view-update-brand/<int:pk>/', ITBrandUpdateRetrieve.as_view()),
+      
+      path('transaction/', TransactionListAPIView.as_view(), name='TransactionListAPIView'),
+      
+      path('orders/', OrderListAPIView.as_view(), name='OrderListAPIView'),
+      path('pending-orders/', PendingOrderListAPIView.as_view(), name='PendingOrderListAPIView'),
+      path('payment-orders/', PaymentOrderListAPIView.as_view(), name='PaymentOrderListAPIView'),
+      path('working-orders/', WorkingOrderListAPIView.as_view(), name='WorkingOrderListAPIView'),
+      path('cancelled-orders/', CancelledOrderListAPIView.as_view(), name='CancelledOrderListAPIView'),
+      path('delivery-orders/', DeliveryOrderListAPIView.as_view(), name='DeliveryOrderListAPIView'),
+      path('complete-orders/', CompletedOrderListAPIView.as_view(), name='CompletedOrderListAPIView'),
+
+      # ORder update
+        
+        path('update-pending-order/<int:pk>/', UpdateOrder.as_view() ),
+        path('cancel-pending-order/<int:pk>/', CancelOrder.as_view() ),
+        path('working-order/<int:pk>/', WorkingOrder.as_view() ),
+        path('complete-order/<int:pk>/', CompleteOrder.as_view() ),
+        path('deliver-order/<int:pk>/', DeliveredOrder.as_view() ),
 
       # DetailsOfFeatureDesignAPIView crud url
       path('details-feature-design/', DetailsOfFeatureDesignAPIView.as_view()),

@@ -26,6 +26,7 @@ admin.site.register(CompanyModel)
 
 # Order Model
 admin.site.register(OrderCivil) 
+admin.site.register(DeliveryFileCivil) 
 admin.site.register(OtherPdfCivil)  
 admin.site.register(PersonalInfoCivil)  
 admin.site.register(PresentAddressCivil) 
