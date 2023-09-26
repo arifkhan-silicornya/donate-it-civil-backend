@@ -174,7 +174,7 @@ class ProductCategoryModel(models.Model):
 class ProductModel(models.Model):
     category = models.ForeignKey(ProductCategoryModel,on_delete= models.CASCADE)
     proName = models.CharField(max_length= 100,blank = False)
-    proDescription = models.TextField(max_length= 400,blank = True)
+    proDescription = models.TextField(max_length= 1000,blank = True)
     proImg = ResizedImageField( upload_to=upload_to_product_img,blank=True, null=True)
     fileOne = models.FileField( upload_to=upload_to_product,blank=True, null=True)
     fileTwo = models.FileField( upload_to=upload_to_product,blank=True, null=True)
@@ -218,7 +218,7 @@ class CompanyModel(models.Model):
 
 class BottomBanner(models.Model):
     title = models.CharField(max_length=200)
-    description = models.TextField(max_length=700)
+    description = models.TextField(max_length=1000)
     img = ResizedImageField( upload_to=upload_to_bottom_banner,blank=True, null=True)
     link = models.TextField(max_length=200, blank=True, null=True)
     active = models.BooleanField(default=True)
@@ -248,7 +248,7 @@ class DetailsOfFeatureDesign(models.Model):
     bed = models.IntegerField()
     bath = models.IntegerField()
     kitchen = models.IntegerField()
-    Plan_description = models.TextField(max_length=600)
+    Plan_description = models.TextField(max_length=1000)
 
     active= models.BooleanField(default=True)
 

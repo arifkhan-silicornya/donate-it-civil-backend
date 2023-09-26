@@ -121,8 +121,9 @@ class UserCodeVerifyView(generics.CreateAPIView):
 
         if CodeVerification.objects.filter(user=user_obj,code=code).exists() :
             user = CodeVerification.objects.get(user=user_obj)
-            currentDT = x.strftime("%x %X")
-            if(currentDT > user.expiredDate ) :
+            print(user.createDate)
+            print(user.expiredDate)
+            if(user.createDate > user.expiredDate ) :
                 return Response({'type':'error','msg': 'Code Expired. Generate New Code.'})
             else:
                 user_obj.is_verified =True
@@ -144,8 +145,10 @@ class CustomUserLoginView(APIView):
         except:
             return Response({"type":"eror","msg":"Email or Username, and Password not send with request"})
 
-        if User.objects.filter(username=username).exists() or User.objects.filter(email=username).exists():
-            user = User.objects.get(username=username) or User.objects.get(email=username)
+        if User.objects.filter(username=username).exists():
+            user = User.objects.get(username=username)
+        if User.objects.filter(email=username).exists():
+            user = User.objects.get(email=username)
         else:
             return Response({"type":"error","msg":"User not found"})
         

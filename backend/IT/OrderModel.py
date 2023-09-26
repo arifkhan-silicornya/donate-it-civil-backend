@@ -18,7 +18,7 @@ class OrderIt(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     ProductIT = models.ForeignKey(ProductModel ,  on_delete=models.PROTECT)
     currency = models.CharField(max_length= 300, null = False)
-    project_description = models.TextField(max_length= 300, null = True,blank=True)
+    project_description = models.TextField(max_length= 1000, null = True,blank=True)
     
     payment_left = models.PositiveIntegerField(default=2)
     total_price = models.BigIntegerField(default=0, null = True,blank=True)

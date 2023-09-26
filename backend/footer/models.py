@@ -30,7 +30,7 @@ def order_id():
 class footerItem(models.Model):
     footerSection = models.ForeignKey(footerSection, on_delete=models.CASCADE )
     name = models.CharField(max_length= 300,blank = False)
-    description = models.TextField(max_length= 300,blank = True,null=True)
+    description = models.TextField(max_length= 1000,blank = True,null=True)
     link = models.CharField(max_length= 300,blank = False,default='/')
     order = models.CharField(max_length= 300,blank = True,default= order_id)
     active=models.BooleanField(default=True)

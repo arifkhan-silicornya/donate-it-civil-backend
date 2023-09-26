@@ -163,7 +163,7 @@ class ProductCategoryModel(models.Model):
 class ProductModel(models.Model):
     category = models.ForeignKey(ProductCategoryModel,on_delete= models.CASCADE)
     proName = models.CharField(max_length= 100,blank = False)
-    proDescription = models.TextField(max_length= 400,blank = True)
+    proDescription = models.TextField(max_length= 1000,blank = True)
     proImg = ResizedImageField( upload_to=upload_to_product_img,blank=True, null=True)
     fileOne = models.FileField( upload_to=upload_to_product,blank=True, null=True)
     fileTwo = models.FileField( upload_to=upload_to_product,blank=True, null=True)
@@ -208,7 +208,7 @@ class CompanyModel(models.Model):
 
 class BottomBanner(models.Model):
     title = models.CharField(max_length=250)
-    description = models.TextField(max_length=500)
+    description = models.TextField(max_length=1000)
     img = ResizedImageField( upload_to=upload_to_readmore,blank=True, null=True)
     link = models.TextField(max_length=500, blank=True, null=True)
     active = models.BooleanField(default=True)
