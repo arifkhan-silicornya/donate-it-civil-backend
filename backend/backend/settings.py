@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-gsyv+3vg$qn!8i*b#@60eui_ysh@^c31l##vyd0rw-ntr10b!t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # BASE_URL = "https://backend.usukc.com"
 # ALLOWED_HOSTS = ['https://usukc.com']

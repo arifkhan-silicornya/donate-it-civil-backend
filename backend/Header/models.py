@@ -8,7 +8,7 @@ def upload_to_site(instance, filename):
 
 def upload_to_icons(instance, filename):
     return 'image/icons/{filename}'.format(filename=filename)
-
+  
 class siteList(models.Model):
     name = models.CharField(max_length= 300,blank = False)
     baseroot = models.CharField(max_length= 300,blank = False,default='/')

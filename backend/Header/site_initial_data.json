@@ -1,0 +1,26 @@
+[
+    {
+      "model": "Header.siteList",
+      "pk": 1,
+      "name" : "Donate",
+      "baseroot" :"/",
+      "img" : "",
+      "active": true
+    },
+    {
+      "model": "Header.siteList",
+      "pk": 2,
+      "name":"IT",
+      "baseroot" :"/",
+      "img" : "",
+      "active": true
+    },
+    {
+      "model": "Header.siteList",
+      "pk": 3,
+      "name":"Civil",
+      "baseroot" :"/",
+      "img" : "",
+      "active": true
+    }
+  ]

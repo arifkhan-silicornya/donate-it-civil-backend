@@ -17,8 +17,8 @@ class AdminLoginAPIView(APIView):
         except:
             return Response({"type":"eror","msg":"Email or Username, and Password not send with request"})
 
-        if User.objects.filter(username=username,is_superuser=True).exists() or User.objects.filter(email=username,is_superuser=True).exists():
-            user = User.objects.get(username=username) or User.objects.get(email=username)
+        if User.objects.filter(email=username,is_superuser=True).exists():
+            user = User.objects.get(email=username)
         else:
             return Response({"type":"error","msg":"Admin user not found"})
 
