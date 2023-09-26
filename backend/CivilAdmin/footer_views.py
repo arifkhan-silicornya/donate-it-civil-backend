@@ -91,7 +91,7 @@ class footerItemRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
         return Response({"type": "error", "msg": "Footer item updation failed"})
     
     
-class footerHeadOfficeListCreateView(ListCreateAPIView):
+class footerHeadOfficeListCreateViewCivil(ListCreateAPIView):
     queryset = footerHeadOffice.objects.all()
     permission_classes = [AllowAny]
     serializer_class = footerHeadOfficeSerializer
@@ -103,7 +103,7 @@ class footerHeadOfficeListCreateView(ListCreateAPIView):
         
         if serializer.is_valid():
             serializer.save(siteList=site_civil)
-            return Response({"type": "success", "msg": "Head office succesfully created"})
+            return Response({"type": "success", "msg": "Head office for civil succesfully created"})
         return Response({"type": "error", "msg": "Head office  creation failed"})
     def get(self, request):
         if siteList.objects.filter(name='Civil').exists():

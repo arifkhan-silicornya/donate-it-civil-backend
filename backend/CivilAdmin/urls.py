@@ -76,7 +76,7 @@ urlpatterns = [
       path('footer-item/', footerItemListCreateView.as_view(), name='footerItemListCreateView'),
       path('footer-item/<int:pk>/', footerItemRetrieveUpdateDestroyView.as_view(), name='footerItemRetrieveUpdateDestroyView'),
       
-      path('head-office/', footerHeadOfficeListCreateView.as_view(), name='footerHeadOfficeListCreateView'),
+      path('head-office/', footerHeadOfficeListCreateViewCivil.as_view(), name='footerHeadOfficeListCreateView-Civil'),
       path('head-office/<int:pk>/', footerHeadOfficeRetrieveUpdateDestroyView.as_view(), name='footerHeadOfficeRetrieveUpdateDestroyView'),
       
       path('social-icon/', footerSocialIconListCreateView.as_view(), name='footerSocialIconListCreateView'),
