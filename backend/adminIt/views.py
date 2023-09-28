@@ -844,18 +844,18 @@ class footerItemListCreateView(ListCreateAPIView):
         return Response({"type": "error", "msg": "Footer item creation failed"})
     
     def get(self, request):
+        dataArray = []
         if siteList.objects.filter(name='IT').exists():
             site_civil = siteList.objects.get(name='IT')
         if footerSection.objects.filter(site =site_civil).exists():
             allData =  footerSection.objects.filter(site =site_civil).all().order_by('-id')
         
-        dataArray = []
-        for section in allData:
-            item = footerItem.objects.filter(footerSection=section).all()
-            item_serializer = footerItemSerializer(item, many=True).data
+            for section in allData:
+                item = footerItem.objects.filter(footerSection=section).all()
+                item_serializer = footerItemSerializer(item, many=True).data
             
-            for i in item_serializer:
-                dataArray.append(i)
+                for i in item_serializer:
+                    dataArray.append(i)
         return Response(dataArray)
     
 

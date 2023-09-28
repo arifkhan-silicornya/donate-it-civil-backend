@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from .views import *
 from .OrderView import *
 from .Paymentviews import *
+from .Dashboard_View import * 
 
 urlpatterns = [
 
@@ -33,6 +34,8 @@ urlpatterns = [
         path('details-design/<int:pk>/', DetailsDesignView.as_view(), name='Details-Design-View'),
 
         
+        # dashbaord
+        path('get-dashboard/', get_dashboard_data, name='dashboard'),
    ]
 
 

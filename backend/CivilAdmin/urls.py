@@ -7,7 +7,7 @@ from .header_views import *
 from .OrderView import *
 from .Paymentviews import *
 from .OrderManageView import *
-
+from .dashboard_view import *
 
 urlpatterns = [
       path('create-site-list/', SiteListView.as_view(), name='create_site_list'),
@@ -134,6 +134,10 @@ urlpatterns = [
       # CompanyAccountAPIView crud url
       path('company-account/', CompanyAccountAPIView.as_view()),
       path('company-account/<int:pk>/', CompanyAccountAPIView.as_view()),
+
+      
+      # dashboard
+      path('get-dashboard/', get_dashboard_data),
    ]
 
 

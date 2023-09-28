@@ -147,7 +147,7 @@ class CustomUserLoginView(APIView):
 
         if User.objects.filter(username=username).exists():
             user = User.objects.get(username=username)
-        if User.objects.filter(email=username).exists():
+        elif User.objects.filter(email=username).exists():
             user = User.objects.get(email=username)
         else:
             return Response({"type":"error","msg":"User not found"})

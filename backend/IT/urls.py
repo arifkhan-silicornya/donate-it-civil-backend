@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from .views import *
 from .OrderView import *
 from .Paymentviews import *
+from .Dashboard_View import *
 
 urlpatterns = [
 
@@ -51,8 +52,9 @@ urlpatterns = [
         path('make-payment/', CreateTransaction.as_view(), name='make-payment'),
         path('get-all-transaction/', GetTransaction.as_view(), name='get-payment'),
         
-        
 
+        # dashbaord
+        path('get-dashboard/', get_dashboard_data, name='dashboard'),
         
    ]
 

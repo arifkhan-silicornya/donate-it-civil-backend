@@ -5,6 +5,7 @@ from .views import *
 from IT.views import *
 from .header_view import *
 from .OrderManageView import *
+from .dashboard_view import *
 
 urlpatterns = [
         path('banner/', BannerView.as_view(), name='Banner_it'),
@@ -120,6 +121,10 @@ urlpatterns = [
         # Brand Logo
         path('create-view-brand/', ITBrandList.as_view() ),
         path('view-update-brand/<int:pk>/', ITBrandUpdateRetrieve.as_view()),
+        
+        
+        # dashboard
+        path('get-dashboard/', get_dashboard_data),
 
 
         
