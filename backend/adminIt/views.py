@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import *
 from rest_framework.pagination import PageNumberPagination
 from IT.models import *
+from IT.Paymentserializers import *   
+from IT.Payment_Model import *
 from Authentication.serializers import UserSerializer
 from rest_framework.generics import GenericAPIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView ,UpdateAPIView
@@ -1119,8 +1121,6 @@ class DeliveryOrderListAPIView(generics.ListCreateAPIView):
     serializer_class = OrderItSerializer
     queryset = OrderIt.objects.filter(status='del').order_by('-id')
 
-from IT.Paymentserializers import *   
-from IT.Payment_Model import *
 
 class TransactionListAPIView(generics.ListCreateAPIView):
     permission_classes = [IsAdminUser]

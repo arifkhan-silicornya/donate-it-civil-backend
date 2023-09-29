@@ -149,7 +149,7 @@ class OrderItSerializer(serializers.ModelSerializer):
         return ProductSerializer(ProductModel.objects.get(id=model.ProductIT.id),many=False).data
     
     def get_DeliveryFile(self,model):
-        return DeliveryFileSerializer(DeliveryFile.objects.filter(id=model.id),many=True).data
+        return DeliveryFileSerializer(DeliveryFile.objects.filter(orderit=model.id),many=True).data
     
     
     
