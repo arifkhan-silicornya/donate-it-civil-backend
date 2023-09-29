@@ -19,6 +19,7 @@ class OrderCivilSerializer(serializers.ModelSerializer):
     CompanyDetail=serializers.SerializerMethodField("get_CompanyDetail")
     Contact_info=serializers.SerializerMethodField("get_Contact_info")
     SocialMediaLink=serializers.SerializerMethodField("get_SocialMediaLink")
+    DeliveryFile = serializers.SerializerMethodField("get_DeliveryFile")
     class Meta:
         model = OrderCivil
         fields = '__all__'
@@ -73,6 +74,14 @@ class OrderCivilSerializer(serializers.ModelSerializer):
             return SocialMediaLinkSerializer(SocialMediaLink,many=True).data
         except:
             return []
+    def get_DeliveryFile(self,model):
+        return DeliveryFileCivilSerializer(DeliveryFileCivil.objects.filter(ordercivil=model.id),many=True).data
+
+class DeliveryFileCivilSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeliveryFileCivil
+        fields = ['id','file','create_at','update_at']
+        depth = 1
         
 class OrderPdfSerializer(serializers.ModelSerializer):
     class Meta:
