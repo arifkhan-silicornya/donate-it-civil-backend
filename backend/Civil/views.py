@@ -75,10 +75,9 @@ class ProductViewIT(APIView):
     def get(self, request, pk=None):
         if pk:
             instance = self.get_product(pk)
-            serializer = ProductSerializer(instance, many=True, context={'request':request})
         else:
             instance = ProductModel.objects.filter(active=True).all()
-            serializer = ProductSerializer(instance, many=True, context={'request':request})
+        serializer = ProductSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     

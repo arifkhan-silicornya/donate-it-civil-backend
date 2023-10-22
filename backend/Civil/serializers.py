@@ -29,8 +29,7 @@ class FeatureWorksCategoryerializer(serializers.ModelSerializer):
     def get_FeatureWorks(self,model):
         try:
             obj = FeatureWorks.objects.filter(category=model,active=True)
-            seria =  FeatureWorksSerializer(instance=obj, many=True, read_only=True).data
-            return seria
+            return FeatureWorksSerializer(instance=obj, many=True, read_only=True).data
         except:
             return []
 
@@ -95,8 +94,7 @@ class ProductCategoryModelSerializer(serializers.ModelSerializer):
     def get_Product(self,model):
         try:
             obj = ProductModel.objects.filter(category=model,active=True)
-            seria =  ProductSerializer(instance=obj,many=True, read_only=True).data
-            return seria
+            return ProductSerializer(instance=obj,many=True, read_only=True).data
         except:
             return []
 # =======================       Notice Model Serializer         ========================
@@ -138,7 +136,6 @@ class DetailsOfFeatureDesignSerializer(serializers.ModelSerializer):
     def get_images(self,model):
         try:
             obj = ImagesOfDetailsDesign.objects.filter(DetailsDesign=model,active=True).all()
-            seria =  ImagesOfDesignSerializer(instance=obj, many=True, read_only=True).data
-            return seria
+            return ImagesOfDesignSerializer(instance=obj, many=True, read_only=True).data
         except:
             return []

@@ -117,56 +117,54 @@ class OrderAndOtherPDFUpload(CreateAPIView):
     def post(self, request):
         try:
             orderID = request.data['order']
-            
-            if OrderIt.objects.filter(id=orderID).exists():
-                order = OrderIt.objects.get(id=orderID)
-                order_pdfOne = request.data['order_pdfOne']
-                order_pdfTwo = request.data['order_pdfTwo']
-                order_pdfThree = request.data['order_pdfThree']
-                other_pdfOne = request.data['other_pdfOne']
-                other_pdfTwo = request.data['other_pdfTwo']
-                other_pdfThree = request.data['other_pdfThree']
-                
-                if order_pdfOne:
-                    data = {'file': order_pdfOne}
-                    orderSerializer = OrderPdfSerializer(data=data, partial=False)
-                    if orderSerializer.is_valid():
-                        orderSerializer.save(orderit=order)
-                        
-                if order_pdfTwo:
-                    data = {'file': order_pdfTwo}
-                    orderSerializer = OrderPdfSerializer(data=data, partial=False)
-                    if orderSerializer.is_valid():
-                        orderSerializer.save(orderit=order)
-                        
-                if order_pdfThree:
-                    data = {'file': order_pdfThree}
-                    orderSerializer = OrderPdfSerializer(data=data, partial=False)
-                    if orderSerializer.is_valid():
-                        orderSerializer.save(orderit=order)
-                        
-                if other_pdfOne:
-                    data={'file':other_pdfOne}
-                    other_pdfSerializer = OtherPdfSerializer(data=data, partial=False)
-                    if other_pdfSerializer.is_valid():
-                        other_pdfSerializer.save(orderit=order)
-                        
-                if other_pdfTwo:
-                    data = {'file': other_pdfTwo}
-                    other_pdfSerializer = OtherPdfSerializer(data=data, partial=False)
-                    if other_pdfSerializer.is_valid():
-                        other_pdfSerializer.save(orderit=order)
-                        
-                if other_pdfThree:
-                    data = {'file': other_pdfThree}
-                    other_pdfSerializer = OtherPdfSerializer(data=data, partial=False)
-                    if other_pdfSerializer.is_valid():
-                        other_pdfSerializer.save(orderit=order)
-                        
-                return Response({"type": "success", "msg": "Completed Order Created"})
-            else:
+
+            if not OrderIt.objects.filter(id=orderID).exists():
                 return Response({"type": "error", "msg": "Order not found"})
-        
+
+            order = OrderIt.objects.get(id=orderID)
+            order_pdfTwo = request.data['order_pdfTwo']
+            order_pdfThree = request.data['order_pdfThree']
+            other_pdfOne = request.data['other_pdfOne']
+            other_pdfTwo = request.data['other_pdfTwo']
+            other_pdfThree = request.data['other_pdfThree']
+
+            if order_pdfOne := request.data['order_pdfOne']:
+                data = {'file': order_pdfOne}
+                orderSerializer = OrderPdfSerializer(data=data, partial=False)
+                if orderSerializer.is_valid():
+                    orderSerializer.save(orderit=order)
+
+            if order_pdfTwo:
+                data = {'file': order_pdfTwo}
+                orderSerializer = OrderPdfSerializer(data=data, partial=False)
+                if orderSerializer.is_valid():
+                    orderSerializer.save(orderit=order)
+
+            if order_pdfThree:
+                data = {'file': order_pdfThree}
+                orderSerializer = OrderPdfSerializer(data=data, partial=False)
+                if orderSerializer.is_valid():
+                    orderSerializer.save(orderit=order)
+
+            if other_pdfOne:
+                data={'file':other_pdfOne}
+                other_pdfSerializer = OtherPdfSerializer(data=data, partial=False)
+                if other_pdfSerializer.is_valid():
+                    other_pdfSerializer.save(orderit=order)
+
+            if other_pdfTwo:
+                data = {'file': other_pdfTwo}
+                other_pdfSerializer = OtherPdfSerializer(data=data, partial=False)
+                if other_pdfSerializer.is_valid():
+                    other_pdfSerializer.save(orderit=order)
+
+            if other_pdfThree:
+                data = {'file': other_pdfThree}
+                other_pdfSerializer = OtherPdfSerializer(data=data, partial=False)
+                if other_pdfSerializer.is_valid():
+                    other_pdfSerializer.save(orderit=order)
+
+            return Response({"type": "success", "msg": "Completed Order Created"})
         except:
             return Response({"type": "error", "msg": "Order and other pdf upload failed"})
 

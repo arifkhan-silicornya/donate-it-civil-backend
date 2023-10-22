@@ -213,7 +213,7 @@ class CompanyModel(models.Model):
     last_update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.full_Name)+ " " + str(self.staff_title)
+        return f"{str(self.full_Name)} {str(self.staff_title)}"
 
 
 class BottomBanner(models.Model):

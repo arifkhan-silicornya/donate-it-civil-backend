@@ -149,7 +149,7 @@ class CompanyDetailIT(models.Model):
     update_at = models.DateTimeField(auto_now= True)
 
     def __str__(self):
-        return str(self.orderit.id) +" com id :"+ str(self.id)
+        return f"{str(self.orderit.id)} com id :{str(self.id)}"
 
 
 # =========================       Contact Info       =====================
@@ -186,7 +186,7 @@ class SocialMediaLinkIT(models.Model):
     update_at = models.DateTimeField(auto_now= True)
 
     def __str__(self):
-        return str(self.orderit.id) + " " + str(self.id)
+        return f"{str(self.orderit.id)} {str(self.id)}"
 
 
     # =========================       Delivery File       =====================

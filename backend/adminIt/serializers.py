@@ -129,16 +129,14 @@ class OrderItSerializer(serializers.ModelSerializer):
     def get_OrderPdfIT(self,model):
         try:
             obj = OrderPdfIT.objects.filter(orderit=model)
-            seria =  OrderPdfSerializer(instance=obj,many=True, read_only=True).data
-            return seria
+            return OrderPdfSerializer(instance=obj,many=True, read_only=True).data
         except:
             return []
         
     def get_OtherPdfIT(self,model):
         try:
             obj = OtherPdfIT.objects.filter(orderit=model)
-            seria =  OtherPdfSerializer(instance=obj,many=True, read_only=True).data
-            return seria
+            return OtherPdfSerializer(instance=obj,many=True, read_only=True).data
         except:
             return []
         
