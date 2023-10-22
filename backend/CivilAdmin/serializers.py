@@ -55,8 +55,7 @@ class FeatureWorksCategoryeSerializer(serializers.ModelSerializer):
     def get_FeatureWorks(self,model):
         try:
             obj = FeatureWorks.objects.filter(category=model,active=True)
-            seria =  FeatureWorksSerializer(instance=obj,many=True, read_only=True).data
-            return seria
+            return FeatureWorksSerializer(instance=obj,many=True, read_only=True).data
         except:
             return []
 
@@ -72,10 +71,7 @@ class ArchitectureSerializer(serializers.ModelSerializer):
 
     def get_deatial_feature(self,model):
         try:
-            if DetailsOfFeatureDesign.objects.filter(Architecture=model).exists():
-                return True
-            else:
-                return False
+            return bool(DetailsOfFeatureDesign.objects.filter(Architecture=model).exists())
         except:
             return False    
 

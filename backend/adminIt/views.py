@@ -101,10 +101,9 @@ class TechnologiesCategoryAPIView(APIView):
     def get(self, request, pk=None):
         if pk:
             instance = self.get_technologies_category(pk)
-            serializer = TechnologiesCategorySerializer(instance, many=True, context={'request':request})
         else:
             instance = TechnologiesCategory.objects.all()
-            serializer = TechnologiesCategorySerializer(instance, many=True, context={'request':request})
+        serializer = TechnologiesCategorySerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     def post(self, request):
         serializer = TechnologiesCategorySerializer(data=request.data)
@@ -138,12 +137,8 @@ class TechnologyView(APIView):
             return Response({'type': 'error', 'message': 'Technology not found'})
         
     def get(self, request, pk=None):
-        if pk:
-            instance = self.get_technology(pk)
-            serializer = TechnologySerializer(instance, many=True, context={'request':request})
-        else:
-            instance = Technology.objects.all()
-            serializer = TechnologySerializer(instance, many=True, context={'request':request})
+        instance = self.get_technology(pk) if pk else Technology.objects.all()
+        serializer = TechnologySerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     def post(self, request, format=None):
         ctg = request.data['category']
@@ -192,12 +187,8 @@ class NoticeView(APIView):
             return NoticeModel.objects.filter(id=pk)
         
     def get(self, request, pk=None):
-        if pk:
-            instance = self.get_notice(pk)
-            serializer = NoticeSerializer(instance, many=True, context={'request':request})
-        else:
-            instance = NoticeModel.objects.all()
-            serializer = NoticeSerializer(instance, many=True, context={'request':request})
+        instance = self.get_notice(pk) if pk else NoticeModel.objects.all()
+        serializer = NoticeSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     def post(self, request, format=None):
         serializer = NoticeSerializer(data=request.data or request.FILES)
@@ -228,12 +219,8 @@ class SecurityView(APIView):
             return SecurityPage.objects.filter(id=pk)
         
     def get(self, request, pk=None):
-        if pk:
-            instance = self.get_security(pk)
-            serializer = SecurityPageSerializer(instance, many=True, context={'request':request})
-        else:
-            instance = SecurityPage.objects.all()
-            serializer = SecurityPageSerializer(instance, many=True, context={'request':request})
+        instance = self.get_security(pk) if pk else SecurityPage.objects.all()
+        serializer = SecurityPageSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     def post(self, request, format=None):
         serializer = SecurityPageSerializer(data=request.data)
@@ -265,12 +252,8 @@ class ContactView(APIView):
             return Contact.objects.filter(id=pk)
         
     def get(self, request, pk=None):
-        if pk:
-            instance = self.get_contact(pk)
-            serializer = ContactSerializer(instance, many=True, context={'request':request})
-        else:
-            instance = Contact.objects.all()
-            serializer = ContactSerializer(instance, many=True, context={'request':request})
+        instance = self.get_contact(pk) if pk else Contact.objects.all()
+        serializer = ContactSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     def post(self, request, format=None):
         serializer = ContactSerializer(data=request.data)
@@ -302,12 +285,8 @@ class CompanyView(APIView):
             return CompanyModel.objects.filter(id=pk)
         
     def get(self, request, pk=None):
-        if pk:
-            instance = self.get_company(pk)
-            serializer = CompanySerializer(instance, many=True, context={'request':request})
-        else:
-            instance = CompanyModel.objects.all()
-            serializer = CompanySerializer(instance, many=True, context={'request':request})
+        instance = self.get_company(pk) if pk else CompanyModel.objects.all()
+        serializer = CompanySerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     def post(self, request, format=None):
         serializer = CompanySerializer(data=request.data)
@@ -338,12 +317,8 @@ class OurServicesView(APIView):
             return OurServices.objects.filter(id=pk)
         
     def get(self, request, pk=None):
-        if pk:
-            instance = self.get_service(pk)
-            serializer = OurServicesSerializer(instance, many=True, context={'request':request})
-        else:
-            instance = OurServices.objects.all()
-            serializer = OurServicesSerializer(instance, many=True, context={'request':request})
+        instance = self.get_service(pk) if pk else OurServices.objects.all()
+        serializer = OurServicesSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     def post(self, request, format=None):
         serializer = OurServicesSerializer(data=request.data or request.FILES)
@@ -375,12 +350,8 @@ class ReadmoreView(APIView):
             return Readmore.objects.filter(id=pk)
         
     def get(self, request, pk=None):
-        if pk:
-            instance = self.get_readmore(pk)
-            serializer = ReadmoreSerializer(instance, many=True, context={'request':request})
-        else:
-            instance = Readmore.objects.all()
-            serializer = ReadmoreSerializer(instance, many=True, context={'request':request})
+        instance = self.get_readmore(pk) if pk else Readmore.objects.all()
+        serializer = ReadmoreSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     def post(self, request, format=None):
         serializer = ReadmoreSerializer(data=request.data)
@@ -411,12 +382,8 @@ class HomeTemplateView(APIView):
             return HomeTemplate.objects.filter(id=pk)
         
     def get(self, request, pk=None):
-        if pk:
-            instance = self.get_home(pk)
-            serializer = HomeTemplateSerializer(instance, many=True, context={'request':request})
-        else:
-            instance = HomeTemplate.objects.all()
-            serializer = HomeTemplateSerializer(instance, many=True, context={'request':request})
+        instance = self.get_home(pk) if pk else HomeTemplate.objects.all()
+        serializer = HomeTemplateSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     def post(self, request, format=None):
         serializer = HomeTemplateSerializer(data=request.data)
@@ -448,12 +415,8 @@ class CategoryView(APIView):
             return ProductCategoryModel.objects.filter(id=pk)
         
     def get(self, request, pk=None):
-        if pk:
-            instance = self.get_category(pk)
-            serializer = CategorySerializer(instance, many=True, context={'request':request})
-        else:
-            instance = ProductCategoryModel.objects.all()
-            serializer = CategorySerializer(instance, many=True, context={'request':request})
+        instance = self.get_category(pk) if pk else ProductCategoryModel.objects.all()
+        serializer = CategorySerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     def post(self, request, format=None):
         serializer = CategorySerializer(data=request.data)
@@ -488,12 +451,8 @@ class ProductView(APIView):
             return Response({'type': 'error', 'msg': 'Product not found'})
         
     def get(self, request, pk=None):
-        if pk:
-            instance = self.get_product(pk)
-            serializer = ProductSerializer(instance, many=True, context={'request':request})
-        else:
-            instance = ProductModel.objects.all()
-            serializer = ProductSerializer(instance, many=True, context={'request':request})
+        instance = self.get_product(pk) if pk else ProductModel.objects.all()
+        serializer = ProductSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     def post(self, request, format=None):
         ctg = request.data['category']
@@ -544,12 +503,8 @@ class OrderITView(APIView):
             return OrderIt.objects.filter(id=pk)
         
     def get(self, request, pk=None):
-        if pk:
-            instance = self.get_orderIt(pk)
-            serializer = OrderItSerializer(instance, many=True, context={'request':request})
-        else:
-            instance = OrderIt.objects.all()
-            serializer = OrderItSerializer(instance, many=True, context={'request':request})
+        instance = self.get_orderIt(pk) if pk else OrderIt.objects.all()
+        serializer = OrderItSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     def post(self, request, format=None):
         try:
@@ -851,13 +806,12 @@ class footerItemListCreateView(ListCreateAPIView):
             site_civil = siteList.objects.get(name='IT')
         if footerSection.objects.filter(site =site_civil).exists():
             allData =  footerSection.objects.filter(site =site_civil).all().order_by('-id')
-        
+
             for section in allData:
                 item = footerItem.objects.filter(footerSection=section).all()
                 item_serializer = footerItemSerializer(item, many=True).data
-            
-                for i in item_serializer:
-                    dataArray.append(i)
+
+                dataArray.extend(iter(item_serializer))
         return Response(dataArray)
     
 

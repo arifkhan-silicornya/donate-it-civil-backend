@@ -30,8 +30,7 @@ class PaymentMethodSerializer(serializers.ModelSerializer):
     def get_CompanyAccount(self,model):
         try:
             obj = CompanyAccount.objects.filter(payment_method=model,active=True)
-            seria =  CompanyAccount_Serializer(instance=obj,many=True, read_only=True).data
-            return seria
+            return CompanyAccount_Serializer(instance=obj,many=True, read_only=True).data
         except:
             return {}
 
