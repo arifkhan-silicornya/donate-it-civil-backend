@@ -883,17 +883,16 @@ class DetailsOfFeatureDesignAPIView(APIView):
         except:    
             return Response({"type":"error","msg":"Architecture Id not sent with request"})
 
-        if Architecture.objects.filter(id=architecture_id).exists():
-            architecture = Architecture.objects.get(id=architecture_id)
-            print("12", architecture)
-        else:
+        if not Architecture.objects.filter(id=architecture_id).exists():
             return Response({"type":"error","msg":"Architecture not found"}) 
-        
+
+        architecture = Architecture.objects.get(id=architecture_id)
+        print("12", architecture)
         if DetailsOfFeatureDesign.objects.filter(Architecture=architecture).exists():
             return Response({"type":"error","msg":"This Architecture Data Already existed"}) 
 
         serializer = DetailsOfFeatureDesignSerializer(data=request.data)
-        
+
         if serializer.is_valid():
             serializer.save(Architecture=architecture)
             return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -84,8 +84,8 @@ class User(AbstractBaseUser,PermissionsMixin):
     phoneNumber=models.CharField(max_length=20,null=True,blank=True)
     
     profile_picture=ResizedImageField( upload_to=upload_to_profile,blank=True, null=True,)
-    def __str__(self) :
-        return self.email +" "+str(self.id) +" "+self.username
+    def __str__(self):
+        return f"{self.email} {str(self.id)} {self.username}"
 
 # =========================       code verification       =====================
 

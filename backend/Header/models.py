@@ -30,7 +30,7 @@ class Navbar(models.Model):
     last_update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.name) +" "+ str(self.site)
+        return f"{str(self.name)} {str(self.site)}"
 
 # Brand Logo for donate
 class DonateBrandLogo(models.Model):

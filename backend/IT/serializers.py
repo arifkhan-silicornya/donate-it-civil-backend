@@ -27,8 +27,7 @@ class User_Tech_Cat_Serializer(serializers.ModelSerializer):
     def get_technology_sections(self,model):
         try:
             obj = Technology.objects.filter(category=model,active=True)
-            seria =  TechnologySerializer(instance=obj,many=True, read_only=True).data
-            return seria
+            return TechnologySerializer(instance=obj,many=True, read_only=True).data
         except:
             return []
 
@@ -94,8 +93,7 @@ class ProductCategoryModelSerializer(serializers.ModelSerializer):
     def get_Product(self,model):
         try:
             obj = ProductModel.objects.filter(category=model,active=True)
-            seria =  ProductSerializer(instance=obj,many=True, read_only=True).data
-            return seria
+            return ProductSerializer(instance=obj,many=True, read_only=True).data
         except:
             return []
 

@@ -29,26 +29,25 @@ class CreateTransaction(generics.CreateAPIView):
             bank = request.data['bank']
             if order == '' or bank == '':
                 return Response({'type':'error','msg': 'order or bank is empty'})
-            else:
-                if CompanyAccount.objects.filter(id=bank).exists() and OrderIt.objects.filter(id=order).exists():
-                    bankObj = CompanyAccount.objects.get(id=bank)
-                    orderobj = OrderIt.objects.get(id=order)
-                    serializer = self.get_serializer(data=request.data)
-                    if serializer.is_valid(raise_exception=True):
-                        serializer.save(user=request.user, order = orderobj, bank = bankObj)
-                        
-                        SaveData =  serializer.data
-                        total_online_pay = int(SaveData['amount']) + int(orderobj.total_online_paid)
-                        if orderobj.payment_left > 0:
-                            OrderIt.objects.filter(id=orderobj.id).update(total_online_paid = total_online_pay, payment_left= orderobj.payment_left-1)
-                        else:
-                            OrderIt.objects.filter(id=orderobj.id).update(total_online_paid = total_online_pay)
+            if CompanyAccount.objects.filter(id=bank).exists() and OrderIt.objects.filter(id=order).exists():
+                bankObj = CompanyAccount.objects.get(id=bank)
+                orderobj = OrderIt.objects.get(id=order)
+                serializer = self.get_serializer(data=request.data)
+                if serializer.is_valid(raise_exception=True):
+                    serializer.save(user=request.user, order = orderobj, bank = bankObj)
 
-                        return Response({'type':'success','msg': 'Your Transaction Successfull'})
+                    SaveData =  serializer.data
+                    total_online_pay = int(SaveData['amount']) + int(orderobj.total_online_paid)
+                    if orderobj.payment_left > 0:
+                        OrderIt.objects.filter(id=orderobj.id).update(total_online_paid = total_online_pay, payment_left= orderobj.payment_left-1)
                     else:
-                        return Response({'type':'error','msg': 'data not valid'})                        
+                        OrderIt.objects.filter(id=orderobj.id).update(total_online_paid = total_online_pay)
+
+                    return Response({'type':'success','msg': 'Your Transaction Successfull'})
                 else:
-                    return Response({'type':'error','msg': 'order or bank value not exist'})
+                    return Response({'type':'error','msg': 'data not valid'})                        
+            else:
+                return Response({'type':'error','msg': 'order or bank value not exist'})
         except:
             return Response({'type':'error','msg': 'order or bank not send with request'})
         

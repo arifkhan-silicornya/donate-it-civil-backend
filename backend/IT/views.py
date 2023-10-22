@@ -97,10 +97,9 @@ class TechnologiesCategoryView(APIView):
     def get(self, request, pk=None):
         if pk:
             instance = self.get_technologies_category(pk)
-            serializer = User_Tech_Cat_Serializer(instance, many=True, context={'request':request})
         else:
             instance = TechnologiesCategory.objects.filter(active=True).all()
-            serializer = User_Tech_Cat_Serializer(instance, many=True, context={'request':request})
+        serializer = User_Tech_Cat_Serializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -115,10 +114,9 @@ class ProductViewIT(APIView):
     def get(self, request, pk=None):
         if pk:
             instance = self.get_product(pk)
-            serializer = ProductSerializer(instance, many=True, context={'request':request})
         else:
             instance = ProductModel.objects.filter(active=True).all()
-            serializer = ProductSerializer(instance, many=True, context={'request':request})
+        serializer = ProductSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -130,10 +128,9 @@ class ProCategoryViewIT(APIView):
     def get(self, request, pk=None):
         if pk:
             instance = self.get_category(pk)
-            serializer = ProductCategoryModelSerializer(instance, many=True, context={'request':request})
         else:
             instance = ProductCategoryModel.objects.filter(active=True)
-            serializer = ProductCategoryModelSerializer(instance, many=True, context={'request':request})
+        serializer = ProductCategoryModelSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -155,10 +152,9 @@ class user_CompanyView(APIView):
     def get(self, request, pk=None):
         if pk:
             instance = self.get_company(pk)
-            serializer = CompanySerializer(instance, many=True, context={'request':request})
         else:
             instance = CompanyModel.objects.filter(active=True)
-            serializer = CompanySerializer(instance, many=True, context={'request':request})
+        serializer = CompanySerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class user_NoticeView(APIView):
@@ -169,10 +165,9 @@ class user_NoticeView(APIView):
     def get(self, request, pk=None):
         if pk:
             instance = self.get_notice(pk)
-            serializer = NoticeSerializer(instance, many=True, context={'request':request})
         else:
             instance = NoticeModel.objects.filter(active=True).all()
-            serializer = NoticeSerializer(instance, many=True, context={'request':request})
+        serializer = NoticeSerializer(instance, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

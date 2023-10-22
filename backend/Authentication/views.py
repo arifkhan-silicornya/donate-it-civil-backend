@@ -75,7 +75,7 @@ class UserRegistrationView(generics.CreateAPIView):
             CodeVer.createDate = x.strftime("%x %X")
             CodeVer.expiredDate = x2.strftime("%x %X")
             CodeVer.save()
-        
+
         else:
             CodeVer = CodeVerification()
             CodeVer.user = user
@@ -91,12 +91,11 @@ class UserRegistrationView(generics.CreateAPIView):
         })
         message = EmailMessage(mail_subject, message, settings.EMAIL_HOST_USER, [user.email,])
         message.content_subtype = "html"
-        
-        if (message.send(fail_silently=False)) :
-            CodeVer.save()
-            return Response({'type':'success','msg': 'A verification mail sent to your account.'}, status=status.HTTP_201_CREATED)
-        else:
+
+        if not (message.send(fail_silently=False)):
             return Response({'type':'error','msg': 'Mail did not not sent to your account.'})
+        CodeVer.save()
+        return Response({'type':'success','msg': 'A verification mail sent to your account.'}, status=status.HTTP_201_CREATED)
             
 
 
@@ -116,22 +115,20 @@ class UserCodeVerifyView(generics.CreateAPIView):
             code=request.data["code"]
         except:
             return Response({"type":"error","msg":"username or password not found."})
-        
+
         user_obj = User.objects.filter(email=email).first() or User.objects.filter(username__icontains=email).first()
 
-        if CodeVerification.objects.filter(user=user_obj,code=code).exists() :
-            user = CodeVerification.objects.get(user=user_obj)
-            print(user.createDate)
-            print(user.expiredDate)
-            if(user.createDate > user.expiredDate ) :
-                return Response({'type':'error','msg': 'Code Expired. Generate New Code.'})
-            else:
-                user_obj.is_verified =True
-                user_obj.is_active =True
-                user_obj.save()
-                return Response({'type':'success','msg': 'Your Account is verified. You can login now.'})
-        else:
+        if not CodeVerification.objects.filter(user=user_obj, code=code).exists():
             return Response({'type':'error','msg': 'Verification not successfull. User or Code not valid.'})
+        user = CodeVerification.objects.get(user=user_obj)
+        print(user.createDate)
+        print(user.expiredDate)
+        if (user.createDate > user.expiredDate ):
+            return Response({'type':'error','msg': 'Code Expired. Generate New Code.'})
+        user_obj.is_verified =True
+        user_obj.is_active =True
+        user_obj.save()
+        return Response({'type':'success','msg': 'Your Account is verified. You can login now.'})
 
 
 # Custom login view 
@@ -228,12 +225,11 @@ class ResetPasswordView(generics.RetrieveUpdateAPIView):
     serializer_class = ResetPasswordSerializer
     def post(self, request):
         serializer = ResetPasswordSerializer(data=request.data)
-        if serializer.is_valid():
-            user = request.user 
-            serializer.update(user, serializer.validated_data)
-            return Response({'type':'success',"message": "Password reset successful."}, status=status.HTTP_200_OK)
-        else:
+        if not serializer.is_valid():
             return Response({'type':'error','msg':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        user = request.user
+        serializer.update(user, serializer.validated_data)
+        return Response({'type':'success',"message": "Password reset successful."}, status=status.HTTP_200_OK)
 
 
 # user can change password when login
@@ -242,12 +238,11 @@ class ChangePasswordView(generics.RetrieveUpdateAPIView):
     serializer_class = ChangePasswordSerializer
     def post(self, request):
         serializer = ChangePasswordSerializer(data=request.data)
-        if serializer.is_valid():
-            user = request.user  # Assuming the user is authenticated
-            serializer.update(user, serializer.validated_data)
-            return Response({'type':'success',"msg": "Password Changed successfully."}, status=status.HTTP_200_OK)
-        else:
+        if not serializer.is_valid():
             return Response({'type':'error','msg':"Fill carefully before submit","status":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        user = request.user  # Assuming the user is authenticated
+        serializer.update(user, serializer.validated_data)
+        return Response({'type':'success',"msg": "Password Changed successfully."}, status=status.HTTP_200_OK)
 
 
 

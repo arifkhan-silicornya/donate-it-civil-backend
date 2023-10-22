@@ -213,8 +213,7 @@ class ProfilePictureUpdate(APIView):
     permission_classes = (IsAuthenticated,)
     def post(self, request, format=None):
         try:
-            usr= request.user
-            if usr:
+            if usr := request.user:
                 serializer = UserProfile_Pic_UpdateSerializer(usr, data=request.data, partial=True)
                 if serializer.is_valid():
                     serializer.save()

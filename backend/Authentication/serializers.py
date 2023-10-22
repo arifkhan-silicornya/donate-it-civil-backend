@@ -121,8 +121,7 @@ class CodeVerificationSerializer(serializers.ModelSerializer):
         email = data.get('email')
 
         if User.objects.filter(email=email).exists():
-            user_obj = User.objects.get(email=email)
-            return user_obj
+            return User.objects.get(email=email)
         else:
             raise serializers.ValidationError("User not found")
 
@@ -152,12 +151,12 @@ class ResetPasswordSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         user = instance
         email = validated_data['email']
-       
+
         try:
             user_obj = User.objects.get(email=email)
         except User.DoesNotExist:
             raise serializers.ValidationError("Invalid user.")
-        
+
         code = validated_data['code']
         new_password = validated_data['new_password']
 
@@ -169,12 +168,11 @@ class ResetPasswordSerializer(serializers.Serializer):
 
         # If the code is valid, update the user's password
         currentDT = x.strftime("%x %X")
-        if(currentDT > Code_obj.expiredDate ) :
+        if (currentDT > Code_obj.expiredDate ):
             raise serializers.ValidationError("Code Expired. Verify in 15 minite. try again!!!")
-        else:
-            user_obj.set_password(new_password)
-            user_obj.save()
-            return user
+        user_obj.set_password(new_password)
+        user_obj.save()
+        return user
         
 
 

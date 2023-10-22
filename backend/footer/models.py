@@ -15,7 +15,7 @@ class footerSection(models.Model):
     last_update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return  str(self.site.name) + " " + str(self.title)
+        return f"{str(self.site.name)} {str(self.title)}"
 
 
 def order_id():
@@ -38,7 +38,7 @@ class footerItem(models.Model):
     last_update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return  str(self.footerSection.title) + " " + str(self.name)
+        return f"{str(self.footerSection.title)} {str(self.name)}"
 
 class footerHeadOffice(models.Model):
     siteList = models.ForeignKey(siteList, on_delete=models.CASCADE )
@@ -55,7 +55,7 @@ class footerHeadOffice(models.Model):
     last_update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return  str(self.usa_address) + " " +str(self.uk_address)
+        return f"{str(self.usa_address)} {str(self.uk_address)}"
 
 class footerSocialIcon(models.Model):
     siteList = models.ForeignKey(siteList, on_delete=models.CASCADE)
@@ -68,7 +68,7 @@ class footerSocialIcon(models.Model):
     last_update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return  str(self.name) + " " +str(self.active)
+        return f"{str(self.name)} {str(self.active)}"
 
 class PaymentIcon(models.Model):
     name = models.CharField(max_length= 300,blank = False)
@@ -79,7 +79,7 @@ class PaymentIcon(models.Model):
     last_update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return  str(self.name) + " " +str(self.active)
+        return f"{str(self.name)} {str(self.active)}"
 
 
 class NewsLetter(models.Model):
@@ -90,4 +90,4 @@ class NewsLetter(models.Model):
     last_update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return  str(self.email) + " " +str(self.active)
+        return f"{str(self.email)} {str(self.active)}"
